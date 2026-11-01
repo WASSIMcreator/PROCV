@@ -249,6 +249,7 @@ footer a { text-decoration: none; font-weight: 600; color: #fff; }
 footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
 
 /* form dialog */
+dialog.fd.fallback { position: fixed; inset: 0; z-index: 100; display: block; width: 100%; height: 100%; max-height: none; border-radius: 0; }
 dialog.fd { border: 0; padding: 0; width: min(780px, 100%); max-width: 100%; max-height: 94vh; margin: auto; border-radius: 18px; background: var(--bg); color: var(--ink); overflow: auto; }
 dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .fd-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--navy); color: #fff; }
@@ -646,21 +647,21 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     out.push('', L.photo);
     window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
     if (window.fbq) fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
-    if (fd && fd.open) fd.close();
+    if (fd && fd.open) closeForm();
   });
 
   // order buttons -> form dialog
   var fd = document.getElementById('fd');
   function openForm(e) {
-    if (!fd.showModal) return;
     if (e) e.preventDefault();
-    fd.showModal();
+    try { fd.showModal(); } catch (err) { fd.setAttribute('open', ''); fd.classList.add('fallback'); }
     if (window.fbq) fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' });
     setTimeout(function () { var n = fd.querySelector('[name=nom]'); if (n) n.focus(); }, 60);
   }
   document.querySelectorAll('.order').forEach(function (a) { a.addEventListener('click', openForm); });
-  document.getElementById('fd-x').addEventListener('click', function () { fd.close(); });
-  fd.addEventListener('click', function (e) { if (e.target === fd) fd.close(); });
+  function closeForm() { try { fd.close(); } catch (err) {} fd.removeAttribute('open'); fd.classList.remove('fallback'); }
+  document.getElementById('fd-x').addEventListener('click', closeForm);
+  fd.addEventListener('click', function (e) { if (e.target === fd) closeForm(); });
   if (location.hash === '#commande') openForm();
 
   // voice note
