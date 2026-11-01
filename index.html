@@ -17,6 +17,23 @@
     h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
   })();
 </script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1814127609805768');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1814127609805768&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <style>
 :root {
   --bg: #f3f5f9;
@@ -570,6 +587,10 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     document.querySelectorAll('.tel-link').forEach(function (a) { a.href = 'tel:+' + PHONE; });
   }
   wire();
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a.wa');
+    if (a && window.fbq) fbq('track', 'Contact');
+  });
 
   document.getElementById('lang').addEventListener('click', function () {
     var l = h.dataset.l === 'ar' ? 'fr' : 'ar';
@@ -624,6 +645,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     });
     out.push('', L.photo);
     window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
+    if (window.fbq) fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
     if (fd && fd.open) fd.close();
   });
 
@@ -633,6 +655,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     if (!fd.showModal) return;
     if (e) e.preventDefault();
     fd.showModal();
+    if (window.fbq) fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' });
     setTimeout(function () { var n = fd.querySelector('[name=nom]'); if (n) n.focus(); }, 60);
   }
   document.querySelectorAll('.order').forEach(function (a) { a.addEventListener('click', openForm); });
