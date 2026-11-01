@@ -16,6 +16,11 @@
     var h = document.documentElement;
     h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
   })();
+  // Always open at the top: no restored scroll position, no old #infos jump.
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+  if (location.hash === '#infos' || location.hash === '#prix') { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+  window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted && !location.hash) window.scrollTo(0, 0); });
 </script>
 <!-- Meta Pixel Code -->
 <script>
