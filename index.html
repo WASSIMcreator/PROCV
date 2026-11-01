@@ -68,7 +68,7 @@ html[dir="ltr"] .btn.go:hover .arr { transform: scaleX(-1) translateX(-4px); }
 
 /* header */
 .top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
-.top .wrap { display: flex; align-items: center; gap: 12px; height: 76px; }
+.top .wrap { display: flex; align-items: center; gap: 12px; height: 68px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; direction: ltr; }
 .logo img { width: 62px; height: 62px; object-fit: contain; }
 footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 14px; padding: 4px; }
@@ -77,6 +77,9 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .top .sp { flex: 1; }
 .lang { background: none; border: 1px solid var(--line); border-radius: 10px; min-height: 42px; padding: 0 14px; font: 500 15px var(--font); color: var(--ink); cursor: pointer; }
 .lang:hover { border-color: var(--navy); }
+
+.wordmark { display: inline-flex; align-items: center; gap: 6px; direction: ltr; text-decoration: none; font-weight: 700; font-size: 21px; color: var(--blue); letter-spacing: .02em; }
+.wordmark b { background: var(--navy); color: #fff; padding: 3px 9px; border-radius: 6px; }
 
 /* hero */
 .hero { padding: clamp(32px, 5vw, 72px) 0 clamp(48px, 7vw, 96px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
@@ -301,7 +304,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo.png" alt="PRO CV" width="60" height="60"></a>
+    <a class="wordmark" href="#" aria-label="PRO CV"><b>PRO</b>CV</a>
     <span class="sp"></span>
     <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
     <a class="btn go sm order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
