@@ -157,18 +157,34 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 .faq details p { padding-bottom: 18px; color: var(--muted); }
 
 
-/* infos checklist */
-.infos .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 32px; list-style: none; counter-reset: i; }
-.infos .grid2 li { counter-increment: i; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; background: var(--paper); border-radius: 10px; padding: 14px 16px; }
-.infos .grid2 li::before { content: counter(i); width: 36px; height: 36px; border-radius: 50%; background: #e4e7ee; color: var(--navy); display: grid; place-items: center; font-weight: 700; }
-.infos .grid2 b { display: block; }
-.infos .grid2 li > div > span { color: #454b59; font-size: 15px; }
-.infos .send { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.infos .send small { color: var(--muted); font-size: 14px; }
-.warn { margin-top: clamp(40px, 6vw, 64px); background: #fff4e5; border-inline-start: 5px solid #b25e00; border-radius: 8px; padding: 18px 22px; max-width: 820px; }
+/* order form */
+.form { background: var(--paper); border-radius: 14px; padding: clamp(20px, 3.5vw, 36px); max-width: 920px; }
+.form .g { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; }
+.form .full { grid-column: 1 / -1; }
+.form .part { grid-column: 1 / -1; font-size: 19px; font-weight: 700; color: var(--navy); padding-top: 10px; display: flex; gap: 10px; align-items: center; }
+.form .part i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-size: 15px; }
+.form label { display: grid; gap: 6px; font-weight: 600; font-size: 16px; }
+.form label small { font-weight: 400; color: var(--muted); font-size: 14px; }
+.form .req::after { content: " *"; color: var(--bad); }
+.form input[type=text], .form input[type=tel], .form input[type=email], .form input[type=url], .form input[type=date], .form select, .form textarea {
+  width: 100%; min-height: 50px; padding: 12px 14px; border: 1.5px solid #c9c6bd; border-radius: 10px; background: #fbfbfa; font: 400 16px/1.4 var(--font); color: var(--ink); }
+.form textarea { min-height: 112px; resize: vertical; }
+.form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--navy); background: #fff; box-shadow: 0 0 0 3px rgba(40,52,73,.15); }
+.form .bad input, .form .bad select { border-color: var(--bad); }
+.form .err { color: var(--bad); font-size: 14px; font-weight: 500; display: none; }
+.form .bad .err { display: block; }
+.form .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.form .chips label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1.5px solid #c9c6bd; border-radius: 99px; cursor: pointer; font-weight: 600; direction: ltr; }
+.form .chips input { accent-color: var(--navy); width: 18px; height: 18px; }
+.form .chips label:has(input:checked) { border-color: var(--navy); background: #e4e7ee; }
+.form .foot { margin-top: 26px; display: grid; gap: 12px; }
+.form .foot .btn { width: 100%; }
+.form .photo { background: #eef6f1; border-radius: 10px; padding: 12px 16px; font-size: 15px; color: #23402f; }
+.form .saved { font-size: 14px; color: var(--muted); }
+.warn { margin-top: clamp(40px, 6vw, 64px); background: #fff4e5; border-inline-start: 5px solid #b25e00; border-radius: 8px; padding: 18px 22px; max-width: 920px; }
 .warn b { display: block; font-size: 18px; color: #7a3f00; margin-bottom: 4px; }
 .warn p { color: #4a3420; }
-@media (max-width: 700px) { .infos .grid2 { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .form .g { grid-template-columns: 1fr; } }
 
 /* final */
 .final { text-align: center; padding-top: 0 !important; }
@@ -361,25 +377,40 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
   <section class="block infos" id="infos">
     <div class="wrap">
       <div class="head rv">
-        <h2><span lang="ar">شنو خاصك تصيفط لينا باش نوجدو الـ CV</span><span lang="fr">Ce qu'il faut nous envoyer pour votre CV</span></h2>
-        <p class="lead"><span lang="ar">جمع هاد المعلومات وصيفطهم فواتساب، بالدارجة ولا بالفرنسية. كلما كانو كاملين، كلما كان الملف أحسن.</span><span lang="fr">Rassemblez ces informations et envoyez-les sur WhatsApp, en darija ou en français. Plus elles sont complètes, meilleur est le dossier.</span></p>
+        <h2><span lang="ar">عمّر المعلومات ديالك وصيفطها لينا</span><span lang="fr">Remplissez vos informations et envoyez-les</span></h2>
+        <p class="lead"><span lang="ar">عمّر هاد الاستمارة بالدارجة ولا بالفرنسية. ملي تكليكي على "صيفط"، كيتحل ليك واتساب برسالة فيها كلشي، غير كليكي على إرسال.</span><span lang="fr">Remplissez ce formulaire en darija ou en français. En cliquant sur « Envoyer », WhatsApp s'ouvre avec un message tout prêt : il suffit de l'envoyer.</span></p>
       </div>
-      <ol class="grid2">
-          <li><div><b><span lang="ar">الاسم الكامل وتاريخ الازدياد</span><span lang="fr">Nom complet et date de naissance</span></b><span lang="ar">كيف مكتوبين فالباسبور.</span><span lang="fr">Comme sur le passeport.</span></div></li>
-          <li><div><b><span lang="ar">التليفون، الإيميل والمدينة</span><span lang="fr">Téléphone, e-mail et ville</span></b><span lang="ar">باش تتواصل معاك الشركة.</span><span lang="fr">Pour que l'entreprise vous contacte.</span></div></li>
-          <li><div><b><span lang="ar">صورة شخصية واضحة</span><span lang="fr">Une photo claire</span></b><span lang="ar">من الصدر للفوق، بخلفية عادية ولبسة نقية.</span><span lang="fr">Buste, fond simple, tenue soignée.</span></div></li>
-          <li><div><b><span lang="ar">المهنة اللي باغي</span><span lang="fr">Le métier visé</span></b><span lang="ar">Ausbildung ولا خدمة، وفأي مجال.</span><span lang="fr">Ausbildung ou emploi, et dans quel domaine.</span></div></li>
-          <li><div><b><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></b><span lang="ar">سمية الشركة، المدينة، من شحال لشحال (الشهر والعام)، وشنو كنتي كدير.</span><span lang="fr">Entreprise, ville, dates (mois et année), et vos tâches.</span></div></li>
-          <li><div><b><span lang="ar">الدراسة والديبلومات</span><span lang="fr">Études et diplômes</span></b><span lang="ar">سمية المدرسة ولا المعهد، الشعبة، والتواريخ.</span><span lang="fr">École ou institut, filière et dates.</span></div></li>
-          <li><div><b><span lang="ar">مستوى اللغات</span><span lang="fr">Niveau de langues</span></b><span lang="ar">الألمانية (<span class="ltr">A1, A2, B1…</span>) والشهادة إلا كانت، والفرنسية والإنجليزية.</span><span lang="fr">Allemand (A1, A2, B1…) avec certificat s'il y en a, français, anglais.</span></div></li>
-          <li><div><b><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></b><span lang="ar">الصنف (<span class="ltr">B, C, CE…</span>) إلا كانت عندك.</span><span lang="fr">La catégorie (B, C, CE…) si vous en avez un.</span></div></li>
-          <li><div><b><span lang="ar">المهارات والهوايات</span><span lang="fr">Compétences et loisirs</span></b><span lang="ar">شنو كتعرف دير مزيان، وشنو كتحب.</span><span lang="fr">Ce que vous savez bien faire, ce que vous aimez.</span></div></li>
-          <li><div><b><span lang="ar">إعلان الخدمة (إلا كان)</span><span lang="fr">L'annonce visée (si vous l'avez)</span></b><span lang="ar">صيفط الرابط باش نكتبو الملف على قدّها.</span><span lang="fr">Envoyez le lien pour adapter le dossier.</span></div></li>
-      </ol>
-      <div class="send rv">
-        <a class="btn wa wa-form" href="#"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer mes infos sur WhatsApp</span></a>
-        <small><span lang="ar">كتفتح ليك رسالة فيها هاد اللائحة، غير عمّرها.</span><span lang="fr">Un message avec cette liste s'ouvre, il suffit de la remplir.</span></small>
-      </div>
+      <form class="form rv" id="order" novalidate>
+        <div class="g">
+          <div class="part"><i>1</i><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
+          <div><label><span class="req"><span lang="ar">الاسم الكامل</span><span lang="fr">Nom complet</span></span><small><span lang="ar">كيف مكتوب فالباسبور</span><span lang="fr">Comme sur le passeport</span></small><input type="text" name="nom" data-ph="" required autocomplete="name"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span><span lang="ar">تاريخ الازدياد</span><span lang="fr">Date de naissance</span></span><input type="date" name="naissance" data-ph="" dir="ltr" autocomplete="off"></label></div>
+          <div><label><span class="req"><span lang="ar">رقم التليفون</span><span lang="fr">Téléphone</span></span><input type="tel" name="tel" data-ph="06 00 00 00 00" required dir="ltr" autocomplete="tel"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span><span lang="ar">الإيميل</span><span lang="fr">E-mail</span></span><input type="email" name="email" data-ph="nom@gmail.com" dir="ltr" autocomplete="email"></label></div>
+          <div><label><span><span lang="ar">المدينة</span><span lang="fr">Ville</span></span><input type="text" name="ville" data-ph="Casablanca" autocomplete="off"></label></div>
+          <div class="part"><i>2</i><span lang="ar">الهدف ديالك</span><span lang="fr">Votre objectif</span></div>
+          <div><label><span class="req"><span lang="ar">شنو باغي؟</span><span lang="fr">Vous cherchez</span></span><select name="but" required><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="Ausbildung" data-ar="Ausbildung (تكوين مهني)" data-fr="Ausbildung (formation)">Ausbildung (تكوين مهني)</option><option value="Arbeit" data-ar="خدمة (Arbeit)" data-fr="Un emploi (Arbeit)">خدمة (Arbeit)</option><option value="Pflege" data-ar="التمريض (Pflege)" data-fr="Soins (Pflege)">التمريض (Pflege)</option><option value="Studium" data-ar="الدراسة (Studium)" data-fr="Études (Studium)">الدراسة (Studium)</option><option value="Andere" data-ar="حاجة أخرى" data-fr="Autre">حاجة أخرى</option></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">المهنة اللي باغي</span><span lang="fr">Métier visé</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div class="full"><label><span><span lang="ar">رابط الإعلان (إلا كان)</span><span lang="fr">Lien de l'annonce (si vous l'avez)</span></span><input type="url" name="annonce" data-ph="https://" dir="ltr" autocomplete="off"></label></div>
+          <div class="part"><i>3</i><span lang="ar">الخبرة والدراسة</span><span lang="fr">Expérience et études</span></div>
+          <div class="full"><label><span><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></span><small><span lang="ar">لكل خدمة: الشركة، المدينة، من شحال لشحال (الشهر والعام)، وشنو كنتي كدير</span><span lang="fr">Pour chaque poste : entreprise, ville, dates (mois et année), vos tâches</span></small><textarea name="experience" data-ph=""></textarea></label></div>
+          <div class="full"><label><span><span lang="ar">الدراسة والديبلومات</span><span lang="fr">Études et diplômes</span></span><small><span lang="ar">المدرسة ولا المعهد، الشعبة، والتواريخ</span><span lang="fr">École ou institut, filière et dates</span></small><textarea name="etudes" data-ph=""></textarea></label></div>
+          <div class="part"><i>4</i><span lang="ar">اللغات والرخصة</span><span lang="fr">Langues et permis</span></div>
+          <div><label><span><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></span><select name="allemand"><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option><option value="0" data-ar="ما زال ما بديتش" data-fr="Pas encore commencé">ما زال ما بديتش</option></select></label></div>
+          <div><label><span><span lang="ar">الشهادة (إلا كانت)</span><span lang="fr">Certificat (si vous en avez)</span></span><input type="text" name="certificat" data-ph="Goethe B1, telc B2…" autocomplete="off"></label></div>
+          <div class="full"><label><span><span lang="ar">لغات أخرى</span><span lang="fr">Autres langues</span></span><input type="text" name="langues" data-ph="Arabisch: Muttersprache, Französisch: B1…" autocomplete="off"></label></div>
+          <div class="full"><span style="font-weight:600"><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></span>
+            <div class="chips" style="margin-top:8px"><label><input type="checkbox" name="permis" value="B"> B</label><label><input type="checkbox" name="permis" value="C"> C</label><label><input type="checkbox" name="permis" value="CE"> CE</label><label><input type="checkbox" name="permis" value="D"> D</label></div></div>
+          <div class="part"><i>5</i><span lang="ar">المهارات والهوايات</span><span lang="fr">Compétences et loisirs</span></div>
+          <div><label><span><span lang="ar">المهارات</span><span lang="fr">Compétences</span></span><small><span lang="ar">شنو كتعرف دير مزيان</span><span lang="fr">Ce que vous savez bien faire</span></small><textarea name="competences" data-ph=""></textarea></label></div>
+          <div><label><span><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></span><small><span lang="ar">الرياضة، القراية…</span><span lang="fr">Sport, lecture…</span></small><textarea name="loisirs" data-ph=""></textarea></label></div>
+        </div>
+        <div class="foot">
+          <p class="photo"><span lang="ar">الصورة الشخصية: ملي يتحل واتساب وتصيفط الرسالة، صيفط الصورة ديالك فنفس المحادثة.</span><span lang="fr">Photo : une fois le message envoyé sur WhatsApp, envoyez votre photo dans la même conversation.</span></p>
+          <button class="btn wa" type="submit"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer sur WhatsApp</span></button>
+          <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
+        </div>
+      </form>
 
       <div class="warn rv" role="note">
         <b><span lang="ar">تنبيه مهم</span><span lang="fr">À savoir</span></b>
@@ -438,6 +469,55 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
     h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
     try { localStorage.setItem('procv-lang', l); } catch (e) {}
     wire();
+    if (typeof phs === 'function') phs();
+  });
+
+
+  // order form -> WhatsApp
+  var form = document.getElementById('order');
+  var KEY = 'procv-form';
+  function phs() {
+    form.querySelectorAll('[data-ph]').forEach(function (el) { el.placeholder = el.dataset.ph; });
+    form.querySelectorAll('option[data-ar]').forEach(function (o) { o.textContent = h.dataset.l === 'ar' ? o.dataset.ar : o.dataset.fr; });
+  }
+  phs();
+  try {
+    var d = JSON.parse(localStorage.getItem(KEY) || '{}');
+    Object.keys(d).forEach(function (k) {
+      if (k === 'permis') form.querySelectorAll('[name=permis]').forEach(function (c) { c.checked = d.permis.indexOf(c.value) > -1; });
+      else if (form.elements[k]) form.elements[k].value = d[k];
+    });
+  } catch (e) {}
+  function data() {
+    var o = {};
+    Array.prototype.forEach.call(form.elements, function (el) { if (el.name && el.name !== 'permis') o[el.name] = el.value.trim(); });
+    o.permis = Array.prototype.filter.call(form.querySelectorAll('[name=permis]'), function (c) { return c.checked; }).map(function (c) { return c.value; });
+    return o;
+  }
+  form.addEventListener('input', function (e) {
+    var w = e.target.closest('div'); if (w) w.classList.remove('bad');
+    try { localStorage.setItem(KEY, JSON.stringify(data())); } catch (err) {}
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var first = null;
+    form.querySelectorAll('[required]').forEach(function (el) {
+      var w = el.closest('div');
+      if (!el.value.trim()) { w.classList.add('bad'); first = first || el; } else w.classList.remove('bad');
+    });
+    if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    var o = data(), ar = h.dataset.l === 'ar';
+    var L = ar
+      ? { t: 'السلام عليكم، بغيت ملف الترشيح الألماني (200 درهم). هادي المعلومات ديالي:', nom: 'الاسم الكامل', naissance: 'تاريخ الازدياد', tel: 'التليفون', email: 'الإيميل', ville: 'المدينة', but: 'الهدف', metier: 'المهنة', annonce: 'رابط الإعلان', experience: 'الخبرة المهنية', etudes: 'الدراسة والديبلومات', allemand: 'مستوى الألمانية', certificat: 'الشهادة', langues: 'لغات أخرى', permis: 'رخصة السياقة', competences: 'المهارات', loisirs: 'الهوايات', photo: 'غادي نصيفط الصورة دابا.' }
+      : { t: 'Bonjour, je voudrais le dossier de candidature allemand (200 DH). Voici mes informations :', nom: 'Nom complet', naissance: 'Date de naissance', tel: 'Téléphone', email: 'E-mail', ville: 'Ville', but: 'Objectif', metier: 'Métier visé', annonce: "Lien de l'annonce", experience: 'Expérience', etudes: 'Études et diplômes', allemand: "Niveau d'allemand", certificat: 'Certificat', langues: 'Autres langues', permis: 'Permis', competences: 'Compétences', loisirs: 'Loisirs', photo: "J'envoie ma photo juste après." };
+    if (o.allemand === '0') o.allemand = ar ? 'ما زال ما بديت' : 'pas encore commencé';
+    o.permis = o.permis.join(', ');
+    var out = [L.t, ''];
+    ['nom', 'naissance', 'tel', 'email', 'ville', 'but', 'metier', 'annonce', 'experience', 'etudes', 'allemand', 'certificat', 'langues', 'permis', 'competences', 'loisirs'].forEach(function (k) {
+      if (o[k]) out.push('*' + L[k] + ':* ' + o[k]);
+    });
+    out.push('', L.photo);
+    window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
   });
 
   document.querySelectorAll('.tabs button').forEach(function (b) {
