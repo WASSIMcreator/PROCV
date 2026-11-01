@@ -190,6 +190,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 .final { text-align: center; padding-top: 0 !important; }
 .final h2 { color: var(--navy); }
 .final .lead { margin: 12px auto 0; }
+.final .cta-row { justify-items: center; }
 .final .btn { margin-top: 26px; }
 
 footer { border-top: 1px solid var(--line); padding: 28px 0 100px; font-size: 15px; color: var(--muted); }
@@ -230,6 +231,35 @@ dialog.choose::backdrop { background: rgba(15,20,30,.6); }
 .choose .opt b { display: block; font-size: 17px; }
 .choose .opt small { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
 .choose .x { position: absolute; top: 14px; inset-inline-end: 14px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--bg); font-size: 24px; cursor: pointer; color: var(--ink); }
+
+/* form dialog */
+dialog.fd { border: 0; padding: 0; width: min(780px, 100%); max-width: 100%; max-height: 94vh; margin: auto; border-radius: 16px; background: var(--bg); color: var(--ink); overflow: auto; }
+dialog.fd::backdrop { background: rgba(15,20,30,.65); }
+.fd-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--navy); color: #fff; }
+.fd-top b { font-size: 19px; }
+.fd-top .x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 24px; cursor: pointer; }
+.fd .q-small { padding: 12px 20px 0; }
+.fd .form { border-radius: 0; background: transparent; max-width: none; }
+.q-small { font-size: 14px; color: var(--muted); }
+.q-small a { color: var(--wa); font-weight: 600; }
+.cta-row { display: grid; gap: 10px; justify-items: start; margin-top: 8px; }
+.clients .cta-row { margin-top: 28px; }
+@media (max-width: 700px) { dialog.fd { max-height: 100%; height: 100%; border-radius: 0; } .cta-row .btn { width: 100%; } .cta-row { justify-items: stretch; } }
+
+/* clients */
+.clients { background: var(--navy-2); color: #fff; }
+.clients h2 { color: #fff; }
+.clients .lead { color: #c9d0dd; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.card { position: relative; }
+.card > button, .card video { display: block; width: 100%; aspect-ratio: 760 / 880; border: 0; padding: 0; border-radius: 12px; overflow: hidden; background: #0d1422; cursor: zoom-in; }
+.card img { width: 100%; height: 100%; object-fit: cover; }
+.card video { object-fit: cover; cursor: default; }
+.card figcaption { margin-top: 10px; font-size: 15px; color: #c9d0dd; }
+.card .snd { position: absolute; top: 10px; inset-inline-start: 10px; min-height: 40px; padding: 0 14px; border-radius: 99px; border: 0; background: rgba(255,255,255,.92); color: var(--navy); font: 600 14px var(--font); cursor: pointer; }
+.card .snd.on { background: var(--wa); color: #fff; }
+.clients .q-small, .clients .cta-row { color: #c9d0dd; }
+@media (max-width: 900px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 
 /* sticky mobile cta */
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--line); display: none; transform: translateY(110%); transition: transform .3s; }
@@ -332,6 +362,29 @@ dialog.choose::backdrop { background: rgba(15,20,30,.6); }
     </div>
   </section>
 
+  <!-- CLIENTS -->
+  <section class="block clients" id="clients">
+    <div class="wrap">
+      <div class="head rv">
+        <h2><span lang="ar">زبناء وثقو فينا</span><span lang="fr">Ils nous ont fait confiance</span></h2>
+        <p class="lead"><span lang="ar">رسائل وأداءات حقيقية من زبناء PRO CV. خبّينا الأسماء والأرقام ديالهم.</span><span lang="fr">De vrais messages et paiements de clients PRO CV. Noms et numéros masqués.</span></p>
+      </div>
+      <div class="cards">
+        <figure class="card vid rv">
+          <video src="assets/clients/reel.mp4" poster="assets/clients/reel.jpg" muted loop playsinline autoplay preload="metadata" aria-label="PRO CV"></video>
+          <button type="button" class="snd" id="snd"><span lang="ar">شغّل الصوت</span><span lang="fr">Activer le son</span></button>
+          <figcaption><span lang="ar">شوف شنو كنوجدو</span><span lang="fr">Ce que nous préparons</span></figcaption>
+        </figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/a.jpg"><img src="assets/clients/a.jpg" alt="Messages vocaux d'un client satisfait" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">زبون فرحان بالملف ديالو</span><span lang="fr">Un client satisfait</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/b.jpg"><img src="assets/clients/b.jpg" alt="Virement de 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء 200 درهم بالتحويل البنكي</span><span lang="fr">Paiement de 200 DH par virement</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/c.jpg"><img src="assets/clients/c.jpg" alt="Reçu Cash Plus 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء بـ Cash Plus</span><span lang="fr">Paiement par Cash Plus</span></figcaption></figure>
+      </div>
+      <div class="cta-row rv">
+        <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي بحالهم</span><span lang="fr">Je veux mon dossier aussi</span></a>
+      </div>
+    </div>
+  </section>
+
   <!-- ATS -->
   <section class="block ats" id="ats">
     <div class="wrap">
@@ -414,17 +467,46 @@ dialog.choose::backdrop { background: rgba(15,20,30,.6); }
   <section class="block infos" id="infos">
     <div class="wrap">
       <div class="head rv">
-        <h2><span lang="ar">عمّر المعلومات ديالك وصيفطها لينا</span><span lang="fr">Remplissez vos informations et envoyez-les</span></h2>
-        <p class="lead"><span lang="ar">عمّر هاد الاستمارة بالدارجة ولا بالفرنسية. ملي تكليكي على "صيفط"، كيتحل ليك واتساب برسالة فيها كلشي، غير كليكي على إرسال.</span><span lang="fr">Remplissez ce formulaire en darija ou en français. En cliquant sur « Envoyer », WhatsApp s'ouvre avec un message tout prêt : il suffit de l'envoyer.</span></p>
+        <h2><span lang="ar">واجد تطلب ملفك؟</span><span lang="fr">Prêt à commander ?</span></h2>
+        <p class="lead"><span lang="ar">عمّر الاستمارة فدقيقتين، بالدارجة ولا بالفرنسية. ملي تصيفطها كتوصلنا المعلومات ديالك مرتبة فواتساب، وكنبداو الخدمة.</span><span lang="fr">Remplissez le formulaire en deux minutes, en darija ou en français. Vos informations nous arrivent bien rangées sur WhatsApp et on commence.</span></p>
       </div>
-      <div class="formgrid">
-      <aside class="help rv">
-        <b><span lang="ar">عندك سؤال قبل ما تطلب؟</span><span lang="fr">Une question avant de commander ?</span></b>
-        <p><span lang="ar">للمزيد من المعلومات، ما تترددش تسولنا. كنجاوبوك بالدارجة ولا بالفرنسية.</span><span lang="fr">Pour plus d'informations, n'hésitez pas à nous écrire. On répond en darija ou en français.</span></p>
-        <a class="btn ask wa keep" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrire sur WhatsApp</span></a>
-        <a class="tel-link ltr" href="#">07 06 82 84 46</a>
-      </aside>
-      <form class="form rv" id="order" novalidate>
+      <div class="cta-row rv">
+        <a class="btn go order" href="#infos"><span lang="ar">عمّر الاستمارة دابا</span><span lang="fr">Remplir le formulaire</span></a>
+        <p class="q-small"><span lang="ar">عندك سؤال؟</span><span lang="fr">Une question ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
+      </div>
+
+      <div class="warn rv" role="note">
+        <b><span lang="ar">تنبيه مهم</span><span lang="fr">À savoir</span></b>
+        <p><span lang="ar">PRO CV ما كنبيعوش فرص الشغل، وما كنوفروش عقود العمل ولا الفيزا ولا الـ Ausbildung. الخدمة ديالنا هي نكتبو ليك ملف الترشيح بالألمانية، والقبول كيبقى عند الشركة ولا المؤسسة اللي غادي تقدم ليها. إلا شي واحد طلب منك فلوس على "خدمة مضمونة فألمانيا" باسمنا، راه ماشي حنا.</span><span lang="fr">PRO CV ne vend pas d'emploi et ne fournit ni contrat de travail, ni visa, ni place d'Ausbildung. Nous rédigeons votre dossier de candidature en allemand ; la décision reste à l'entreprise ou à l'école à qui vous postulez. Si quelqu'un vous demande de l'argent pour un « emploi garanti en Allemagne » en notre nom, ce n'est pas nous.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block final">
+    <div class="wrap rv">
+      <h2><span lang="ar">الملف ديالك يقدر يكون جاهز غدا</span><span lang="fr">Votre dossier peut être prêt demain</span></h2>
+      <p class="lead"><span lang="ar">كليكي على "اطلب ملفك" وختار: تعمّر المعلومات، ولا تهضر معانا فواتساب.</span><span lang="fr">Cliquez sur « Commander » puis choisissez : remplir le formulaire ou nous écrire sur WhatsApp.</span></p>
+      <div class="btns"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك دابا</span><span lang="fr">Commander mon dossier</span></a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b style="color:var(--navy)">PRO CV</b> · <span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
+    <span><a class="tel-link ltr" href="#">07 06 82 84 46</a> · <a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
+  </div>
+</footer>
+
+<div class="dock" id="dock"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span></a></div>
+
+<dialog class="fd" id="fd" aria-labelledby="fd-h">
+  <div class="fd-top">
+    <b id="fd-h"><span lang="ar">عمّر المعلومات ديالك</span><span lang="fr">Vos informations</span></b>
+    <button type="button" class="x" id="fd-x" aria-label="Fermer">×</button>
+  </div>
+  <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
+      <form class="form" id="order" novalidate>
         <div class="g">
           <div class="part"><i>1</i><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
           <div><label><span class="req"><span lang="ar">الاسم الكامل</span><span lang="fr">Nom complet</span></span><small><span lang="ar">كيف مكتوب فالباسبور</span><span lang="fr">Comme sur le passeport</span></small><input type="text" name="nom" data-ph="" required autocomplete="name"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
@@ -455,41 +537,6 @@ dialog.choose::backdrop { background: rgba(15,20,30,.6); }
           <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
-      </div>
-
-      <div class="warn rv" role="note">
-        <b><span lang="ar">تنبيه مهم</span><span lang="fr">À savoir</span></b>
-        <p><span lang="ar">PRO CV ما كنبيعوش فرص الشغل، وما كنوفروش عقود العمل ولا الفيزا ولا الـ Ausbildung. الخدمة ديالنا هي نكتبو ليك ملف الترشيح بالألمانية، والقبول كيبقى عند الشركة ولا المؤسسة اللي غادي تقدم ليها. إلا شي واحد طلب منك فلوس على "خدمة مضمونة فألمانيا" باسمنا، راه ماشي حنا.</span><span lang="fr">PRO CV ne vend pas d'emploi et ne fournit ni contrat de travail, ni visa, ni place d'Ausbildung. Nous rédigeons votre dossier de candidature en allemand ; la décision reste à l'entreprise ou à l'école à qui vous postulez. Si quelqu'un vous demande de l'argent pour un « emploi garanti en Allemagne » en notre nom, ce n'est pas nous.</span></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="block final">
-    <div class="wrap rv">
-      <h2><span lang="ar">الملف ديالك يقدر يكون جاهز غدا</span><span lang="fr">Votre dossier peut être prêt demain</span></h2>
-      <p class="lead"><span lang="ar">كليكي على "اطلب ملفك" وختار: تعمّر المعلومات، ولا تهضر معانا فواتساب.</span><span lang="fr">Cliquez sur « Commander » puis choisissez : remplir le formulaire ou nous écrire sur WhatsApp.</span></p>
-      <div class="btns"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك دابا</span><span lang="fr">Commander mon dossier</span></a></div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <span><b style="color:var(--navy)">PRO CV</b> · <span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
-    <span><a class="tel-link ltr" href="#">07 06 82 84 46</a> · <a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
-  </div>
-</footer>
-
-<div class="dock" id="dock"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span></a></div>
-
-<dialog class="choose" id="choose" aria-labelledby="choose-h">
-  <button type="button" class="x" id="choose-x" aria-label="Fermer">×</button>
-  <h3 id="choose-h"><span lang="ar">كيفاش بغيتي تطلب؟</span><span lang="fr">Comment voulez-vous commander ?</span></h3>
-  <p class="sub"><span lang="ar">ختار اللي ساهل عليك.</span><span lang="fr">Choisissez ce qui vous arrange.</span></p>
-  <div class="opts">
-    <button type="button" class="opt main" id="choose-form"><span class="ic">1</span><span><b><span lang="ar">عمّر الاستمارة</span><span lang="fr">Remplir le formulaire</span></b><small><span lang="ar">كتعمّر المعلومات ديالك فدقيقتين، وكتوصلنا مرتبة فواتساب.</span><span lang="fr">Vos informations en deux minutes, envoyées bien rangées sur WhatsApp.</span></small></span></button>
-    <a class="opt alt wa" href="#" id="choose-wa"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></span><span><b><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Nous écrire sur WhatsApp</span></b><small><span lang="ar">عندك سؤال قبل ما تطلب؟ كنجاوبوك دابا.</span><span lang="fr">Une question avant de commander ? On vous répond.</span></small></span></a>
-  </div>
 </dialog>
 <dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
 
@@ -572,56 +619,38 @@ dialog.choose::backdrop { background: rgba(15,20,30,.6); }
     });
     out.push('', L.photo);
     window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
+    if (fd && fd.open) fd.close();
   });
 
 
-  // order buttons -> choice dialog
-  var ch = document.getElementById('choose');
-  document.querySelectorAll('.order').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      if (!ch.showModal) return;
-      e.preventDefault(); ch.showModal();
-    });
-  });
-  document.getElementById('choose-x').addEventListener('click', function () { ch.close(); });
-  ch.addEventListener('click', function (e) { if (e.target === ch) ch.close(); });
-  document.getElementById('choose-wa').addEventListener('click', function () { ch.close(); });
-  document.getElementById('choose-form').addEventListener('click', function () {
-    ch.close();
-    var sec = document.getElementById('infos');
-    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(function () { var n = document.querySelector('#order [name=nom]'); if (n) n.focus({ preventScroll: true }); }, 700);
-  });
+  // order buttons -> form dialog
+  var fd = document.getElementById('fd');
+  function openForm(e) {
+    if (!fd.showModal) return;
+    if (e) e.preventDefault();
+    fd.showModal();
+    setTimeout(function () { var n = fd.querySelector('[name=nom]'); if (n) n.focus(); }, 60);
+  }
+  document.querySelectorAll('.order').forEach(function (a) { a.addEventListener('click', openForm); });
+  document.getElementById('fd-x').addEventListener('click', function () { fd.close(); });
+  fd.addEventListener('click', function (e) { if (e.target === fd) fd.close(); });
+  if (location.hash === '#commande') openForm();
 
   document.querySelectorAll('.tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
-    
-  // order buttons -> choice dialog
-  var ch = document.getElementById('choose');
-  document.querySelectorAll('.order').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      if (!ch.showModal) return;
-      e.preventDefault(); ch.showModal();
-    });
-  });
-  document.getElementById('choose-x').addEventListener('click', function () { ch.close(); });
-  ch.addEventListener('click', function (e) { if (e.target === ch) ch.close(); });
-  document.getElementById('choose-wa').addEventListener('click', function () { ch.close(); });
-  document.getElementById('choose-form').addEventListener('click', function () {
-    ch.close();
-    var sec = document.getElementById('infos');
-    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(function () { var n = document.querySelector('#order [name=nom]'); if (n) n.focus({ preventScroll: true }); }, 700);
-  });
-
-  document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+      document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
       document.getElementById('t-lkw').hidden = b.dataset.t !== 'lkw';
       document.getElementById('t-kfz').hidden = b.dataset.t !== 'kfz';
     });
   });
 
   var lb = document.getElementById('lb'), lbi = document.getElementById('lbi');
-  document.querySelectorAll('.pages button').forEach(function (b) {
+  var vid = document.querySelector('.card.vid video'), snd = document.getElementById('snd');
+  if (snd) snd.addEventListener('click', function () {
+    vid.muted = !vid.muted; if (!vid.muted) { vid.currentTime = 0; vid.play(); }
+    snd.classList.toggle('on', !vid.muted);
+  });
+  document.querySelectorAll('.pages button, .card button[data-src]').forEach(function (b) {
     b.addEventListener('click', function () {
       lbi.src = b.dataset.src; lbi.alt = b.querySelector('img').alt;
       if (lb.showModal) lb.showModal(); else window.open(b.dataset.src);
