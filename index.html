@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-l="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRO CV · Bewerbung auf Deutsch</title>
+<meta name="description" content="PRO CV: ملف ترشيح ألماني كامل (Deckblatt + Anschreiben + Lebenslauf) بـ200 درهم في 24 ساعة. Dossier de candidature allemand complet pour 200 DH.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    var l = 'ar';
+    try { l = localStorage.getItem('procv-lang') || 'ar'; } catch (e) {}
+    var h = document.documentElement;
+    h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
+  })();
+</script>
+<style>
+:root {
+  --bg: #f2f2f0;
+  --paper: #ffffff;
+  --navy: #283449;
+  --navy-2: #1d2636;
+  --ink: #1b2130;
+  --muted: #5a6070;
+  --line: #dcd9d0;
+  --wa: #0e7a3f;
+  --wa-2: #0b6634;
+  --ok: #0e7a3f;
+  --bad: #b3261e;
+  --font: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --m: clamp(16px, 4vw, 48px);
+  --max: 1160px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+html[data-l="ar"] [lang="fr"], html[data-l="fr"] [lang="ar"] { display: none !important; }
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--m); }
+h1, h2, h3 { line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+h2 { font-size: clamp(28px, 4vw, 44px); }
+.lead { color: #454b59; font-size: 18px; max-width: 56ch; }
+.ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 0 26px; border-radius: 10px; font: 600 18px/1 var(--font); text-decoration: none; cursor: pointer; border: 0; transition: background .2s, transform .2s; }
+.btn.wa { background: var(--wa); color: #fff; }
+.btn.wa:hover { background: var(--wa-2); transform: translateY(-1px); }
+.btn.wa svg { width: 22px; height: 22px; flex: none; }
+
+/* header */
+.top { position: sticky; top: 0; z-index: 20; background: rgba(242,242,240,.96); backdrop-filter: blur(8px); }
+.top .wrap { display: flex; align-items: center; gap: 12px; height: 64px; }
+.logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; text-decoration: none; color: var(--navy); direction: ltr; }
+.logo b { background: var(--navy); color: #fff; padding: 2px 8px; border-radius: 4px; }
+.top .sp { flex: 1; }
+.lang { background: none; border: 1px solid var(--line); border-radius: 8px; min-height: 40px; padding: 0 12px; font: 500 15px var(--font); color: var(--ink); cursor: pointer; }
+.top .btn.wa { min-height: 44px; padding: 0 16px; font-size: 15px; }
+
+/* hero */
+.hero { padding: clamp(28px, 5vw, 64px) 0 clamp(40px, 6vw, 80px); }
+.hero .wrap { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+.badge { display: inline-flex; gap: 8px; align-items: center; font-size: 15px; font-weight: 600; color: var(--navy); background: #e4e7ee; padding: 6px 12px; border-radius: 99px; margin-bottom: 18px; direction: ltr; }
+.hero h1 { font-size: clamp(36px, 5vw, 72px); line-height: 1.12; color: var(--navy); }
+.hero h1 .price { white-space: nowrap; color: var(--wa); }
+.hero .lead { margin-top: 16px; }
+.hero .cta { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.hero .tel { font-weight: 600; color: var(--muted); text-decoration: none; }
+.checks { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px; font-size: 16px; font-weight: 500; }
+.checks li { display: flex; gap: 8px; align-items: center; }
+.checks li::before { content: ""; width: 20px; height: 20px; border-radius: 50%; background: var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; flex: none; }
+
+.stack { position: relative; aspect-ratio: 1 / 1.05; max-width: 520px; width: 100%; justify-self: center; }
+.stack img { position: absolute; width: 62%; border: 0; outline: 1px solid rgba(40,52,73,.12); border-radius: 4px; background: #fff; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.stack .s1 { left: 0; top: 6%; transform: rotate(-5deg); z-index: 1; }
+.stack .s2 { right: 0; top: 0; transform: rotate(4deg); z-index: 2; }
+.stack .s3 { left: 19%; top: 14%; z-index: 3; }
+.stack:hover .s1 { transform: rotate(-8deg) translateX(-10px); }
+.stack:hover .s2 { transform: rotate(7deg) translateX(10px); }
+.stack .tag { position: absolute; z-index: 4; bottom: 2%; left: 4%; background: var(--navy); color: #fff; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 8px; }
+
+/* section base */
+section.block { padding: clamp(56px, 8vw, 104px) 0; }
+.head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 44px); }
+.head .lead { margin-top: 12px; }
+
+/* examples */
+.ex { background: #e6e7e9; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.tabs button { font: 600 16px var(--font); min-height: 44px; padding: 0 18px; border-radius: 99px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; direction: ltr; }
+.tabs button[aria-selected="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+.pages { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.pages[hidden] { display: none; }
+.pages figure { scroll-snap-align: start; }
+.pages button { display: block; width: 100%; padding: 0; border: 0; border-radius: 4px; background: #fff; cursor: zoom-in; overflow: hidden; }
+.pages img { width: 100%; aspect-ratio: 607 / 858; object-fit: cover; object-position: top; transition: transform .3s; }
+.pages button:hover img { transform: scale(1.03); }
+.pages figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+.note { font-size: 14px; color: var(--muted); margin-top: 14px; }
+
+dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(92vw, 720px); max-height: 92vh; margin: auto; overflow: visible; }
+dialog.lb::backdrop { background: rgba(15,20,30,.82); }
+dialog.lb img { max-height: 88vh; width: auto; margin: 0 auto; border-radius: 4px; }
+dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; font-size: 26px; cursor: pointer; }
+
+/* ATS */
+.ats .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+.flow { list-style: none; counter-reset: s; display: grid; gap: 16px; }
+.flow li { counter-increment: s; display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; }
+.flow li::before { content: counter(s); width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; }
+.flow b { display: block; }
+.flow li > div > span { color: var(--muted); font-size: 16px; }
+.scan { position: relative; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; max-width: 440px; justify-self: center; width: 100%; }
+.scan .bar { position: absolute; left: 0; right: 0; height: 70px; top: -70px; background: rgba(14,122,63,.12); border-bottom: 2px solid var(--ok); animation: scan 3.6s linear infinite; }
+@keyframes scan { to { top: 100%; } }
+.scan .read { position: absolute; left: 10px; right: 10px; bottom: 10px; background: rgba(29,38,54,.95); color: #fff; border-radius: 8px; padding: 12px 14px; font-size: 14px; direction: ltr; text-align: left; display: grid; gap: 4px; }
+.scan .read div { display: flex; justify-content: space-between; gap: 10px; }
+.scan .read i { flex: none; width: 18px; height: 18px; border-radius: 50%; background: #1f9a55 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
+.scan .read .t { font-weight: 600; color: #cfd6e4; }
+
+.vs { margin-top: clamp(36px, 5vw, 56px); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--paper); }
+.vs .row { display: grid; grid-template-columns: 1fr 1fr; }
+.vs .row + .row { border-top: 1px solid var(--line); }
+.vs .row > div { padding: 16px 20px; display: flex; gap: 10px; align-items: flex-start; font-size: 16px; }
+.vs .row > div + div { border-inline-start: 1px solid var(--line); background: #f3f8f4; }
+.vs .hd > div { font-weight: 700; font-size: 15px; background: var(--bg) !important; }
+.vs .x, .vs .v { flex: none; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px; }
+.vs .x { background: var(--bad) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6.5 6.5l7 7M13.5 6.5l-7 7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% no-repeat; }
+.vs .v { background: var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
+
+/* offer */
+.offer { background: var(--navy); color: #fff; }
+.offer .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+.offer h2 { color: #fff; }
+.offer .big { font-size: clamp(64px, 10vw, 112px); font-weight: 700; line-height: 1; margin-top: 10px; }
+.offer .big small { font-size: .35em; font-weight: 600; }
+.offer p { color: #c9d0dd; margin-top: 12px; }
+.offer p.after { color: #fff; background: rgba(255,255,255,.08); border-inline-start: 4px solid var(--wa); padding: 12px 16px; border-radius: 6px; }
+.offer ul { list-style: none; display: grid; gap: 12px; font-size: 17px; }
+.offer li { display: flex; gap: 12px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.14); }
+.offer li::before { content: ""; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--wa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
+.offer .btn.wa { margin-top: 26px; width: 100%; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+.steps div { border-top: 2px solid rgba(255,255,255,.3); padding-top: 10px; font-size: 15px; color: #c9d0dd; }
+.steps b { display: block; color: #fff; font-size: 17px; }
+
+/* faq */
+.faq .list { display: grid; gap: 10px; max-width: 820px; }
+.faq details { background: var(--paper); border: 0; border-radius: 10px; padding: 0 20px; }
+.faq summary { min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-weight: 600; cursor: pointer; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-size: 24px; color: var(--navy); }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding-bottom: 18px; color: var(--muted); }
+
+
+/* infos checklist */
+.infos .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 32px; list-style: none; counter-reset: i; }
+.infos .grid2 li { counter-increment: i; display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; background: var(--paper); border-radius: 10px; padding: 14px 16px; }
+.infos .grid2 li::before { content: counter(i); width: 36px; height: 36px; border-radius: 50%; background: #e4e7ee; color: var(--navy); display: grid; place-items: center; font-weight: 700; }
+.infos .grid2 b { display: block; }
+.infos .grid2 li > div > span { color: #454b59; font-size: 15px; }
+.infos .send { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.infos .send small { color: var(--muted); font-size: 14px; }
+.warn { margin-top: clamp(40px, 6vw, 64px); background: #fff4e5; border-inline-start: 5px solid #b25e00; border-radius: 8px; padding: 18px 22px; max-width: 820px; }
+.warn b { display: block; font-size: 18px; color: #7a3f00; margin-bottom: 4px; }
+.warn p { color: #4a3420; }
+@media (max-width: 700px) { .infos .grid2 { grid-template-columns: 1fr; } }
+
+/* final */
+.final { text-align: center; padding-top: 0 !important; }
+.final h2 { color: var(--navy); }
+.final .lead { margin: 12px auto 0; }
+.final .btn { margin-top: 26px; }
+
+footer { border-top: 1px solid var(--line); padding: 28px 0 100px; font-size: 15px; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
+
+/* sticky mobile cta */
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--line); display: none; transform: translateY(110%); transition: transform .3s; }
+.dock.on { transform: none; }
+.dock .btn { width: 100%; }
+
+.rv { opacity: 0; transform: translateY(16px); transition: opacity .6s, transform .6s; }
+.rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .hero .wrap, .ats .grid, .offer .wrap { grid-template-columns: 1fr; }
+  .stack { max-width: 400px; }
+  .top .btn.wa { display: none; }
+  .dock { display: block; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .hero .btn.wa { width: 100%; }
+  .vs .row { grid-template-columns: 1fr; }
+  .vs .row > div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
+  .vs .hd { display: none !important; }
+  .steps { grid-template-columns: 1fr; }
+  .pages { grid-auto-columns: 72%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  .rv { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><b>PRO</b>CV</a>
+    <span class="sp"></span>
+    <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
+    <a class="btn wa" href="#"><span lang="ar">واتساب</span><span lang="fr">WhatsApp</span></a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>
+          <span lang="ar">ملف ترشيح ألماني كامل بـ <span class="price">200 درهم</span></span>
+          <span lang="fr">Votre dossier allemand complet pour <span class="price">200 DH</span></span>
+        </h1>
+        <p class="lead">
+          <span lang="ar">Deckblatt + Anschreiben + Lebenslauf، مكتوبين بالألمانية حسب المهنة ديالك، ومقروءين من أنظمة الفرز الآلي (ATS) اللي كتستعملها الشركات الألمانية.</span>
+          <span lang="fr">Deckblatt + Anschreiben + Lebenslauf, rédigés en allemand pour votre métier, et lisibles par les logiciels de tri (ATS) des entreprises allemandes.</span>
+        </p>
+        <div class="cta">
+          <a class="btn wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">اطلب ملفك على واتساب</span><span lang="fr">Commander sur WhatsApp</span></a>
+          <a class="tel tel-link ltr" href="#">07 06 82 84 46</a>
+        </div>
+        <ul class="checks">
+          <li><span lang="ar">جاهز في 24 ساعة</span><span lang="fr">Prêt en 24 h</span></li>
+          <li><span lang="ar">ما خاصكش تعرف الألمانية</span><span lang="fr">Pas besoin de parler allemand</span></li>
+          <li><span lang="ar">تعديلات فابور حتى بعد الدفع</span><span lang="fr">Modifications gratuites après paiement</span></li>
+        </ul>
+      </div>
+      <div class="stack">
+        <img class="s1" src="assets/cv/l3.jpg" alt="Lebenslauf LKW-Fahrer" width="607" height="858">
+        <img class="s2" src="assets/cv/p3.jpg" alt="Lebenslauf Kfz-Mechatroniker" width="900" height="1270">
+        <img class="s3" src="assets/cv/l1.jpg" alt="Deckblatt Bewerbung LKW-Fahrer" width="607" height="858">
+        <span class="tag"><span lang="ar">ملف حقيقي لزبون عندنا</span><span lang="fr">Dossier réel d'un client</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLES -->
+  <section class="block ex" id="exemples">
+    <div class="wrap">
+      <div class="head rv">
+        <h2><span lang="ar">شوف بعينيك شنو كتستلم</span><span lang="fr">Voyez ce que vous recevez</span></h2>
+        <p class="lead"><span lang="ar">هادو ملفات حقيقية درناها لزبناء من المغرب. كليكي على أي صفحة باش تكبّرها.</span><span lang="fr">Ce sont de vrais dossiers faits pour des clients au Maroc. Touchez une page pour l'agrandir.</span></p>
+      </div>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-t="lkw">LKW-Fahrer</button>
+        <button role="tab" aria-selected="false" data-t="kfz">Kfz-Mechatroniker</button>
+      </div>
+      <div class="pages" id="t-lkw">
+        <figure><button type="button" data-src="assets/cv/l1.jpg"><img src="assets/cv/l1.jpg" alt="Deckblatt" loading="lazy" width="607" height="858"></button><figcaption>Deckblatt</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l2.jpg"><img src="assets/cv/l2.jpg" alt="Anschreiben" loading="lazy" width="607" height="858"></button><figcaption>Anschreiben</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l3.jpg"><img src="assets/cv/l3.jpg" alt="Lebenslauf" loading="lazy" width="607" height="858"></button><figcaption>Lebenslauf</figcaption></figure>
+      </div>
+      <div class="pages" id="t-kfz" hidden>
+        <figure><button type="button" data-src="assets/cv/p1.jpg"><img src="assets/cv/p1.jpg" alt="Deckblatt" loading="lazy" width="900" height="1270"></button><figcaption>Deckblatt</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p2.jpg"><img src="assets/cv/p2.jpg" alt="Anschreiben" loading="lazy" width="900" height="1270"></button><figcaption>Anschreiben</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p3.jpg"><img src="assets/cv/p3.jpg" alt="Lebenslauf" loading="lazy" width="900" height="1270"></button><figcaption>Lebenslauf</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p4.jpg"><img src="assets/cv/p4.jpg" alt="Lebenslauf Seite 2" loading="lazy" width="900" height="1270"></button><figcaption>Lebenslauf (2)</figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p5.jpg"><img src="assets/cv/p5.jpg" alt="Vielen Dank" loading="lazy" width="900" height="1270"></button><figcaption>Vielen Dank</figcaption></figure>
+      </div>
+      <p class="note"><span lang="ar">خبّينا الوجوه والمعلومات الشخصية ديال الزبناء.</span><span lang="fr">Visages et coordonnées des clients masqués.</span></p>
+    </div>
+  </section>
+
+  <!-- ATS -->
+  <section class="block ats" id="ats">
+    <div class="wrap">
+      <div class="grid">
+        <div>
+          <div class="head rv">
+            <h2><span lang="ar">قبل ما يقرا شي واحد السيرة ديالك، كيقراها برنامج</span><span lang="fr">Avant un humain, c'est un logiciel qui lit votre CV</span></h2>
+            <p class="lead"><span lang="ar">بزاف ديال الشركات فألمانيا كتستقبل الطلبات من بوابة إلكترونية، فيها نظام كيسمّاوه ATS (Bewerbermanagementsystem). هاد النظام كيفرز الطلبات قبل ما توصل للمسؤول.</span><span lang="fr">Beaucoup d'entreprises allemandes reçoivent les candidatures via un portail équipé d'un ATS (Bewerbermanagementsystem). Il trie les dossiers avant qu'ils arrivent au recruteur.</span></p>
+          </div>
+          <ol class="flow">
+            <li class="rv"><div><b><span lang="ar">كيقرا النص ديال الملف</span><span lang="fr">Il lit le texte du fichier</span></b><span lang="ar">إلا كان الملف تصويرة ولا scan، ما كيلقى والو يقراه.</span><span lang="fr">Si le fichier est une photo ou un scan, il n'y a rien à lire.</span></div></li>
+            <li class="rv"><div><b><span lang="ar">كيقسّمو لخانات</span><span lang="fr">Il le découpe en rubriques</span></b><span lang="ar">الاسم، الخبرة، التكوين، اللغات، الرخصة… بالعناوين الألمانية المعروفة.</span><span lang="fr">Nom, expérience, formation, langues, permis… avec les titres allemands attendus.</span></div></li>
+            <li class="rv"><div><b><span lang="ar">كيقارنو مع الإعلان</span><span lang="fr">Il le compare à l'annonce</span></b><span lang="ar">كيقلب على كلمات المهنة. الملف اللي ما فيهش هاد الكلمات كيهبط للتحت، وممكن حتى حد ما يشوفو.</span><span lang="fr">Il cherche les mots du métier. Sans eux, le dossier descend dans la liste, et personne ne le voit.</span></div></li>
+          </ol>
+        </div>
+        <div class="scan rv" aria-hidden="true">
+          <img src="assets/cv/p3.jpg" alt="" width="900" height="1270" loading="lazy">
+          <div class="bar"></div>
+          <div class="read">
+            <div class="t">ATS liest den Lebenslauf:</div>
+            <div>Beruf: Kfz-Mechatroniker <i></i></div>
+            <div>Berufserfahrung: 2 <i></i></div>
+            <div>Deutsch: B2 <i></i></div>
+            <div>Text-PDF <i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vs rv">
+        <div class="row hd"><div><span lang="ar">علاش كيترفضو بزاف ديال الملفات</span><span lang="fr">Pourquoi tant de dossiers sont écartés</span></div><div><span lang="ar">شنو كندير أنا فالملف ديالك</span><span lang="fr">Ce que je fais dans votre dossier</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">CV مصوّر بالتليفون ولا scan</span><span lang="fr">CV photographié ou scanné</span></div><div><span class="v"></span><span lang="ar">PDF فيه نص حقيقي، البرنامج كيقراه كامل</span><span lang="fr">Un PDF avec du vrai texte, lisible en entier</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">عناوين بالفرنسية ولا مخترعة</span><span lang="fr">Titres en français ou inventés</span></div><div><span class="v"></span><span lang="ar">عناوين ألمانية: Berufserfahrung, Ausbildung, Sprachen</span><span lang="fr">Titres allemands : Berufserfahrung, Ausbildung, Sprachen</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">كلمات عامة ما فيهاش المهنة</span><span lang="fr">Mots vagues, sans le métier</span></div><div><span class="v"></span><span lang="ar">مصطلحات المهنة: Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span><span lang="fr">Les termes du métier : Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">ترجمة Google فيها أخطاء</span><span lang="fr">Traduction automatique avec des fautes</span></div><div><span class="v"></span><span lang="ar">ألمانية مهنية، ومستوى اللغة واضح (A1 حتى C2)</span><span lang="fr">Un allemand professionnel, niveau de langue clair (A1 à C2)</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">تواريخ ناقصة ولا مخلّطة</span><span lang="fr">Dates manquantes ou en désordre</span></div><div><span class="v"></span><span lang="ar">كل تجربة بالشهر والعام: 01.2020 – 12.2025</span><span lang="fr">Chaque poste au mois près : 01.2020 – 12.2025</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="block offer" id="prix">
+    <div class="wrap">
+      <div class="rv">
+        <h2><span lang="ar">ثمن واحد، ملف كامل</span><span lang="fr">Un prix, un dossier complet</span></h2>
+        <div class="big"><span lang="ar">200 <small>درهم</small></span><span lang="fr">200 <small>DH</small></span></div>
+        <p><span lang="ar">بلا مصاريف زايدة، والملف جاهز في 24 ساعة.</span><span lang="fr">Sans frais cachés, dossier prêt sous 24 h.</span></p>
+        <p class="after"><b><span lang="ar">أحسن خدمة بعد البيع:</span><span lang="fr">Le meilleur service après-vente :</span></b> <span lang="ar">أي تعديل على الملف ديالك بعد الدفع، فابور.</span><span lang="fr">toute modification de votre dossier après paiement est gratuite.</span></p>
+        <div class="steps">
+          <div><b><span lang="ar">1. صيفط</span><span lang="fr">1. Envoyez</span></b><span lang="ar">معلوماتك فواتساب، بالدارجة ولا بالفرنسية</span><span lang="fr">vos infos sur WhatsApp, en darija ou en français</span></div>
+          <div><b><span lang="ar">2. كنكتب</span><span lang="fr">2. J'écris</span></b><span lang="ar">الملف بالألمانية حسب المهنة</span><span lang="fr">le dossier en allemand pour votre métier</span></div>
+          <div><b><span lang="ar">3. استلم</span><span lang="fr">3. Recevez</span></b><span lang="ar">PDF جاهز تصيفطو، في 24 ساعة</span><span lang="fr">un PDF prêt à envoyer sous 24 h</span></div>
+        </div>
+      </div>
+      <div class="rv">
+        <ul>
+          <li><span>Deckblatt&nbsp;<span lang="ar">· صفحة الغلاف بالصورة</span><span lang="fr">· page de garde avec photo</span></span></li>
+          <li><span>Anschreiben&nbsp;<span lang="ar">· رسالة التحفيز</span><span lang="fr">· lettre de motivation</span></span></li>
+          <li><span>Lebenslauf&nbsp;<span lang="ar">· السيرة الذاتية</span><span lang="fr">· le CV</span></span></li>
+          <li><span>Vielen Dank&nbsp;<span lang="ar">· صفحة الشكر</span><span lang="fr">· page de remerciement</span></span></li>
+          <li><span lang="ar">أي تعديل بعد الدفع، فابور</span><span lang="fr">Toute modification après paiement, gratuite</span></li>
+        </ul>
+        <a class="btn wa" href="#"><span lang="ar">بغيت ملفي دابا</span><span lang="fr">Je veux mon dossier</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block faq" id="questions">
+    <div class="wrap">
+      <div class="head rv"><h2><span lang="ar">أسئلة كتجينا بزاف</span><span lang="fr">Questions fréquentes</span></h2></div>
+      <div class="list">
+        <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">لا. صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وأنا كنكتب الملف بالألمانية.</span><span lang="fr">Non. Envoyez vos infos en darija, en arabe ou en français, j'écris le dossier en allemand.</span></p></details>
+        <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
+        <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقولي شنو بغيتي نبدل وكنبدلو ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-moi quoi changer, je le change sans frais.</span></p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFOS -->
+  <section class="block infos" id="infos">
+    <div class="wrap">
+      <div class="head rv">
+        <h2><span lang="ar">شنو خاصك تصيفط لينا باش نوجدو الـ CV</span><span lang="fr">Ce qu'il faut nous envoyer pour votre CV</span></h2>
+        <p class="lead"><span lang="ar">جمع هاد المعلومات وصيفطهم فواتساب، بالدارجة ولا بالفرنسية. كلما كانو كاملين، كلما كان الملف أحسن.</span><span lang="fr">Rassemblez ces informations et envoyez-les sur WhatsApp, en darija ou en français. Plus elles sont complètes, meilleur est le dossier.</span></p>
+      </div>
+      <ol class="grid2">
+          <li><div><b><span lang="ar">الاسم الكامل وتاريخ الازدياد</span><span lang="fr">Nom complet et date de naissance</span></b><span lang="ar">كيف مكتوبين فالباسبور.</span><span lang="fr">Comme sur le passeport.</span></div></li>
+          <li><div><b><span lang="ar">التليفون، الإيميل والمدينة</span><span lang="fr">Téléphone, e-mail et ville</span></b><span lang="ar">باش تتواصل معاك الشركة.</span><span lang="fr">Pour que l'entreprise vous contacte.</span></div></li>
+          <li><div><b><span lang="ar">صورة شخصية واضحة</span><span lang="fr">Une photo claire</span></b><span lang="ar">من الصدر للفوق، بخلفية عادية ولبسة نقية.</span><span lang="fr">Buste, fond simple, tenue soignée.</span></div></li>
+          <li><div><b><span lang="ar">المهنة اللي باغي</span><span lang="fr">Le métier visé</span></b><span lang="ar">Ausbildung ولا خدمة، وفأي مجال.</span><span lang="fr">Ausbildung ou emploi, et dans quel domaine.</span></div></li>
+          <li><div><b><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></b><span lang="ar">سمية الشركة، المدينة، من شحال لشحال (الشهر والعام)، وشنو كنتي كدير.</span><span lang="fr">Entreprise, ville, dates (mois et année), et vos tâches.</span></div></li>
+          <li><div><b><span lang="ar">الدراسة والديبلومات</span><span lang="fr">Études et diplômes</span></b><span lang="ar">سمية المدرسة ولا المعهد، الشعبة، والتواريخ.</span><span lang="fr">École ou institut, filière et dates.</span></div></li>
+          <li><div><b><span lang="ar">مستوى اللغات</span><span lang="fr">Niveau de langues</span></b><span lang="ar">الألمانية (<span class="ltr">A1, A2, B1…</span>) والشهادة إلا كانت، والفرنسية والإنجليزية.</span><span lang="fr">Allemand (A1, A2, B1…) avec certificat s'il y en a, français, anglais.</span></div></li>
+          <li><div><b><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></b><span lang="ar">الصنف (<span class="ltr">B, C, CE…</span>) إلا كانت عندك.</span><span lang="fr">La catégorie (B, C, CE…) si vous en avez un.</span></div></li>
+          <li><div><b><span lang="ar">المهارات والهوايات</span><span lang="fr">Compétences et loisirs</span></b><span lang="ar">شنو كتعرف دير مزيان، وشنو كتحب.</span><span lang="fr">Ce que vous savez bien faire, ce que vous aimez.</span></div></li>
+          <li><div><b><span lang="ar">إعلان الخدمة (إلا كان)</span><span lang="fr">L'annonce visée (si vous l'avez)</span></b><span lang="ar">صيفط الرابط باش نكتبو الملف على قدّها.</span><span lang="fr">Envoyez le lien pour adapter le dossier.</span></div></li>
+      </ol>
+      <div class="send rv">
+        <a class="btn wa wa-form" href="#"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer mes infos sur WhatsApp</span></a>
+        <small><span lang="ar">كتفتح ليك رسالة فيها هاد اللائحة، غير عمّرها.</span><span lang="fr">Un message avec cette liste s'ouvre, il suffit de la remplir.</span></small>
+      </div>
+
+      <div class="warn rv" role="note">
+        <b><span lang="ar">تنبيه مهم</span><span lang="fr">À savoir</span></b>
+        <p><span lang="ar">PRO CV ما كنبيعوش فرص الشغل، وما كنوفروش عقود العمل ولا الفيزا ولا الـ Ausbildung. الخدمة ديالنا هي نكتبو ليك ملف الترشيح بالألمانية، والقبول كيبقى عند الشركة ولا المؤسسة اللي غادي تقدم ليها. إلا شي واحد طلب منك فلوس على "خدمة مضمونة فألمانيا" باسمنا، راه ماشي حنا.</span><span lang="fr">PRO CV ne vend pas d'emploi et ne fournit ni contrat de travail, ni visa, ni place d'Ausbildung. Nous rédigeons votre dossier de candidature en allemand ; la décision reste à l'entreprise ou à l'école à qui vous postulez. Si quelqu'un vous demande de l'argent pour un « emploi garanti en Allemagne » en notre nom, ce n'est pas nous.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block final">
+    <div class="wrap rv">
+      <h2><span lang="ar">الملف ديالك يقدر يكون جاهز غدا</span><span lang="fr">Votre dossier peut être prêt demain</span></h2>
+      <p class="lead"><span lang="ar">صيفط لينا رسالة دابا، ونجاوبوك بالدارجة.</span><span lang="fr">Envoyez un message maintenant, on vous répond en darija ou en français.</span></p>
+      <a class="btn wa" href="#"><span lang="ar">راسلنا على واتساب</span><span lang="fr">Écrire sur WhatsApp</span></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b style="color:var(--navy)">PRO CV</b> · <span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
+    <span><a class="tel-link ltr" href="#">07 06 82 84 46</a> · <a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
+  </div>
+</footer>
+
+<div class="dock" id="dock"><a class="btn wa" href="#"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span></a></div>
+
+<dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
+
+<script>
+  // ---- Contact details ----
+  var PHONE = '212706828446';
+
+  var h = document.documentElement;
+  function msg() {
+    return h.dataset.l === 'ar'
+      ? 'السلام عليكم، بغيت ملف الترشيح الألماني (200 درهم).'
+      : 'Bonjour, je voudrais le dossier de candidature allemand (200 DH).';
+  }
+  function wire() {
+    document.querySelectorAll('.wa').forEach(function (a) {
+      a.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg());
+      a.target = '_blank'; a.rel = 'noopener';
+    });
+    document.querySelectorAll('.wa-form').forEach(function (a) {
+      var t = h.dataset.l === 'ar'
+        ? 'السلام عليكم، هادي المعلومات ديالي للملف (200 درهم):\n1. الاسم الكامل وتاريخ الازدياد:\n2. التليفون، الإيميل والمدينة:\n3. الصورة: (غادي نصيفطها)\n4. المهنة اللي باغي:\n5. الخبرة المهنية:\n6. الدراسة والديبلومات:\n7. مستوى اللغات:\n8. رخصة السياقة:\n9. المهارات والهوايات:\n10. رابط الإعلان (إلا كان):'
+        : 'Bonjour, voici mes informations pour le dossier (200 DH) :\n1. Nom complet et date de naissance :\n2. Téléphone, e-mail et ville :\n3. Photo : (je l\'envoie)\n4. Métier visé :\n5. Expérience professionnelle :\n6. Études et diplômes :\n7. Niveau de langues :\n8. Permis de conduire :\n9. Compétences et loisirs :\n10. Lien de l\'annonce (si vous l\'avez) :';
+      a.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(t);
+    });
+    document.querySelectorAll('.tel-link').forEach(function (a) { a.href = 'tel:+' + PHONE; });
+  }
+  wire();
+
+  document.getElementById('lang').addEventListener('click', function () {
+    var l = h.dataset.l === 'ar' ? 'fr' : 'ar';
+    h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
+    try { localStorage.setItem('procv-lang', l); } catch (e) {}
+    wire();
+  });
+
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+      document.getElementById('t-lkw').hidden = b.dataset.t !== 'lkw';
+      document.getElementById('t-kfz').hidden = b.dataset.t !== 'kfz';
+    });
+  });
+
+  var lb = document.getElementById('lb'), lbi = document.getElementById('lbi');
+  document.querySelectorAll('.pages button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      lbi.src = b.dataset.src; lbi.alt = b.querySelector('img').alt;
+      if (lb.showModal) lb.showModal(); else window.open(b.dataset.src);
+    });
+  });
+  document.getElementById('lbx').addEventListener('click', function () { lb.close(); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
+
+  var dock = document.getElementById('dock'), hero = document.querySelector('.hero');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) { dock.classList.toggle('on', !e[0].isIntersecting); }).observe(hero);
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); ro.unobserve(x.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.rv').forEach(function (el) { ro.observe(el); });
+  } else {
+    document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
