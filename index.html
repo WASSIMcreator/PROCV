@@ -58,7 +58,7 @@ h2 { font-size: clamp(28px, 4vw, 44px); }
 .logo b { background: var(--navy); color: #fff; padding: 2px 8px; border-radius: 4px; }
 .top .sp { flex: 1; }
 .lang { background: none; border: 1px solid var(--line); border-radius: 8px; min-height: 40px; padding: 0 12px; font: 500 15px var(--font); color: var(--ink); cursor: pointer; }
-.top .btn.wa { min-height: 44px; padding: 0 16px; font-size: 15px; }
+.top .btn { min-height: 44px; padding: 0 16px; font-size: 15px; }
 
 /* hero */
 .hero { padding: clamp(28px, 5vw, 64px) 0 clamp(40px, 6vw, 80px); }
@@ -214,6 +214,22 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
 .formgrid .help .tel-link { color: #fff; font-weight: 600; text-decoration: none; justify-self: center; }
 @media (max-width: 900px) { .formgrid { grid-template-columns: 1fr; } .formgrid .help { order: 0; position: static; } }
 
+/* choice dialog */
+dialog.choose { border: 0; border-radius: 16px; padding: 24px; width: min(460px, calc(100% - 32px)); margin: auto; background: var(--paper); color: var(--ink); }
+dialog.choose::backdrop { background: rgba(15,20,30,.6); }
+.choose h3 { font-size: 22px; color: var(--navy); padding-inline-end: 44px; }
+.choose p.sub { color: var(--muted); margin-top: 4px; font-size: 15px; }
+.choose .opts { display: grid; gap: 12px; margin-top: 18px; }
+.choose .opt { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; width: 100%; text-align: start; padding: 16px; border-radius: 12px; border: 2px solid var(--line); background: #fff; font: inherit; color: inherit; text-decoration: none; cursor: pointer; transition: border-color .2s, background .2s; }
+.choose .opt:hover { border-color: var(--wa); background: #f3f8f4; }
+.choose .opt.main { border-color: var(--wa); background: #f3f8f4; }
+.choose .opt .ic { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--wa); color: #fff; font-weight: 700; font-size: 20px; }
+.choose .opt .ic svg { width: 24px; height: 24px; }
+.choose .opt.alt .ic { background: #fff; color: var(--wa); border: 2px solid var(--wa); }
+.choose .opt b { display: block; font-size: 17px; }
+.choose .opt small { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+.choose .x { position: absolute; top: 14px; inset-inline-end: 14px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--bg); font-size: 24px; cursor: pointer; color: var(--ink); }
+
 /* sticky mobile cta */
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); border-top: 1px solid var(--line); display: none; transform: translateY(110%); transition: transform .3s; }
 .dock.on { transform: none; }
@@ -227,7 +243,7 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
 @media (max-width: 900px) {
   .hero .wrap, .ats .grid, .offer .wrap { grid-template-columns: 1fr; }
   .stack { max-width: 400px; }
-  .top .btn.wa { display: none; }
+  .top .btn.go { display: none; }
   .dock { display: flex; gap: 10px; }
 }
 @media (max-width: 560px) {
@@ -252,7 +268,7 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
     <a class="logo" href="#"><b>PRO</b>CV</a>
     <span class="sp"></span>
     <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
-    <a class="btn wa" href="#"><span lang="ar">سولنا فواتساب</span><span lang="fr">Une question ?</span></a>
+    <a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
   </div>
 </header>
 
@@ -270,8 +286,7 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
           <span lang="fr">Deckblatt + Anschreiben + Lebenslauf, rédigés en allemand pour votre métier, et lisibles par les logiciels de tri (ATS) des entreprises allemandes.</span>
         </p>
         <div class="cta">
-          <a class="btn go" href="#infos"><span lang="ar">عمّر معلوماتك واطلب ملفك</span><span lang="fr">Remplir le formulaire et commander</span></a>
-          <a class="btn ask wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">عندك سؤال؟ هضر معانا</span><span lang="fr">Une question ? Écrivez-nous</span></a>
+          <a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك دابا</span><span lang="fr">Commander mon dossier</span></a>
           <a class="tel tel-link ltr" href="#">07 06 82 84 46</a>
         </div>
         <ul class="checks">
@@ -377,8 +392,7 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
           <li><span>Vielen Dank&nbsp;<span lang="ar">· صفحة الشكر</span><span lang="fr">· page de remerciement</span></span></li>
           <li><span lang="ar">أي تعديل بعد الدفع، فابور</span><span lang="fr">Toute modification après paiement, gratuite</span></li>
         </ul>
-        <a class="btn go" href="#infos"><span lang="ar">بغيت ملفي دابا</span><span lang="fr">Je veux mon dossier</span></a>
-        <a class="ask-link wa" href="#"><span lang="ar">عندك سؤال قبل؟ هضر معانا فواتساب مباشرة</span><span lang="fr">Une question avant ? Écrivez-nous sur WhatsApp</span></a>
+        <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي دابا</span><span lang="fr">Je veux mon dossier</span></a>
       </div>
     </div>
   </section>
@@ -406,7 +420,7 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
       <aside class="help rv">
         <b><span lang="ar">عندك سؤال قبل ما تطلب؟</span><span lang="fr">Une question avant de commander ?</span></b>
         <p><span lang="ar">للمزيد من المعلومات، ما تترددش تسولنا. كنجاوبوك بالدارجة ولا بالفرنسية.</span><span lang="fr">Pour plus d'informations, n'hésitez pas à nous écrire. On répond en darija ou en français.</span></p>
-        <a class="btn ask wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrire sur WhatsApp</span></a>
+        <a class="btn ask wa keep" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrire sur WhatsApp</span></a>
         <a class="tel-link ltr" href="#">07 06 82 84 46</a>
       </aside>
       <form class="form rv" id="order" novalidate>
@@ -452,8 +466,8 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
   <section class="block final">
     <div class="wrap rv">
       <h2><span lang="ar">الملف ديالك يقدر يكون جاهز غدا</span><span lang="fr">Votre dossier peut être prêt demain</span></h2>
-      <p class="lead"><span lang="ar">عمّر المعلومات ديالك، ولا إلا عندك شي سؤال هضر معانا مباشرة.</span><span lang="fr">Remplissez vos informations, ou posez-nous directement vos questions.</span></p>
-      <div class="btns"><a class="btn go" href="#infos"><span lang="ar">عمّر المعلومات واطلب</span><span lang="fr">Remplir et commander</span></a><a class="btn ask wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">عندك سؤال؟ هضر معانا</span><span lang="fr">Une question ? Écrivez-nous</span></a></div>
+      <p class="lead"><span lang="ar">كليكي على "اطلب ملفك" وختار: تعمّر المعلومات، ولا تهضر معانا فواتساب.</span><span lang="fr">Cliquez sur « Commander » puis choisissez : remplir le formulaire ou nous écrire sur WhatsApp.</span></p>
+      <div class="btns"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك دابا</span><span lang="fr">Commander mon dossier</span></a></div>
     </div>
   </section>
 </main>
@@ -465,8 +479,17 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
   </div>
 </footer>
 
-<div class="dock" id="dock"><a class="btn go" href="#infos"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span></a><a class="btn ask wa" href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></a></div>
+<div class="dock" id="dock"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span></a></div>
 
+<dialog class="choose" id="choose" aria-labelledby="choose-h">
+  <button type="button" class="x" id="choose-x" aria-label="Fermer">×</button>
+  <h3 id="choose-h"><span lang="ar">كيفاش بغيتي تطلب؟</span><span lang="fr">Comment voulez-vous commander ?</span></h3>
+  <p class="sub"><span lang="ar">ختار اللي ساهل عليك.</span><span lang="fr">Choisissez ce qui vous arrange.</span></p>
+  <div class="opts">
+    <button type="button" class="opt main" id="choose-form"><span class="ic">1</span><span><b><span lang="ar">عمّر الاستمارة</span><span lang="fr">Remplir le formulaire</span></b><small><span lang="ar">كتعمّر المعلومات ديالك فدقيقتين، وكتوصلنا مرتبة فواتساب.</span><span lang="fr">Vos informations en deux minutes, envoyées bien rangées sur WhatsApp.</span></small></span></button>
+    <a class="opt alt wa" href="#" id="choose-wa"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></span><span><b><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Nous écrire sur WhatsApp</span></b><small><span lang="ar">عندك سؤال قبل ما تطلب؟ كنجاوبوك دابا.</span><span lang="fr">Une question avant de commander ? On vous répond.</span></small></span></a>
+  </div>
+</dialog>
 <dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
 
 <script>
@@ -550,9 +573,47 @@ footer a { text-decoration: none; font-weight: 600; color: var(--navy); }
     window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
   });
 
+
+  // order buttons -> choice dialog
+  var ch = document.getElementById('choose');
+  document.querySelectorAll('.order').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (!ch.showModal) return;
+      e.preventDefault(); ch.showModal();
+    });
+  });
+  document.getElementById('choose-x').addEventListener('click', function () { ch.close(); });
+  ch.addEventListener('click', function (e) { if (e.target === ch) ch.close(); });
+  document.getElementById('choose-wa').addEventListener('click', function () { ch.close(); });
+  document.getElementById('choose-form').addEventListener('click', function () {
+    ch.close();
+    var sec = document.getElementById('infos');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { var n = document.querySelector('#order [name=nom]'); if (n) n.focus({ preventScroll: true }); }, 700);
+  });
+
   document.querySelectorAll('.tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
-      document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
+    
+  // order buttons -> choice dialog
+  var ch = document.getElementById('choose');
+  document.querySelectorAll('.order').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (!ch.showModal) return;
+      e.preventDefault(); ch.showModal();
+    });
+  });
+  document.getElementById('choose-x').addEventListener('click', function () { ch.close(); });
+  ch.addEventListener('click', function (e) { if (e.target === ch) ch.close(); });
+  document.getElementById('choose-wa').addEventListener('click', function () { ch.close(); });
+  document.getElementById('choose-form').addEventListener('click', function () {
+    ch.close();
+    var sec = document.getElementById('infos');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { var n = document.querySelector('#order [name=nom]'); if (n) n.focus({ preventScroll: true }); }, 700);
+  });
+
+  document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
       document.getElementById('t-lkw').hidden = b.dataset.t !== 'lkw';
       document.getElementById('t-kfz').hidden = b.dataset.t !== 'kfz';
     });
