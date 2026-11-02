@@ -15,6 +15,8 @@
     try { l = localStorage.getItem('procv-lang') || 'ar'; } catch (e) {}
     var h = document.documentElement;
     h.dataset.l = l; h.lang = l; h.dir = l === 'ar' ? 'rtl' : 'ltr';
+    // ?f=1 (the /formulaire page): show only the order form
+    if (/[?&]f=1(&|$)/.test(location.search)) h.classList.add('only-form');
   })();
   // Always open at the top: no restored scroll position, no old #infos jump.
   try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
@@ -292,6 +294,29 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .fd-r { display: flex; align-items: center; gap: 8px; }
 .fd-lang { min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 14px var(--font); cursor: pointer; }
 .s2-files { display: grid; gap: 16px; }
+.ask-sec { padding: 8px 0 clamp(28px, 4vw, 48px); }
+.ask { background: #fff; border-radius: 18px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 0 0 1px var(--line), 0 20px 44px -30px rgba(20,37,74,.45); display: grid; gap: 16px; }
+.ask-h { display: grid; gap: 4px; }
+.ask-h b { font-size: clamp(19px, 2.4vw, 24px); color: var(--navy); }
+.ask-h small { color: var(--muted); font-size: 15px; }
+.ask-q { display: flex; flex-wrap: wrap; gap: 10px; }
+.ask-b { min-height: 46px; padding: 0 16px; border-radius: 99px; border: 1.5px solid #cfe9d8; background: #f1faf4; color: #1d5c37; font: 600 15px var(--font); cursor: pointer; transition: background .2s, border-color .2s; }
+.ask-b:hover { background: #e2f4e8; border-color: var(--wa); }
+.ask-b.other { background: var(--wa); border-color: var(--wa); color: #fff; }
+.ask-of { margin-top: 24px; }
+html:not(.only-form) .of { display: none; }
+html.only-form main, html.only-form .dock, html.only-form .top .order, html.only-form #fd-x, html.only-form .fd-lang { display: none !important; }
+.of { padding: clamp(24px, 4vw, 48px) 0 clamp(40px, 6vw, 72px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
+.of .wrap { max-width: 840px; }
+.of h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.15; }
+.of h1 .price { white-space: nowrap; color: var(--blue); }
+.of .lead { margin-top: 12px; }
+.of .checks { margin-top: 18px; }
+html.only-form dialog.fd.inline { position: static; display: block; width: 100%; max-width: 100%; height: auto; max-height: none; margin: 28px 0 0; border-radius: 18px; overflow: visible; box-shadow: 0 30px 60px -34px rgba(20,37,74,.5), 0 0 0 1px var(--line); }
+html.only-form dialog.fd.inline .fd-top { position: static; border-radius: 18px 18px 0 0; }
+.thanks { display: grid; gap: 14px; text-align: center; padding-top: 32px; padding-bottom: 32px; }
+.thanks .big { font-size: 46px; }
+.thanks b { font-size: 21px; color: var(--navy); }
 .form .prog { margin-bottom: 18px; display: grid; gap: 8px; font-weight: 700; color: var(--navy); font-size: 15px; }
 .form .prog .bar { height: 8px; border-radius: 99px; background: var(--blue-soft); overflow: hidden; }
 .form .prog .bar i { display: block; height: 100%; width: 20%; background: var(--blue); border-radius: 99px; transition: width .3s; }
@@ -383,6 +408,24 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   </div>
 </header>
 
+<!-- form-only page (/formulaire) -->
+<section class="of" id="of">
+  <div class="wrap">
+    <h1><span lang="ar">ملف ترشيح ألماني كامل بـ <span class="price">200 درهم</span></span><span lang="fr">Votre dossier allemand complet pour <span class="price">200 DH</span></span></h1>
+    <p class="lead"><span lang="ar">عمّر المعلومات ديالك هنا، بالدارجة ولا بالفرنسية، وحنا نكتبو ليك Deckblatt + Anschreiben + Lebenslauf بالألمانية حسب المهنة ديالك.</span><span lang="fr">Remplissez vos informations ici, en darija ou en français, et nous rédigeons votre Deckblatt + Anschreiben + Lebenslauf en allemand pour votre métier.</span></p>
+    <ul class="checks">
+      <li><span lang="ar">جاهز في 24 ساعة</span><span lang="fr">Prêt en 24 h</span></li>
+      <li><span lang="ar">ما خاصكش تعرف الألمانية</span><span lang="fr">Pas besoin de parler allemand</span></li>
+      <li><span lang="ar">تعديلات فابور حتى بعد الدفع</span><span lang="fr">Modifications gratuites après paiement</span></li>
+    </ul>
+    <div class="ask ask-of">
+      <div class="ask-h"><b><span lang="ar">عندك سؤال؟ سولنا قبل ما تطلب</span><span lang="fr">Une question ? Posez-la avant de commander</span></b><small><span lang="ar">كليكي على السؤال، وكنجاوبوك فواتساب بسرعة. بلا حتى التزام.</span><span lang="fr">Touchez votre question, nous répondons vite sur WhatsApp. Sans engagement.</span></small></div>
+      <div class="ask-q"><button type="button" class="ask-b" data-ar="واش خاصني نعرف الألمانية؟" data-fr="Dois-je parler allemand ?"><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></button><button type="button" class="ask-b" data-ar="شحال كياخد ديال الوقت؟" data-fr="Combien de temps ça prend ?"><span lang="ar">شحال كياخد ديال الوقت؟</span><span lang="fr">Combien de temps ça prend ?</span></button><button type="button" class="ask-b" data-ar="كيفاش نخلص؟" data-fr="Comment je paie ?"><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment je paie ?</span></button><button type="button" class="ask-b" data-ar="واش كيصلح للـ Ausbildung؟" data-fr="Ça marche pour une Ausbildung ?"><span lang="ar">واش كيصلح للـ Ausbildung؟</span><span lang="fr">Ça marche pour une Ausbildung ?</span></button><button type="button" class="ask-b" data-ar="واش كتكتبو للمهنة ديالي؟" data-fr="Vous faites mon métier ?"><span lang="ar">واش كتكتبو للمهنة ديالي؟</span><span lang="fr">Vous faites mon métier ?</span></button><button type="button" class="ask-b other"><span lang="ar">💬 سؤال آخر</span><span lang="fr">💬 Autre question</span></button></div>
+    </div>
+    <div id="of-slot"></div>
+  </div>
+</section>
+
 <main>
   <section class="hero">
     <div class="wrap">
@@ -413,6 +456,14 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       </div>
     </div>
   </section>
+
+  <!-- QUESTIONS BEFORE ORDERING -->
+  <section class="ask-sec"><div class="wrap">
+    <div class="ask ">
+      <div class="ask-h"><b><span lang="ar">عندك سؤال؟ سولنا قبل ما تطلب</span><span lang="fr">Une question ? Posez-la avant de commander</span></b><small><span lang="ar">كليكي على السؤال، وكنجاوبوك فواتساب بسرعة. بلا حتى التزام.</span><span lang="fr">Touchez votre question, nous répondons vite sur WhatsApp. Sans engagement.</span></small></div>
+      <div class="ask-q"><button type="button" class="ask-b" data-ar="واش خاصني نعرف الألمانية؟" data-fr="Dois-je parler allemand ?"><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></button><button type="button" class="ask-b" data-ar="شحال كياخد ديال الوقت؟" data-fr="Combien de temps ça prend ?"><span lang="ar">شحال كياخد ديال الوقت؟</span><span lang="fr">Combien de temps ça prend ?</span></button><button type="button" class="ask-b" data-ar="كيفاش نخلص؟" data-fr="Comment je paie ?"><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment je paie ?</span></button><button type="button" class="ask-b" data-ar="واش كيصلح للـ Ausbildung؟" data-fr="Ça marche pour une Ausbildung ?"><span lang="ar">واش كيصلح للـ Ausbildung؟</span><span lang="fr">Ça marche pour une Ausbildung ?</span></button><button type="button" class="ask-b" data-ar="واش كتكتبو للمهنة ديالي؟" data-fr="Vous faites mon métier ?"><span lang="ar">واش كتكتبو للمهنة ديالي؟</span><span lang="fr">Vous faites mon métier ?</span></button><button type="button" class="ask-b other"><span lang="ar">💬 سؤال آخر</span><span lang="fr">💬 Autre question</span></button></div>
+    </div>
+  </div></section>
 
   <!-- EXAMPLES -->
   <section class="block ex" id="exemples">
@@ -675,6 +726,12 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <button class="btn soft" type="button" id="s2-edit"><span lang="ar">بدّل الأجوبة ديالي</span><span lang="fr">Modifier mes réponses</span></button>
         <button class="btn soft" type="button" id="s2-done"><span lang="ar">صيفطت كلشي، شكرا</span><span lang="fr">Tout est envoyé, merci</span></button>
       </div>
+      <div class="form thanks" id="thanks" hidden>
+        <div class="big">🙏</div>
+        <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
+        <p><span lang="ar">غادي نبداو نكتبو الملف ديالك ونتواصلو معاك فواتساب.</span><span lang="fr">Nous commençons votre dossier et revenons vers vous sur WhatsApp.</span></p>
+        <a class="wa" href="#"><span lang="ar">عندك سؤال؟ هضر معانا فواتساب</span><span lang="fr">Une question ? Écrivez-nous sur WhatsApp</span></a>
+      </div>
 </dialog>
 
 <dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
@@ -711,6 +768,14 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       setTimeout(function () { if (!document.hidden) location.href = web; }, 1500);
     }, 400);
   }
+  // "ask before ordering" buttons: open WhatsApp with the chosen question
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.ask-b');
+    if (!b) return;
+    var ar = h.dataset.l === 'ar', q = b.dataset[ar ? 'ar' : 'fr'];
+    if (window.fbq) fbq('track', 'Contact');
+    goWhatsApp(q ? (ar ? 'السلام عليكم، عندي سؤال قبل ما نطلب ملف الترشيح الألماني: ' : "Bonjour, j'ai une question avant de commander le dossier allemand : ") + q : msg());
+  });
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.wa');
     if (!a) return;
@@ -904,7 +969,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     try { localStorage.setItem('procv-step', String(cur)); } catch (err) {}
     document.getElementById('prep').hidden = cur !== 1;
     if (fd && fd.open && !reached[cur] && window.fbq) { reached[cur] = 1; fbq('trackCustom', 'FormStep', { step: cur }); }
-    if (fd && fd.open) fd.scrollTop = 0;
+    if (fd && fd.open) fdTop();
   }
   document.getElementById('pg-back').addEventListener('click', function () { go(cur - 1); });
   document.getElementById('pg-next').addEventListener('click', next);
@@ -1043,7 +1108,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     document.getElementById('s2-how').hidden = !ok;
     document.getElementById('s2-share').hidden = !ok;
     document.getElementById('s2-alt').hidden = ok;
-    if (fd) fd.scrollTop = 0;
+    fdTop();
   }
   document.getElementById('s2-wa').addEventListener('click', function () { goWhatsApp(message(data())); });
   document.getElementById('s2-edit').addEventListener('click', function () {
@@ -1063,7 +1128,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     try { localStorage.removeItem('procv-step2'); localStorage.removeItem(KEY); } catch (err) {}
     files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
     form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI(); drawDocs();
-    step2.hidden = true; form.hidden = false; go(1);
+    step2.hidden = true;
+    if (h.classList.contains('only-form')) { go(1); form.hidden = true; document.getElementById('thanks').hidden = false; fdTop(); return; }
+    form.hidden = false; go(1);
     closeForm();
   });
   // back from WhatsApp (even after a reload): reopen on step 2 if the documents are not sent yet
@@ -1091,18 +1158,20 @@ go(st0);
     if (!silent) setTimeout(function () { if (form.hidden) return; var n = firstEmpty(); if (n) n.focus({ preventScroll: true }); }, 60);
   }
   document.querySelectorAll('.order').forEach(function (a) { a.addEventListener('click', openForm); });
+  var backPending = false;
   function afterClose() {
-    if (!popClose) { try { if (history.state && history.state.fd) history.back(); } catch (err) {} }
+    if (!popClose && !backPending) { try { if (history.state && history.state.fd) { backPending = true; history.back(); } } catch (err) {} }
     popClose = false;
   }
   function closeForm() {
-    var fb = fd.classList.contains('fallback');
+    if (h.classList.contains('only-form')) { popClose = false; return; } // the form page never closes
     try { fd.close(); } catch (err) {}
     fd.removeAttribute('open'); fd.classList.remove('fallback');
-    if (fb) afterClose();
+    afterClose(); // the native close event is not reliable in every browser
   }
   fd.addEventListener('close', afterClose);
   window.addEventListener('popstate', function () {
+    backPending = false;
     if (!fd.open) return;
     if (!form.hidden && cur > 1) { go(cur - 1); try { history.pushState({ fd: 1 }, ''); } catch (err) {} }
     else { popClose = true; closeForm(); }
@@ -1114,7 +1183,20 @@ go(st0);
     var r = fd.getBoundingClientRect();
     if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeForm();
   });
-  if (location.hash === '#commande') openForm();
+  // bring the form to the top of the new step/panel (dialog scroll, or page scroll on /formulaire)
+  function fdTop() {
+    if (!fd) return;
+    if (fd.classList.contains('inline')) { var r = fd.getBoundingClientRect(); if (r.top < 80) window.scrollTo(0, window.scrollY + r.top - 84); }
+    else fd.scrollTop = 0;
+  }
+  // /formulaire: the form sits inside the page instead of a popup
+  if (h.classList.contains('only-form')) {
+    document.getElementById('of-slot').appendChild(fd);
+    fd.classList.add('inline'); fd.setAttribute('open', '');
+    try { history.pushState({ fd: 1 }, ''); } catch (err) {}
+    if (window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
+    go(cur);
+  } else if (location.hash === '#commande') openForm();
 
   // voice note
   var au = document.getElementById('vn-audio'), vn = document.getElementById('vn');
