@@ -651,7 +651,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     });
     out.push('', L.photo);
     window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
-    if (window.fbq) fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+    if (window.fbq) {
+      fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+      // Payment happens on WhatsApp; a sent form is counted as the sale so Sales campaigns can optimize on it.
+      fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+    }
     if (fd && fd.open) closeForm();
   });
 
