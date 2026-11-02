@@ -285,6 +285,49 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form .foot .btn { width: 100%; }
 .form .photo { background: #eaf5ee; border-radius: 10px; padding: 12px 16px; font-size: 15px; color: #23402f; }
 .form .saved { font-size: 14px; color: var(--muted); }
+.form .hid { display: none !important; }
+.form .prog { margin-bottom: 18px; display: grid; gap: 8px; font-weight: 700; color: var(--navy); font-size: 15px; }
+.form .prog .bar { height: 8px; border-radius: 99px; background: var(--blue-soft); overflow: hidden; }
+.form .prog .bar i { display: block; height: 100%; width: 20%; background: var(--blue); border-radius: 99px; transition: width .3s; }
+.form .nav { display: flex; gap: 12px; }
+.form .nav .btn { flex: 1; }
+.form .nav .btn[hidden] { display: none; }
+.form .foot .btn[hidden] { display: none; }
+.btn.soft { background: var(--blue-soft); color: var(--navy); }
+.btn[hidden] { display: none !important; }
+.form .lbl { font-weight: 600; font-size: 16px; }
+.form .hint { display: block; color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
+.form .bad .chips label, .form .bad .drop, .form .bad .item { border-color: var(--bad); }
+.form .rep .item { border: 1.5px solid #dfe3ec; border-radius: 12px; padding: 14px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; background: #fbfcfe; }
+.form .rep .item label { font-size: 15px; }
+.form .rep .item input { width: 100%; }
+.form .rep .item .n { grid-column: 1 / -1; font-weight: 700; color: var(--navy); font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+.form .rep .item .rm { border: 0; background: none; color: var(--bad); font: 600 14px var(--font); cursor: pointer; padding: 4px 8px; }
+.form .rep .item .rm[hidden] { display: none; }
+.form .rep .item .w { grid-column: 1 / -1; }
+.form .rep.off .list, .form .rep.off .add { display: none; }
+.form .rep-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.form .add { border: 1.5px dashed var(--blue); background: var(--blue-soft); color: var(--blue); border-radius: 10px; min-height: 44px; padding: 0 16px; font: 700 15px var(--font); cursor: pointer; }
+.form label.none { display: inline-flex; grid-auto-flow: column; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
+.form .none input { width: 18px; height: 18px; accent-color: var(--navy); }
+.form .doc { display: grid; gap: 8px; }
+.form .doc[hidden] { display: none; }
+.form .drop { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 84px; padding: 12px 16px; border: 1.5px dashed #b9c2d4; border-radius: 12px; cursor: pointer; background: #fbfcfe; position: relative; }
+.form .doc.has .drop { border-style: solid; border-color: #3aa76d; background: #f1faf4; }
+.form .drop input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.form .drop-t { font-weight: 600; color: var(--blue); }
+.thumbs { display: flex; flex-wrap: wrap; gap: 10px; }
+.thumbs:empty { display: none; }
+.thumbs .th { position: relative; display: block; }
+.thumbs img { width: 64px; height: 80px; object-fit: cover; border-radius: 8px; display: block; box-shadow: 0 0 0 1px var(--line); }
+.thumbs em { display: grid; place-items: center; width: 64px; height: 80px; padding: 4px; font-style: normal; font-size: 11px; text-align: center; overflow: hidden; word-break: break-all; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+.thumbs .thx { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: var(--bad); color: #fff; font: 700 15px/1 var(--font); cursor: pointer; }
+.thumbs.big { justify-content: center; }
+.step2 { display: grid; gap: 16px; }
+.step2[hidden] { display: none; }
+.step2 .part { display: flex; }
+.form[hidden] { display: none; }
+@media (max-width: 640px) { .form .rep .item { grid-template-columns: 1fr; } }
 
 dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(92vw, 720px); max-height: 92vh; margin: auto; overflow: visible; }
 dialog.lb::backdrop { background: rgba(12,23,48,.88); }
@@ -541,36 +584,83 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   </div>
   <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
 <form class="form" id="order" novalidate>
+        <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
         <div class="g">
           <div class="part"><i>1</i><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
-          <div><label><span class="req"><span lang="ar">الاسم الكامل</span><span lang="fr">Nom complet</span></span><small><span lang="ar">كيف مكتوب فالباسبور</span><span lang="fr">Comme sur le passeport</span></small><input type="text" name="nom" data-ph="" required autocomplete="name"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
-          <div><label><span><span lang="ar">تاريخ الازدياد</span><span lang="fr">Date de naissance</span></span><input type="date" name="naissance" data-ph="" dir="ltr" autocomplete="off"></label></div>
+          <div><label><span class="req"><span lang="ar">الاسم الكامل</span><span lang="fr">Nom et prénom</span></span><small><span lang="ar">كيف مكتوب فالباسبور</span><span lang="fr">Comme sur le passeport</span></small><input type="text" name="nom" data-ph="" required autocomplete="name"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">تاريخ الازدياد</span><span lang="fr">Date de naissance</span></span><small>&nbsp;</small><input type="date" name="naissance" data-ph="" required dir="ltr" autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">المدينة والبلاد فين ساكن</span><span lang="fr">Ville et pays de résidence</span></span><input type="text" name="ville" data-ph="Casablanca, Maroc" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span class="req"><span lang="ar">رقم التليفون</span><span lang="fr">Téléphone</span></span><input type="tel" name="tel" data-ph="06 00 00 00 00" required dir="ltr" autocomplete="tel"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
-          <div><label><span><span lang="ar">الإيميل</span><span lang="fr">E-mail</span></span><input type="email" name="email" data-ph="nom@gmail.com" dir="ltr" autocomplete="email"></label></div>
-          <div><label><span><span lang="ar">المدينة</span><span lang="fr">Ville</span></span><input type="text" name="ville" data-ph="Casablanca" autocomplete="off"></label></div>
-          <div class="part"><i>2</i><span lang="ar">الهدف ديالك</span><span lang="fr">Votre objectif</span></div>
-          <div><label><span class="req"><span lang="ar">شنو باغي؟</span><span lang="fr">Vous cherchez</span></span><select name="but" required><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="Ausbildung" data-ar="Ausbildung (تكوين مهني)" data-fr="Ausbildung (formation)">Ausbildung (تكوين مهني)</option><option value="Arbeit" data-ar="خدمة (Arbeit)" data-fr="Un emploi (Arbeit)">خدمة (Arbeit)</option><option value="Pflege" data-ar="التمريض (Pflege)" data-fr="Soins (Pflege)">التمريض (Pflege)</option><option value="Studium" data-ar="الدراسة (Studium)" data-fr="Études (Studium)">الدراسة (Studium)</option><option value="Andere" data-ar="حاجة أخرى" data-fr="Autre">حاجة أخرى</option></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
-          <div><label><span class="req"><span lang="ar">المهنة اللي باغي</span><span lang="fr">Métier visé</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">الإيميل</span><span lang="fr">E-mail</span></span><input type="email" name="email" data-ph="nom@gmail.com" required dir="ltr" autocomplete="email"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">الحالة العائلية</span><span lang="fr">Situation familiale</span></span><select name="famille" required><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="Ledig" data-ar="عزب / عزبة" data-fr="Célibataire">عزب / عزبة</option><option value="Verheiratet" data-ar="مزوج / مزوجة" data-fr="Marié(e)">مزوج / مزوجة</option><option value="Geschieden" data-ar="مطلق / مطلقة" data-fr="Divorcé(e)">مطلق / مطلقة</option><option value="Verwitwet" data-ar="أرمل / أرملة" data-fr="Veuf / veuve">أرمل / أرملة</option></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+
+          <div class="part"><i>2</i><span lang="ar">الخدمة ولا التكوين اللي باغي</span><span lang="fr">Poste / formation souhaité(e)</span></div>
+          <div><label><span class="req"><span lang="ar">سمية الخدمة ولا التكوين</span><span lang="fr">Nom du poste ou formation</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><span class="req lbl"><span lang="ar">النوع</span><span lang="fr">Type</span></span>
+            <div class="chips" style="margin-top:8px"><label><input type="radio" name="but" value="Arbeit" required> Arbeit</label><label><input type="radio" name="but" value="Ausbildung"> Ausbildung</label></div><span class="err"><span lang="ar">اختار واحد</span><span lang="fr">Choisissez une option</span></span></div>
           <div class="full"><label><span><span lang="ar">رابط الإعلان (إلا كان)</span><span lang="fr">Lien de l'annonce (si vous l'avez)</span></span><input type="url" name="annonce" data-ph="https://" dir="ltr" autocomplete="off"></label></div>
-          <div class="part"><i>3</i><span lang="ar">الخبرة والدراسة</span><span lang="fr">Expérience et études</span></div>
-          <div class="full"><label><span><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></span><small><span lang="ar">لكل خدمة: الشركة، المدينة، من شحال لشحال (الشهر والعام)، وشنو كنتي كدير</span><span lang="fr">Pour chaque poste : entreprise, ville, dates (mois et année), vos tâches</span></small><textarea name="experience" data-ph=""></textarea></label></div>
-          <div class="full"><label><span><span lang="ar">الدراسة والديبلومات</span><span lang="fr">Études et diplômes</span></span><small><span lang="ar">المدرسة ولا المعهد، الشعبة، والتواريخ</span><span lang="fr">École ou institut, filière et dates</span></small><textarea name="etudes" data-ph=""></textarea></label></div>
-          <div class="part"><i>4</i><span lang="ar">اللغات والرخصة</span><span lang="fr">Langues et permis</span></div>
-          <div><label><span><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></span><select name="allemand"><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option><option value="0" data-ar="ما زال ما بديتش" data-fr="Pas encore commencé">ما زال ما بديتش</option></select></label></div>
-          <div><label><span><span lang="ar">الشهادة (إلا كانت)</span><span lang="fr">Certificat (si vous en avez)</span></span><input type="text" name="certificat" data-ph="Goethe B1, telc B2…" autocomplete="off"></label></div>
-          <div class="full"><label><span><span lang="ar">لغات أخرى</span><span lang="fr">Autres langues</span></span><input type="text" name="langues" data-ph="Arabisch: Muttersprache, Französisch: B1…" autocomplete="off"></label></div>
-          <div class="full"><span style="font-weight:600"><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></span>
-            <div class="chips" style="margin-top:8px"><label><input type="checkbox" name="permis" value="B"> B</label><label><input type="checkbox" name="permis" value="C"> C</label><label><input type="checkbox" name="permis" value="CE"> CE</label><label><input type="checkbox" name="permis" value="D"> D</label></div></div>
-          <div class="part"><i>5</i><span lang="ar">المهارات والهوايات</span><span lang="fr">Compétences et loisirs</span></div>
-          <div><label><span><span lang="ar">المهارات</span><span lang="fr">Compétences</span></span><small><span lang="ar">شنو كتعرف دير مزيان</span><span lang="fr">Ce que vous savez bien faire</span></small><textarea name="competences" data-ph=""></textarea></label></div>
-          <div><label><span><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></span><small><span lang="ar">الرياضة، القراية…</span><span lang="fr">Sport, lecture…</span></small><textarea name="loisirs" data-ph=""></textarea></label></div>
+
+          <div class="part"><i>3</i><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></div>
+          <div class="full"><span class="req lbl"><span lang="ar">المستوى ديالك</span><span lang="fr">Votre niveau</span></span>
+            <div class="chips" style="margin-top:8px"><label><input type="radio" name="allemand" value="A1" required> A1</label><label><input type="radio" name="allemand" value="A2"> A2</label><label><input type="radio" name="allemand" value="B1"> B1</label><label><input type="radio" name="allemand" value="B2"> B2</label><label><input type="radio" name="allemand" value="C1"> C1</label><label><input type="radio" name="allemand" value="C2"> C2</label></div><span class="err"><span lang="ar">اختار المستوى</span><span lang="fr">Choisissez un niveau</span></span></div>
+          <div class="full"><label><span><span lang="ar">الشهادة (إلا كانت)</span><span lang="fr">Certificat (si vous en avez)</span></span><input type="text" name="certificat" data-ph="Goethe B1, telc B2, ÖSD…" autocomplete="off"></label></div>
+
+          <div class="part"><i>4</i><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></div>
+          <div class="full rep" id="exp"><div class="list"></div>
+            <span class="err"><span lang="ar">عمّر خدمة وحدة على الأقل (الفترة، الخدمة، الشركة)، ولا علّم "ما عنديش خبرة"</span><span lang="fr">Remplissez au moins une expérience (période, poste, entreprise), ou cochez « Pas d'expérience »</span></span>
+            <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ زيد خدمة أخرى</span><span lang="fr">+ Ajouter une expérience</span></button>
+            <label class="none"><input type="checkbox" name="noexp"> <span lang="ar">ما عنديش خبرة</span><span lang="fr">Pas d'expérience</span></label></div></div>
+
+          <div class="part"><i>5</i><span lang="ar">الدراسة والتكوين</span><span lang="fr">Études / formations</span></div>
+          <div class="full rep" id="etu"><div class="list"></div>
+            <span class="err"><span lang="ar">عمّر دراسة وحدة على الأقل (الفترة، الديبلوم، المؤسسة)</span><span lang="fr">Remplissez au moins une formation (période, diplôme, établissement)</span></span>
+            <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ زيد دراسة أخرى</span><span lang="fr">+ Ajouter une formation</span></button></div></div>
+
+          <div class="part"><i>6</i><span lang="ar">المهارات</span><span lang="fr">Compétences</span></div>
+          <div class="full"><label><span class="req"><span lang="ar">شنو كتعرف دير</span><span lang="fr">Ce que je sais faire</span></span><small><span lang="ar">الماكينات، البرامج، الخدمات اللي كتعرف دير…</span><span lang="fr">Machines, logiciels, tâches, etc.</span></small><textarea name="competences" data-ph="" required></textarea></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+
+          <div class="part"><i>7</i><span lang="ar">اللغات</span><span lang="fr">Langues</span></div>
+          <div><label><span class="req"><span lang="ar">العربية</span><span lang="fr">Arabe</span></span><select name="l_ar" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">الفرنسية</span><span lang="fr">Français</span></span><select name="l_fr" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span class="req"><span lang="ar">الإنجليزية</span><span lang="fr">Anglais</span></span><select name="l_en" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
+          <div><label><span><span lang="ar">لغة أخرى (إلا كانت)</span><span lang="fr">Autre langue</span></span><input type="text" name="l_autre" data-ph="Tamazight, Español…" autocomplete="off"></label></div>
+
+          <div class="part"><i>8</i><span lang="ar">رخصة السياقة</span><span lang="fr">Mobilité</span></div>
+          <div class="full"><span class="req lbl"><span lang="ar">عندك رخصة السياقة؟</span><span lang="fr">Permis de conduire ?</span></span>
+            <div class="chips" style="margin-top:8px"><label><input type="radio" name="permis_ok" value="oui" required> <span lang="ar">إيه</span><span lang="fr">Oui</span></label><label><input type="radio" name="permis_ok" value="non"> <span lang="ar">لا</span><span lang="fr">Non</span></label></div>
+            <span class="err"><span lang="ar">اختار إيه ولا لا</span><span lang="fr">Choisissez oui ou non</span></span>
+            <div class="chips" id="cats" hidden style="margin-top:10px"><label><input type="checkbox" name="permis" value="B"> B</label><label><input type="checkbox" name="permis" value="C"> C</label><label><input type="checkbox" name="permis" value="CE"> CE</label><label><input type="checkbox" name="permis" value="D"> D</label></div></div>
+
+          <div class="part"><i>9</i><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></div>
+          <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
+
+          <div class="part"><i>10</i><span lang="ar">التصويرة والوثائق</span><span lang="fr">Photo et documents</span></div>
+          <div class="full doc" data-doc="photo"><span class="req lbl"><span lang="ar">صورة شخصية</span><span lang="fr">Photo d'identité</span></span>
+            <small class="hint"><span lang="ar">من القدام، خلفية بيضاء. غادي تكون فالـ Deckblatt والـ Lebenslauf.</span><span lang="fr">De face, fond blanc. Elle ira sur le Deckblatt et le Lebenslauf.</span></small>
+            <label class="drop"><input type="file" accept="image/*"><span class="thumbs"></span><span class="drop-t"><span lang="ar">📷 كليكي باش تختار التصويرة</span><span lang="fr">📷 Touchez pour choisir la photo</span></span></label>
+            <span class="err"><span lang="ar">زيد التصويرة ديالك</span><span lang="fr">Ajoutez votre photo</span></span></div>
+          <div class="full doc" data-doc="permis" id="doc-permis" hidden><span class="req lbl"><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></span>
+            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 تصويرة الرخصة (القدام واللور)</span><span lang="fr">📎 Photo du permis (recto-verso)</span></span></label>
+            <span class="err"><span lang="ar">زيد تصويرة الرخصة</span><span lang="fr">Ajoutez le permis</span></span></div>
+          <div class="full doc" data-doc="certificat"><span class="lbl"><span lang="ar">شهادة الألمانية (إلا كانت)</span><span lang="fr">Certificat d'allemand (si disponible)</span></span>
+            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 زيد الشهادة</span><span lang="fr">📎 Ajouter le certificat</span></span></label></div>
+          <div class="full doc" data-doc="attest"><span class="lbl"><span lang="ar">شهادات العمل والديبلومات (إلا كانو)</span><span lang="fr">Attestations de travail et diplômes (si disponibles)</span></span>
+            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 تقدر تختار بزاف ديال الملفات</span><span lang="fr">📎 Vous pouvez choisir plusieurs fichiers</span></span></label></div>
         </div>
         <div class="foot">
-          <p class="photo"><span lang="ar">الصورة الشخصية: ملي يتحل واتساب وتصيفط الرسالة، صيفط الصورة ديالك فنفس المحادثة.</span><span lang="fr">Photo : une fois le message envoyé sur WhatsApp, envoyez votre photo dans la même conversation.</span></p>
-          <button class="btn go" type="submit"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer sur WhatsApp</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
+          <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
+          <button class="btn go" type="submit" id="pg-send"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer sur WhatsApp</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
           <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
+      <div class="form step2" id="step2" hidden>
+        <div class="part"><i>✓</i><span lang="ar">بقات غير التصاور والوثائق</span><span lang="fr">Il ne reste que la photo et les documents</span></div>
+        <p><span lang="ar">صيفطتي المعلومات ديالك. دابا كليكي على الزر، اختار واتساب، ومن بعد اختار المحادثة ديال PRO CV (غادي تكون اللولة).</span><span lang="fr">Vos informations sont envoyées. Touchez le bouton, choisissez WhatsApp, puis la conversation PRO CV (elle sera en premier).</span></p>
+        <div class="thumbs big" id="s2-thumbs"></div>
+        <button class="btn go" type="button" id="s2-share"><span lang="ar">📎 صيفط التصاور فواتساب</span><span lang="fr">📎 Envoyer les fichiers sur WhatsApp</span></button>
+        <p class="saved" id="s2-alt" hidden><span lang="ar">التليفون ديالك ما خلاناش نصيفطوهم نيشان. حل المحادثة ديال PRO CV فواتساب، كليكي على 📎 وصيفط التصويرة والوثائق.</span><span lang="fr">Votre téléphone ne permet pas l'envoi direct. Ouvrez la conversation PRO CV sur WhatsApp, touchez 📎 et envoyez la photo et les documents.</span></p>
+        <button class="btn soft" type="button" id="s2-done"><span lang="ar">صيفطتهم، شكرا</span><span lang="fr">C'est envoyé, merci</span></button>
+      </div>
 </dialog>
 
 <dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
@@ -625,48 +715,267 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
   // order form -> WhatsApp
   var form = document.getElementById('order');
+  var step2 = document.getElementById('step2');
   var KEY = 'procv-form';
+  function isAr() { return h.dataset.l === 'ar'; }
+  function sp(ar, fr) { return '<span lang="ar">' + ar + '</span><span lang="fr">' + fr + '</span>'; }
+
+  // language level lists
+  var LV = [['', 'اختار…', 'Choisir…'], ['Muttersprache', 'اللغة الأم', 'Langue maternelle'], ['C2', 'C2', 'C2'], ['C1', 'C1', 'C1'], ['B2', 'B2', 'B2'], ['B1', 'B1', 'B1'], ['A2', 'A2', 'A2'], ['A1', 'A1', 'A1'], ['Keine', 'ما كنعرفهاش', 'Aucune']];
+  form.querySelectorAll('select.lvl').forEach(function (s) {
+    LV.forEach(function (v) { var o = document.createElement('option'); o.value = v[0]; o.dataset.ar = v[1]; o.dataset.fr = v[2]; o.textContent = v[1]; s.appendChild(o); });
+  });
+
+  // repeatable blocks: experience and studies
+  var REP = {
+    exp: { t: ['الخدمة', 'Expérience'], f: [
+      ['debut', 'من (التاريخ)', 'Du (date)', '01/09/2020', 1],
+      ['fin', 'حتى (التاريخ)', 'Au (date)', '30/06/2023 / aujourd\'hui', 1],
+      ['poste', 'الخدمة / المنصب', 'Travail / poste', 'Chauffeur, Mécanicien…', 2],
+      ['lieu', 'الشركة / البلاصة', 'Entreprise / lieu', 'Société X, Casablanca', 2]] },
+    etu: { t: ['الدراسة', 'Formation'], f: [
+      ['debut', 'من (التاريخ)', 'Du (date)', '09/2015', 1],
+      ['fin', 'حتى (التاريخ)', 'Au (date)', '06/2018', 1],
+      ['diplome', 'الديبلوم ولا التكوين', 'Diplôme ou formation', 'Bac, Technicien spécialisé…', 2],
+      ['filiere', 'الشعبة / التخصص', 'Filière / spécialité', 'Sciences, Électricité…', 2],
+      ['etab', 'المؤسسة / البلاد', 'Établissement / pays', 'OFPPT Casablanca, Maroc', 2]] }
+  };
+  function renum(rep) {
+    var k = rep.id, items = rep.querySelectorAll('.item');
+    items.forEach(function (it, i) {
+      it.querySelector('.n b').innerHTML = sp(REP[k].t[0] + ' ' + (i + 1), REP[k].t[1] + ' ' + (i + 1));
+      it.querySelector('.rm').hidden = items.length < 2;
+    });
+  }
+  function addItem(rep, vals) {
+    var k = rep.id, it = document.createElement('div');
+    it.className = 'item';
+    var html = '<div class="n"><b></b><button type="button" class="rm">' + sp('× حيد', '× Retirer') + '</button></div>';
+    REP[k].f.forEach(function (f) {
+      html += '<label' + (f[4] === 2 ? ' class="w"' : '') + '><span>' + sp(f[1], f[2]) + '</span><input type="text" data-k="' + f[0] + '" data-ph="' + f[3].replace(/"/g, '&quot;') + '" placeholder="' + f[3].replace(/"/g, '&quot;') + '"' + (f[4] === 1 ? ' dir="ltr"' : '') + ' autocomplete="off"></label>';
+    });
+    it.innerHTML = html;
+    if (vals) it.querySelectorAll('[data-k]').forEach(function (i) { i.value = vals[i.dataset.k] || ''; });
+    rep.querySelector('.list').appendChild(it);
+    renum(rep);
+    return it;
+  }
+  function items(rep) {
+    return Array.prototype.map.call(rep.querySelectorAll('.item'), function (it) {
+      var o = {}; it.querySelectorAll('[data-k]').forEach(function (i) { o[i.dataset.k] = i.value.trim(); }); return o;
+    }).filter(function (o) { return Object.keys(o).some(function (k) { return o[k]; }); });
+  }
+  var expRep = document.getElementById('exp'), etuRep = document.getElementById('etu');
+  [expRep, etuRep].forEach(function (rep) {
+    rep.querySelector('.add').addEventListener('click', function () { addItem(rep).querySelector('input').focus(); save(); });
+    rep.addEventListener('click', function (e) {
+      var b = e.target.closest('.rm'); if (!b) return;
+      b.closest('.item').remove(); renum(rep); save();
+    });
+  });
+
+  // driving licence: show categories and the licence upload only when "yes"
+  function permisUI() {
+    var yes = form.querySelector('[name=permis_ok][value=oui]').checked;
+    document.getElementById('cats').hidden = !yes;
+    document.getElementById('doc-permis').hidden = !yes;
+  }
+  form.querySelectorAll('[name=permis_ok]').forEach(function (r) { r.addEventListener('change', permisUI); });
+  var noexp = form.querySelector('[name=noexp]');
+  function expUI() { expRep.classList.toggle('off', noexp.checked); }
+  noexp.addEventListener('change', expUI);
+
+  // documents: kept in memory and in IndexedDB, so they survive the trip to WhatsApp
+  var files = { photo: [], permis: [], certificat: [], attest: [] };
+  var DB = null;
+  try {
+    var rq = indexedDB.open('procv', 1);
+    rq.onupgradeneeded = function () { rq.result.createObjectStore('kv'); };
+    rq.onsuccess = function () { DB = rq.result; dbGet('docs', function (v) { if (v) { files = v; drawDocs(); } resume(); }); };
+    rq.onerror = function () { resume(); };
+  } catch (e) {}
+  function dbPut(k, v) { try { DB.transaction('kv', 'readwrite').objectStore('kv').put(v, k); } catch (e) {} }
+  function dbGet(k, cb) { try { var r = DB.transaction('kv').objectStore('kv').get(k); r.onsuccess = function () { cb(r.result); }; r.onerror = function () { cb(null); }; } catch (e) { cb(null); } }
+  function thumb(f, i, doc) {
+    var s = document.createElement('span'); s.className = 'th';
+    if (/^image\//.test(f.type)) { var im = document.createElement('img'); im.src = URL.createObjectURL(f); im.alt = ''; s.appendChild(im); }
+    else { var p = document.createElement('em'); p.textContent = '📄 ' + (f.name || 'PDF'); s.appendChild(p); }
+    if (doc) { var x = document.createElement('button'); x.type = 'button'; x.className = 'thx'; x.textContent = '×'; x.dataset.doc = doc; x.dataset.i = i; s.appendChild(x); }
+    return s;
+  }
+  function drawDocs() {
+    form.querySelectorAll('.doc').forEach(function (d) {
+      var k = d.dataset.doc, box = d.querySelector('.thumbs');
+      box.innerHTML = '';
+      files[k].forEach(function (f, i) { box.appendChild(thumb(f, i, k)); });
+      d.classList.toggle('has', files[k].length > 0);
+    });
+  }
+  form.querySelectorAll('.doc input[type=file]').forEach(function (inp) {
+    inp.addEventListener('change', function () {
+      var d = inp.closest('.doc'), k = d.dataset.doc, list = Array.prototype.slice.call(inp.files || []);
+      if (!list.length) return;
+      files[k] = k === 'photo' ? list.slice(0, 1) : files[k].concat(list);
+      inp.value = '';
+      d.classList.remove('bad');
+      drawDocs(); if (DB) dbPut('docs', files);
+    });
+  });
+  form.addEventListener('click', function (e) {
+    var x = e.target.closest('.thx'); if (!x) return;
+    e.preventDefault(); e.stopPropagation();
+    files[x.dataset.doc].splice(+x.dataset.i, 1);
+    drawDocs(); if (DB) dbPut('docs', files);
+  });
+  function allFiles() { return [].concat(files.photo, files.permis, files.certificat, files.attest); }
+
   function phs() {
     form.querySelectorAll('[data-ph]').forEach(function (el) { el.placeholder = el.dataset.ph; });
-    form.querySelectorAll('option[data-ar]').forEach(function (o) { o.textContent = h.dataset.l === 'ar' ? o.dataset.ar : o.dataset.fr; });
+    form.querySelectorAll('option[data-ar]').forEach(function (o) { o.textContent = isAr() ? o.dataset.ar : o.dataset.fr; });
   }
-  phs();
-  try {
-    var d = JSON.parse(localStorage.getItem(KEY) || '{}');
-    Object.keys(d).forEach(function (k) {
-      if (k === 'permis') form.querySelectorAll('[name=permis]').forEach(function (c) { c.checked = d.permis.indexOf(c.value) > -1; });
-      else if (form.elements[k]) form.elements[k].value = d[k];
+
+  // restore saved answers
+  var d0 = {};
+  try { d0 = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  Object.keys(d0).forEach(function (k) {
+    if (k === 'permis') form.querySelectorAll('[name=permis]').forEach(function (c) { c.checked = (d0.permis || []).indexOf(c.value) > -1; });
+    else if (k === 'noexp') noexp.checked = !!d0.noexp;
+    else if (k === 'exp' || k === 'etu') (d0[k] || []).forEach(function (v) { addItem(k === 'exp' ? expRep : etuRep, v); });
+    else form.querySelectorAll('[name="' + k + '"]').forEach(function (el) {
+      if (el.type === 'radio') el.checked = el.value === d0[k]; else el.value = d0[k];
     });
-  } catch (e) {}
+  });
+  if (!expRep.querySelector('.item')) addItem(expRep);
+  if (!etuRep.querySelector('.item')) addItem(etuRep);
+  phs(); permisUI(); expUI();
+
   function data() {
     var o = {};
-    Array.prototype.forEach.call(form.elements, function (el) { if (el.name && el.name !== 'permis') o[el.name] = el.value.trim(); });
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.name === 'permis' || el.type === 'file') return;
+      if (el.type === 'radio') { if (el.checked) o[el.name] = el.value; }
+      else if (el.type === 'checkbox') o[el.name] = el.checked;
+      else o[el.name] = el.value.trim();
+    });
     o.permis = Array.prototype.filter.call(form.querySelectorAll('[name=permis]'), function (c) { return c.checked; }).map(function (c) { return c.value; });
+    o.exp = items(expRep); o.etu = items(etuRep);
     return o;
   }
-  form.addEventListener('input', function (e) {
-    var w = e.target.closest('div'); if (w) w.classList.remove('bad');
-    try { localStorage.setItem(KEY, JSON.stringify(data())); } catch (err) {}
-  });
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(data())); } catch (err) {} }
+  function box(el) { return el.closest('.g > div'); }
+  form.addEventListener('input', function (e) { var w = box(e.target); if (w) w.classList.remove('bad'); save(); });
+  form.addEventListener('change', function (e) { var w = box(e.target); if (w) w.classList.remove('bad'); save(); });
+
+  // wizard: 5 short steps instead of one long page
+  var STEPS = { 1: 1, 2: 2, 3: 2, 4: 3, 5: 3, 6: 4, 7: 4, 8: 4, 9: 4, 10: 5 }, NSTEP = 5, cur = 1;
+  var STEP_T = [null, ['المعلومات ديالك', 'Vos informations'], ['الخدمة والألمانية', 'Poste et allemand'], ['الخبرة والدراسة', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues'], ['التصويرة والوثائق', 'Photo et documents']];
+  var cells = Array.prototype.slice.call(form.querySelector('.g').children), sNow = 1;
+  cells.forEach(function (el) { if (el.classList.contains('part')) sNow = STEPS[+el.querySelector('i').textContent] || sNow; el.dataset.step = sNow; });
+  var reached = {};
+  function go(n) {
+    cur = Math.max(1, Math.min(NSTEP, n));
+    cells.forEach(function (el) { el.classList.toggle('hid', +el.dataset.step !== cur); });
+    document.getElementById('pg-t').innerHTML = sp('المرحلة ' + cur + ' من ' + NSTEP + ' · ' + STEP_T[cur][0], 'Étape ' + cur + ' / ' + NSTEP + ' · ' + STEP_T[cur][1]);
+    document.getElementById('pg-b').style.width = (cur / NSTEP * 100) + '%';
+    document.getElementById('pg-back').style.visibility = cur > 1 ? 'visible' : 'hidden';
+    document.getElementById('pg-next').hidden = cur === NSTEP;
+    document.getElementById('pg-send').hidden = cur !== NSTEP;
+    try { localStorage.setItem('procv-step', String(cur)); } catch (err) {}
+    if (!reached[cur] && window.fbq) { reached[cur] = 1; fbq('trackCustom', 'FormStep', { step: cur }); }
+    var top = fd && fd.querySelector('.fd-top'); if (top && fd.open) top.scrollIntoView({ block: 'start' });
+  }
+  document.getElementById('pg-back').addEventListener('click', function () { go(cur - 1); });
+  document.getElementById('pg-next').addEventListener('click', next);
+  function next() {
+    var bad = check(cur);
+    if (bad.length) { focusBad(bad[0]); return; }
+    go(cur + 1);
+  }
+  function focusBad(w) {
+    if (+w.dataset.step !== cur) go(+w.dataset.step);
+    setTimeout(function () {
+      w.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      var f = w.querySelector('input:not([type=file]):not([type=radio]):not([type=checkbox]),select,textarea'); if (f) f.focus({ preventScroll: true });
+    }, 50);
+  }
+  var st0 = 1; try { st0 = +localStorage.getItem('procv-step') || 1; } catch (err) {}
+
+  function check(onlyStep) {
+    var bad = [];
+    var seen = {};
+    form.querySelectorAll('[required]').forEach(function (el) {
+      if (el.type === 'radio') {
+        if (seen[el.name]) return; seen[el.name] = 1;
+        if (!form.querySelector('[name="' + el.name + '"]:checked')) bad.push(box(el));
+      } else if (!el.value.trim()) bad.push(box(el));
+      else if (el.type === 'email' && !/^\S+@\S+\.\S+$/.test(el.value.trim())) bad.push(box(el));
+    });
+    var o = data();
+    if (!o.noexp && !o.exp.some(function (x) { return x.debut && x.poste && x.lieu; })) bad.push(expRep);
+    if (!o.etu.some(function (x) { return x.debut && x.diplome && x.etab; })) bad.push(etuRep);
+    if (!files.photo.length) bad.push(form.querySelector('[data-doc=photo]'));
+    if (o.permis_ok === 'oui' && !files.permis.length) bad.push(document.getElementById('doc-permis'));
+    bad = bad.filter(function (w) { return w && (!onlyStep || +w.dataset.step === onlyStep); });
+    form.querySelectorAll('.g > div.bad').forEach(function (w) { w.classList.remove('bad'); });
+    bad.forEach(function (w) { w.classList.add('bad'); });
+    return bad;
+  }
+
+  function message(o) {
+    var ar = isAr(), out = [];
+    function line(a, f, v) { if (v) out.push('*' + (ar ? a : f) + ':* ' + v); }
+    function head(a, f) { out.push('', '*━━ ' + (ar ? a : f) + ' ━━*'); }
+    function lvl(v) { for (var i = 0; i < LV.length; i++) if (LV[i][0] === v) return ar ? LV[i][1] : LV[i][2]; return v; }
+    var fam = form.querySelector('[name=famille] option[value="' + o.famille + '"]');
+    out.push(ar ? 'السلام عليكم، بغيت ملف الترشيح الألماني (200 درهم). هادي المعلومات ديالي:' : 'Bonjour, je voudrais le dossier de candidature allemand (200 DH). Voici mes informations :');
+    head('1- المعلومات الشخصية', '1- Informations personnelles');
+    line('الاسم الكامل', 'Nom et prénom', o.nom);
+    line('تاريخ الازدياد', 'Date de naissance', o.naissance ? o.naissance.split('-').reverse().join('/') : '');
+    line('المدينة والبلاد', 'Ville et pays', o.ville);
+    line('التليفون', 'Téléphone', o.tel);
+    line('الإيميل', 'E-mail', o.email);
+    line('الحالة العائلية', 'Situation familiale', fam ? (ar ? fam.dataset.ar : fam.dataset.fr) : '');
+    head('2- الخدمة ولا التكوين', '2- Poste / formation');
+    line('السمية', 'Nom', o.metier);
+    line('النوع', 'Type', o.but);
+    line('رابط الإعلان', "Lien de l'annonce", o.annonce);
+    head('3- مستوى الألمانية', "3- Niveau d'allemand");
+    line('المستوى', 'Niveau', o.allemand);
+    line('الشهادة', 'Certificat', o.certificat);
+    head('4- الخبرة المهنية', '4- Expérience professionnelle');
+    if (o.noexp) out.push(ar ? 'ما عنديش خبرة' : "Pas d'expérience");
+    else o.exp.forEach(function (x, i) {
+      out.push((i + 1) + ') ' + [x.debut, x.fin].filter(Boolean).join(' – '));
+      line('الخدمة', 'Poste', x.poste); line('الشركة / البلاصة', 'Entreprise / lieu', x.lieu);
+    });
+    head('5- الدراسة والتكوين', '5- Études / formations');
+    o.etu.forEach(function (x, i) {
+      out.push((i + 1) + ') ' + [x.debut, x.fin].filter(Boolean).join(' – '));
+      line('الديبلوم', 'Diplôme', x.diplome); line('الشعبة', 'Filière', x.filiere); line('المؤسسة / البلاد', 'Établissement / pays', x.etab);
+    });
+    head('6- المهارات', '6- Compétences');
+    out.push(o.competences);
+    head('7- اللغات', '7- Langues');
+    line('العربية', 'Arabe', lvl(o.l_ar)); line('الفرنسية', 'Français', lvl(o.l_fr)); line('الألمانية', 'Allemand', o.allemand);
+    line('الإنجليزية', 'Anglais', lvl(o.l_en)); line('أخرى', 'Autre', o.l_autre);
+    head('8- رخصة السياقة', '8- Mobilité');
+    out.push((o.permis_ok === 'oui' ? (ar ? 'إيه' : 'Oui') : (ar ? 'لا' : 'Non')) + (o.permis.length ? ' (' + o.permis.join(', ') + ')' : ''));
+    if (o.loisirs) { head('9- الهوايات', '9- Loisirs'); out.push(o.loisirs); }
+    var docs = [];
+    if (files.photo.length) docs.push(ar ? 'الصورة الشخصية' : "Photo d'identité");
+    if (files.permis.length) docs.push(ar ? 'رخصة السياقة' : 'Permis de conduire');
+    if (files.certificat.length) docs.push(ar ? 'شهادة الألمانية' : "Certificat d'allemand");
+    if (files.attest.length) docs.push(ar ? 'شهادات العمل والديبلومات' : 'Attestations et diplômes');
+    out.push('', '📎 ' + (ar ? 'غادي نصيفط دابا: ' : "J'envoie maintenant : ") + docs.join('، '.replace('، ', ar ? '، ' : ', ')));
+    return out.join('\n');
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var first = null;
-    form.querySelectorAll('[required]').forEach(function (el) {
-      var w = el.closest('div');
-      if (!el.value.trim()) { w.classList.add('bad'); first = first || el; } else w.classList.remove('bad');
-    });
-    if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
-    var o = data(), ar = h.dataset.l === 'ar';
-    var L = ar
-      ? { t: 'السلام عليكم، بغيت ملف الترشيح الألماني (200 درهم). هادي المعلومات ديالي:', nom: 'الاسم الكامل', naissance: 'تاريخ الازدياد', tel: 'التليفون', email: 'الإيميل', ville: 'المدينة', but: 'الهدف', metier: 'المهنة', annonce: 'رابط الإعلان', experience: 'الخبرة المهنية', etudes: 'الدراسة والديبلومات', allemand: 'مستوى الألمانية', certificat: 'الشهادة', langues: 'لغات أخرى', permis: 'رخصة السياقة', competences: 'المهارات', loisirs: 'الهوايات', photo: 'غادي نصيفط الصورة دابا.' }
-      : { t: 'Bonjour, je voudrais le dossier de candidature allemand (200 DH). Voici mes informations :', nom: 'Nom complet', naissance: 'Date de naissance', tel: 'Téléphone', email: 'E-mail', ville: 'Ville', but: 'Objectif', metier: 'Métier visé', annonce: "Lien de l'annonce", experience: 'Expérience', etudes: 'Études et diplômes', allemand: "Niveau d'allemand", certificat: 'Certificat', langues: 'Autres langues', permis: 'Permis', competences: 'Compétences', loisirs: 'Loisirs', photo: "J'envoie ma photo juste après." };
-    if (o.allemand === '0') o.allemand = ar ? 'ما زال ما بديت' : 'pas encore commencé';
-    o.permis = o.permis.join(', ');
-    var out = [L.t, ''];
-    ['nom', 'naissance', 'tel', 'email', 'ville', 'but', 'metier', 'annonce', 'experience', 'etudes', 'allemand', 'certificat', 'langues', 'permis', 'competences', 'loisirs'].forEach(function (k) {
-      if (o[k]) out.push('*' + L[k] + ':* ' + o[k]);
-    });
-    out.push('', L.photo);
+    if (cur < NSTEP) { next(); return; }
+    var bad = check();
+    if (bad.length) { focusBad(bad[0]); return; }
+    var o = data();
     // Moroccan phone in 212 format, so Meta can match the buyer to their account.
     var ph = (o.tel || '').replace(/\D/g, '').replace(/^00/, '');
     if (ph && ph.indexOf('212') !== 0) ph = '212' + ph.replace(/^0/, '');
@@ -683,9 +992,44 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, { eventID: eid + '-purchase' });
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
-    if (fd && fd.open) closeForm();
-    goWhatsApp(out.join('\n'));
+    try { localStorage.setItem('procv-step2', String(Date.now())); } catch (err) {}
+    showStep2();
+    goWhatsApp(message(o));
   });
+
+  // step 2: send the photo and documents to the PRO CV chat through the phone's share sheet
+  function showStep2() {
+    form.hidden = true; step2.hidden = false;
+    var t = document.getElementById('s2-thumbs'); t.innerHTML = '';
+    allFiles().forEach(function (f, i) { t.appendChild(thumb(f, i)); });
+    var all = allFiles();
+    var ok = all.length && navigator.canShare && navigator.canShare({ files: all });
+    document.getElementById('s2-share').hidden = !ok;
+    document.getElementById('s2-alt').hidden = !!ok;
+    step2.scrollIntoView({ block: 'start' });
+  }
+  document.getElementById('s2-share').addEventListener('click', function () {
+    var all = allFiles();
+    navigator.share({ files: all }).catch(function (err) {
+      if (err && err.name === 'AbortError') return;
+      var imgs = all.filter(function (f) { return /^image\//.test(f.type); });
+      if (imgs.length && imgs.length < all.length && navigator.canShare({ files: imgs })) navigator.share({ files: imgs }).catch(function () {});
+      document.getElementById('s2-alt').hidden = false;
+    });
+  });
+  document.getElementById('s2-done').addEventListener('click', function () {
+    try { localStorage.removeItem('procv-step2'); localStorage.removeItem(KEY); } catch (err) {}
+    files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
+    form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI(); drawDocs();
+    step2.hidden = true; form.hidden = false; go(1);
+    closeForm();
+  });
+  // back from WhatsApp (even after a reload): reopen on step 2 if the documents are not sent yet
+  function resume() {
+    var t = 0; try { t = +localStorage.getItem('procv-step2') || 0; } catch (err) {}
+    if (t && Date.now() - t < 6 * 3600e3 && allFiles().length) { openForm(); showStep2(); }
+  }
+go(st0);
 
   // order buttons -> form dialog
   var fd = document.getElementById('fd');
