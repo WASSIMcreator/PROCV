@@ -104,7 +104,7 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .wordmark b { background: var(--navy); color: #fff; padding: 3px 9px; border-radius: 6px; }
 
 /* hero */
-.hero { padding: clamp(32px, 5vw, 72px) 0 clamp(48px, 7vw, 96px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
+.hero { overflow-x: clip; padding: clamp(32px, 5vw, 72px) 0 clamp(48px, 7vw, 96px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
 .hero .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
 .hero h1 { font-size: clamp(36px, 5vw, 70px); line-height: 1.12; }
 .hero h1 .price { white-space: nowrap; color: var(--blue); }
@@ -411,7 +411,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
             <div class="vn-wave" id="vn-wave"><i style="height:100%"></i><i style="height:100%"></i><i style="height:85%"></i><i style="height:36%"></i><i style="height:36%"></i><i style="height:63%"></i><i style="height:50%"></i><i style="height:82%"></i><i style="height:78%"></i><i style="height:42%"></i><i style="height:47%"></i><i style="height:34%"></i><i style="height:37%"></i><i style="height:38%"></i><i style="height:25%"></i><i style="height:17%"></i><i style="height:29%"></i><i style="height:53%"></i><i style="height:46%"></i><i style="height:33%"></i><i style="height:21%"></i><i style="height:31%"></i><i style="height:34%"></i><i style="height:45%"></i><i style="height:38%"></i><i style="height:25%"></i><i style="height:56%"></i><i style="height:81%"></i><i style="height:76%"></i><i style="height:64%"></i><i style="height:66%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:53%"></i><i style="height:69%"></i><i style="height:28%"></i><i style="height:33%"></i><i style="height:14%"></i><i style="height:49%"></i><i style="height:54%"></i><i style="height:81%"></i><i style="height:31%"></i><i style="height:14%"></i><i style="height:14%"></i></div>
             <span class="vn-time" id="vn-time">0:20</span>
             <span class="vn-meta">PRO CV <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M2 13l4 4L15 7M10 15l2 2 9-10"/></svg></span>
-            <audio id="vn-audio" src="assets/clients/voice.m4a" preload="metadata"></audio>
+            <audio id="vn-audio" src="assets/clients/voice.m4a" preload="none"></audio>
           </div>
         </div>
       </div>
@@ -667,10 +667,21 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       if (o[k]) out.push('*' + L[k] + ':* ' + o[k]);
     });
     out.push('', L.photo);
-    if (window.fbq) {
-      fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+    // Moroccan phone in 212 format, so Meta can match the buyer to their account.
+    var ph = (o.tel || '').replace(/\D/g, '').replace(/^00/, '');
+    if (ph && ph.indexOf('212') !== 0) ph = '212' + ph.replace(/^0/, '');
+    // Count one sale per phone per day, even if the client goes back and sends the form again.
+    var sentKey = ph + '|' + new Date().toISOString().slice(0, 10), already = false;
+    try { already = localStorage.getItem('procv-sent') === sentKey; } catch (err) {}
+    if (window.fbq && !already) {
+      var ud = { ph: ph, country: 'ma' };
+      if (o.email) ud.em = o.email.toLowerCase();
+      fbq('init', '1814127609805768', ud);
+      var eid = 'procv-' + sentKey.replace('|', '-');
+      fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, { eventID: eid + '-lead' });
       // Payment happens on WhatsApp; a sent form is counted as the sale so Sales campaigns can optimize on it.
-      fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+      fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, { eventID: eid + '-purchase' });
+      try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
     if (fd && fd.open) closeForm();
     goWhatsApp(out.join('\n'));
