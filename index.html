@@ -596,15 +596,23 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
   // Instagram and Facebook in-app browsers often block new windows,
   // so WhatsApp is opened in the same page, after the pixel has had time to send.
-  function goWhatsApp(url) {
-    setTimeout(function () { location.href = url; }, 400);
+  // On phones, whatsapp:// opens the app directly and skips the "Ouvrir l'application" page;
+  // if the app doesn't open (page still visible), fall back to wa.me.
+  function goWhatsApp(text) {
+    var web = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
+    var phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    setTimeout(function () {
+      if (!phone) { location.href = web; return; }
+      location.href = 'whatsapp://send?phone=' + PHONE + '&text=' + encodeURIComponent(text);
+      setTimeout(function () { if (!document.hidden) location.href = web; }, 1500);
+    }, 400);
   }
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.wa');
     if (!a) return;
     e.preventDefault();
     if (window.fbq) fbq('track', 'Contact');
-    goWhatsApp(a.href);
+    goWhatsApp(msg());
   });
 
   document.getElementById('lang').addEventListener('click', function () {
@@ -665,7 +673,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
     }
     if (fd && fd.open) closeForm();
-    goWhatsApp('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')));
+    goWhatsApp(out.join('\n'));
   });
 
   // order buttons -> form dialog
