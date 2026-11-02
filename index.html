@@ -588,14 +588,23 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   function wire() {
     document.querySelectorAll('.wa').forEach(function (a) {
       a.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg());
-      a.target = '_blank'; a.rel = 'noopener';
+      a.removeAttribute('target'); a.rel = 'noopener';
     });
     document.querySelectorAll('.tel-link').forEach(function (a) { a.href = 'tel:+' + PHONE; });
   }
   wire();
+
+  // Instagram and Facebook in-app browsers often block new windows,
+  // so WhatsApp is opened in the same page, after the pixel has had time to send.
+  function goWhatsApp(url) {
+    setTimeout(function () { location.href = url; }, 400);
+  }
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.wa');
-    if (a && window.fbq) fbq('track', 'Contact');
+    if (!a) return;
+    e.preventDefault();
+    if (window.fbq) fbq('track', 'Contact');
+    goWhatsApp(a.href);
   });
 
   document.getElementById('lang').addEventListener('click', function () {
@@ -650,13 +659,13 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       if (o[k]) out.push('*' + L[k] + ':* ' + o[k]);
     });
     out.push('', L.photo);
-    window.open('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')), '_blank', 'noopener');
     if (window.fbq) {
       fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
       // Payment happens on WhatsApp; a sent form is counted as the sale so Sales campaigns can optimize on it.
       fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
     }
     if (fd && fd.open) closeForm();
+    goWhatsApp('https://wa.me/' + PHONE + '?text=' + encodeURIComponent(out.join('\n')));
   });
 
   // order buttons -> form dialog
