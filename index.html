@@ -83,6 +83,7 @@ section[id] { scroll-margin-top: 84px; }
 .btn.go { background: var(--blue); color: #fff; box-shadow: 0 12px 26px -12px rgba(31,95,209,.85); }
 .btn.go:hover { background: var(--blue-2); transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(31,95,209,.95); }
 .btn.go .arr { transition: transform .2s; }
+.btn:disabled { opacity: .65; cursor: progress; transform: none; }
 .btn.go:hover .arr { transform: translateX(-4px); }
 html[dir="ltr"] .btn .arr { transform: scaleX(-1); }
 html[dir="ltr"] .btn.go:hover .arr { transform: scaleX(-1) translateX(-4px); }
@@ -742,6 +743,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 <script>
   // ---- Contact details ----
   var PHONE = '212706828446';
+  // Google Apps Script web app that keeps a copy of every form + photos (Sheet + Drive + email).
+  // Empty = off. Setup: google-apps-script/README.md
+  var SAVE_URL = 'https://script.google.com/macros/s/AKfycbzgv2FyFIPnSp7VxJ39ofa8LLK6Od-Cn9PF4VzkLLwC1-hgg8MdUEfEGdAYycyMEOtwtw/exec';
 
   var h = document.documentElement;
   function msg() {
@@ -1097,13 +1101,75 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
     try { localStorage.setItem('procv-step2', String(Date.now())); } catch (err) {}
-    showStep2();
-    goWhatsApp(message(o));
+    var text = message(o), btn = document.getElementById('pg-send');
+    btn.disabled = true;
+    // give the copy to Google a few seconds before leaving for WhatsApp; uploads keep going in the background
+    Promise.race([backup(o, text), new Promise(function (r) { setTimeout(r, 4000); })]).then(function () {
+      btn.disabled = false;
+      showStep2();
+      goWhatsApp(text);
+    });
   });
+
+  // ---- copy of the order to Google (Sheet + Drive), so nothing is lost if WhatsApp is never sent ----
+  function orderId() {
+    var id = ''; try { id = localStorage.getItem('procv-id') || ''; } catch (err) {}
+    if (!id) {
+      id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      try { localStorage.setItem('procv-id', id); } catch (err) {}
+    }
+    return id;
+  }
+  function post(obj) {
+    var body = JSON.stringify(obj);
+    // text/plain + no-cors: no preflight, works from any browser; keepalive lets small requests finish after leaving the page
+    return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body, keepalive: body.length < 60000 });
+  }
+  var upDone = {};
+  try { upDone = JSON.parse(localStorage.getItem('procv-up') || '{}'); } catch (err) {}
+  function fileKey(f) { return [f.name, f.size, f.lastModified].join('|'); }
+  // phone photos are often 3-8 MB: shrink big images to 2000 px so they upload fast on mobile data
+  function shrink(f) {
+    if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size < 1.5e6 || !window.createImageBitmap) return Promise.resolve(f);
+    return createImageBitmap(f).then(function (bm) {
+      var k = Math.min(1, 2000 / Math.max(bm.width, bm.height)), c = document.createElement('canvas');
+      c.width = Math.round(bm.width * k); c.height = Math.round(bm.height * k);
+      c.getContext('2d').drawImage(bm, 0, 0, c.width, c.height);
+      return new Promise(function (r) { c.toBlob(function (b) { r(b && b.size < f.size ? new File([b], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : f); }, 'image/jpeg', 0.88); });
+    }).catch(function () { return f; });
+  }
+  function b64(f) {
+    return new Promise(function (r, j) {
+      var rd = new FileReader();
+      rd.onload = function () { r(String(rd.result).split(',')[1] || ''); };
+      rd.onerror = j; rd.readAsDataURL(f);
+    });
+  }
+  function uploadFiles(id) {
+    var list = [];
+    ['photo', 'permis', 'certificat', 'attest'].forEach(function (k) {
+      if (k === 'permis' && !permisOn()) return;
+      files[k].forEach(function (f) { if (!upDone[id + '|' + fileKey(f)]) list.push([k, f]); });
+    });
+    return Promise.all(list.map(function (x) {
+      var key = id + '|' + fileKey(x[1]);
+      return shrink(x[1]).then(function (f) {
+        return b64(f).then(function (data) { return post({ type: 'file', id: id, kind: x[0], name: f.name, mime: f.type, b64: data }); });
+      }).then(function () {
+        upDone[key] = 1; try { localStorage.setItem('procv-up', JSON.stringify(upDone)); } catch (err) {}
+      }).catch(function () {});
+    }));
+  }
+  function backup(o, text) {
+    if (!SAVE_URL) return Promise.resolve();
+    var id = orderId();
+    return Promise.all([post({ type: 'form', id: id, data: o, message: text }).catch(function () {}), uploadFiles(id)]);
+  }
 
   // step 2: send the photo and documents to the PRO CV chat through the phone's share sheet
   function showStep2() {
     form.hidden = true; step2.hidden = false;
+    if (SAVE_URL) uploadFiles(orderId()); // retry any file that did not reach Google yet
     var all = allFiles(), t2 = document.getElementById('s2-thumbs'); t2.innerHTML = '';
     all.forEach(function (f, i) { t2.appendChild(thumb(f, i)); });
     var ok = false; try { ok = !!(all.length && navigator.canShare && navigator.canShare({ files: all })); } catch (err) {}
@@ -1128,7 +1194,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     });
   });
   document.getElementById('s2-done').addEventListener('click', function () {
-    try { localStorage.removeItem('procv-step2'); localStorage.removeItem(KEY); } catch (err) {}
+    try { ['procv-step2', KEY, 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); } catch (err) {}
+    upDone = {};
     files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
     form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI(); drawDocs();
     step2.hidden = true;
