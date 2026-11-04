@@ -37,24 +37,28 @@ function doPost(e) {
 // Opening the /exec link in a browser just says it works.
 function doGet() { return out({ ok: true, service: 'PRO CV form' }); }
 
+// Text typed by the client: a leading = + - @ would make Sheets read it as a formula.
+function safe(v) { v = String(v == null ? '' : v); return /^[=+\-@]/.test(v) ? "'" + v : v; }
+
 function saveForm(id, p) {
   var o = p.data || {};
   var sh = sheet(), r = findRow(sh, id);
-  var folder = orderFolder(id, o);
-  var row = [new Date(), id, o.nom || '', "'" + (o.tel || ''), o.email || '', o.metier || '', o.but || '', o.allemand || '', o.ville || '',
-             countFiles(folder), folder.getUrl(), String(p.message || '').slice(0, 45000)];
+  var props = PropertiesService.getScriptProperties();
+  var want = Math.min(+p.nfiles || 0, MAX_FILES_PER_ORDER);
+  // photos are sent on WhatsApp now: a Drive folder only when files are announced or already there
+  var folder = (want > 0 || props.getProperty('F_' + id)) ? orderFolder(id, o) : null;
+  var row = [new Date(), id, safe(o.nom), "'" + (o.tel || ''), safe(o.email), safe(o.metier), safe(o.but), safe(o.allemand), safe(o.ville),
+             folder ? countFiles(folder) : 0, folder ? folder.getUrl() : '', safe(String(p.message || '').slice(0, 45000))];
   if (r) sh.getRange(r, 1, 1, row.length).setValues([row]);
   else sh.appendRow(row);
 
   // One email per new client, with the photos attached. Photos upload after the form,
   // so wait until all the announced files are in Drive (or 10 min, see flushPending).
   if (!r) {
-    var props = PropertiesService.getScriptProperties();
-    var want = Math.min(+p.nfiles || 0, MAX_FILES_PER_ORDER);
     props.setProperty('N_' + id, String(want));
     props.setProperty('P_' + id, String(Date.now())); // pending until the email is really sent
     ensureTrigger();
-    if (countFiles(folder) >= want) trySend(id);
+    if ((folder ? countFiles(folder) : 0) >= want) trySend(id);
   }
 }
 
@@ -71,10 +75,10 @@ function sendMail(id) {
   if (!me || !r) return;
   var v = sh.getRange(r, 1, 1, HEAD.length).getValues()[0];
   var nom = v[2], tel = String(v[3]).replace(/^'/, ''), message = v[11];
-  var folder = orderFolder(id, null);
+  var folder = props.getProperty('F_' + id) ? orderFolder(id, null) : null;
 
   // attach the files (Gmail limit is 25 MB per email; keep a margin)
-  var att = [], total = 0, skipped = 0, n = 0, it = folder.getFiles();
+  var att = [], total = 0, skipped = 0, n = 0, it = folder ? folder.getFiles() : { hasNext: function () { return false; } };
   while (it.hasNext()) {
     var f = it.next(); n++;
     if (total + f.getSize() > 20 * 1024 * 1024) { skipped++; continue; }
@@ -84,12 +88,12 @@ function sendMail(id) {
 
   var want = +(props.getProperty('N_' + id) || 0);
   var note = n ? '\n\n📎 ' + att.length + ' fichier(s) en pièce jointe' + (skipped ? ', ' + skipped + ' trop lourd(s), voir Drive' : '') + '.'
-               : '\n\n📎 Aucune photo reçue par le site (le client peut les envoyer sur WhatsApp).';
+               : '\n\n📎 Photos et documents : le client les envoie sur WhatsApp.';
   if (n < want) note += '\n⚠️ ' + (want - n) + ' fichier(s) annoncé(s) mais pas reçu(s) : demandez-les au client sur WhatsApp.';
   var mail = {
     to: me,
     subject: 'PRO CV – nouveau formulaire : ' + (nom || '?') + ' (' + tel + ')',
-    body: message + note + '\n\n📁 Photos et documents : ' + folder.getUrl() + '\n📊 Tableau : ' + sh.getParent().getUrl()
+    body: message + note + (folder ? '\n\n📁 Photos et documents : ' + folder.getUrl() : '') + '\n📊 Tableau : ' + sh.getParent().getUrl()
   };
   try {
     MailApp.sendEmail(Object.assign({ attachments: att }, mail));
@@ -104,7 +108,7 @@ function sendMail(id) {
   sendWhatsApp('🆕 PRO CV – nouvelle commande\n👤 ' + (nom || '?') + '\n📞 ' + tel +
     '\n💼 ' + (v[5] || '-') + ' (' + (v[6] || '-') + ')\n🇩🇪 ' + (v[7] || '-') + '\n📍 ' + (v[8] || '-') +
     '\n📎 ' + n + ' fichier(s)' + (n < want ? ' (' + (want - n) + ' manquant(s))' : '') +
-    '\n📁 ' + folder.getUrl() + '\n✉️ Détails complets dans Gmail.');
+    (folder ? '\n📁 ' + folder.getUrl() : '') + '\n✉️ Détails complets dans Gmail.');
 }
 
 // WhatsApp alert to the owner through CallMeBot (text only: files stay in Drive, the link is in the message).
@@ -115,7 +119,7 @@ function sendWhatsApp(text) {
   var phone = props.getProperty('WA_PHONE'), key = props.getProperty('WA_APIKEY');
   if (!phone || !key) return;
   var t = String(text);
-  while (t.length > 20 && encodeURIComponent(t).length > 1500) t = t.slice(0, Math.floor(t.length * 0.9));
+  while (t.length > 20 && encodeURIComponent(t).length > 1500) { var cp = Array.from(t); t = cp.slice(0, Math.floor(cp.length * 0.9)).join(''); }
   try {
     var res = UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(phone) +
       '&apikey=' + encodeURIComponent(key) + '&text=' + encodeURIComponent(t), { muteHttpExceptions: true });
@@ -184,7 +188,7 @@ function countFiles(folder) {
 function sheet() {
   var props = PropertiesService.getScriptProperties();
   var ssId = props.getProperty('SHEET_ID'), ss;
-  try { ss = ssId && SpreadsheetApp.openById(ssId); } catch (e) { ss = null; }
+  if (ssId) ss = SpreadsheetApp.openById(ssId); // an error here fails this request; never replace the real sheet
   if (!ss) {
     ss = SpreadsheetApp.create('PRO CV – Commandes');
     props.setProperty('SHEET_ID', ss.getId());

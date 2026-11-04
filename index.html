@@ -701,11 +701,12 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
           <div class="part"><i>10</i><span lang="ar">التصويرة والوثائق</span><span lang="fr">Photo et documents</span></div>
-          <div class="full" id="doc-note"><span lang="ar">📎 التصويرة الشخصية، رخصة السياقة والشهادات (تصاور ولا PDF): صيفطهم لينا فواتساب من بعد ما تصيفط المعلومات. واتساب غادي يتحل بوحدو.</span><span lang="fr">📎 Photo d'identité, permis et certificats (photos ou PDF) : envoyez-les-nous sur WhatsApp après l'envoi du formulaire. WhatsApp s'ouvrira tout seul.</span></div>
+          <div class="full" id="doc-note"><span lang="ar">📎 التصويرة الشخصية، رخصة السياقة والشهادات (تصاور ولا PDF): صيفطهم لينا فواتساب من بعد ما تصيفط المعلومات.</span><span lang="fr">📎 Photo d'identité, permis et certificats (photos ou PDF) : envoyez-les-nous sur WhatsApp après l'envoi du formulaire.</span></div>
         </div>
         <div class="foot">
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
           <button class="btn go" type="submit" id="pg-send"><span lang="ar">صيفط المعلومات</span><span lang="fr">Envoyer</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
+          <span class="saved"><span lang="ar">🔒 المعلومات ديالك كنستعملوها غير باش نوجدو الملف ديالك، وما كنعطيوهاش لحد.</span><span lang="fr">🔒 Vos informations servent uniquement à préparer votre dossier et ne sont partagées avec personne.</span></span>
           <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
@@ -717,8 +718,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p id="thx-ok"><span lang="ar">المعلومات ديالك وصلونا ✅ واتساب غادي يتحل دابا: كليكي على ➤، ومن بعد صيفط لينا التصويرة والوثائق فنفس المحادثة.</span><span lang="fr">Vos informations nous sont parvenues ✅ WhatsApp va s'ouvrir : touchez ➤, puis envoyez-nous votre photo et vos documents dans la même conversation.</span></p>
-        <p id="thx-send" hidden><span lang="ar">⚠️ الأنترنت ضعيف وما تأكدناش واش وصلونا المعلومات. واتساب غادي يتحل فيه الأجوبة ديالك: كليكي على ➤ باش توصلنا، ومن بعد صيفط التصويرة والوثائق.</span><span lang="fr">⚠️ Connexion faible : nous n'avons pas pu confirmer la réception. WhatsApp va s'ouvrir avec vos réponses : touchez ➤ pour nous les envoyer, puis envoyez votre photo et vos documents.</span></p>
+        <p id="thx-ok"><span lang="ar">المعلومات ديالك وصلونا ✅ كليكي على « حل واتساب » وصيفط الميساج، ومن بعد صيفط لينا التصويرة والوثائق فنفس المحادثة.</span><span lang="fr">Vos informations nous sont parvenues ✅ Touchez « Ouvrir WhatsApp » et envoyez le message, puis votre photo et vos documents dans la même conversation.</span></p>
+        <p id="thx-send" hidden><span lang="ar">⚠️ الأنترنت ضعيف وما تأكدناش واش وصلونا المعلومات. كليكي على « حل واتساب »: الأجوبة ديالك غادي تكون فالميساج، صيفطها باش توصلنا، ومن بعد صيفط التصويرة والوثائق.</span><span lang="fr">⚠️ Connexion faible : nous n'avons pas pu confirmer la réception. Touchez « Ouvrir WhatsApp » : vos réponses seront dans le message, envoyez-le, puis votre photo et vos documents.</span></p>
         <button class="btn go" type="button" id="thx-wa"><span lang="ar">حل واتساب</span><span lang="fr">Ouvrir WhatsApp</span></button>
       </div>
 </dialog>
@@ -740,7 +741,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   }
   function wire() {
     document.querySelectorAll('.wa').forEach(function (a) {
-      a.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg());
+      a.href = 'https://api.whatsapp.com/send?phone=' + PHONE + '&text=' + encodeURIComponent(msg());
       a.removeAttribute('target'); a.rel = 'noopener';
     });
     document.querySelectorAll('.tel-link').forEach(function (a) { a.href = 'tel:+' + PHONE; });
@@ -754,7 +755,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   // auto = opened by the page itself, not by a tap: on phones only try the app, so a blocked attempt
   // leaves the thank-you screen (and its WhatsApp button) instead of jumping to the wa.me page
   function goWhatsApp(text, auto) {
-    var web = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
+    // not wa.me: its redirect turns emoji such as ✅ and 📎 into �
+    var web = 'https://api.whatsapp.com/send?phone=' + PHONE + '&text=' + encodeURIComponent(text);
     var phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     setTimeout(function () {
       if (!phone) { location.href = web; return; }
@@ -901,7 +903,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   var cells = Array.prototype.slice.call(form.querySelector('.g').children), sNow = 1;
   cells.forEach(function (el) { if (el.classList.contains('part')) sNow = STEPS[+el.querySelector('i').textContent] || sNow; el.dataset.step = sNow; });
   var reached = {};
+  var wentAt = 0;
   function go(n) {
+    wentAt = Date.now();
     cur = Math.max(1, Math.min(NSTEP, n));
     cells.forEach(function (el) { el.classList.toggle('hid', +el.dataset.step !== cur); });
     document.getElementById('pg-t').innerHTML = sp('المرحلة ' + cur + ' من ' + NSTEP + ' · ' + STEP_T[cur][0], 'Étape ' + cur + ' / ' + NSTEP + ' · ' + STEP_T[cur][1]);
@@ -914,11 +918,12 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     if (fd && fd.open && !reached[cur] && window.fbq) { reached[cur] = 1; fbq('trackCustom', 'FormStep', { step: cur }); }
     if (fd && fd.open) fdTop();
   }
-  document.getElementById('pg-back').addEventListener('click', function () { go(cur - 1); });
+  document.getElementById('pg-back').addEventListener('click', function () { if (Date.now() - wentAt > 500) go(cur - 1); });
   document.getElementById('pg-next').addEventListener('click', next);
   function next() {
     var bad = check(cur);
     if (bad.length) { focusBad(bad[0]); return; }
+    if (h.classList.contains('only-form')) { try { history.pushState({ fd: 1 }, ''); } catch (err) {} }
     go(cur + 1);
   }
   // first empty text field of the current step (used for Enter/Go and when the form opens)
@@ -1000,7 +1005,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     if (o.loisirs) { head('9- الهوايات', '9- Loisirs'); out.push(o.loisirs); }
     var todo = [ar ? 'الصورة الشخصية' : "Photo d'identité"];
     if (o.permis_ok === 'oui') todo.push(ar ? 'رخصة السياقة' : 'Permis de conduire');
-    todo.push(ar ? 'الشهادات' : 'Certificats');
+    todo.push(ar ? 'الشهادات (إلا كانو)' : 'certificats (si j’en ai)');
     out.push('', '📎 ' + (ar ? 'غادي نصيفط فواتساب: ' : 'J’envoie sur WhatsApp : ') + todo.join(ar ? '، ' : ', '));
     return out.join('\n');
   }
@@ -1017,7 +1022,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     var o = data();
     // Moroccan phone in 212 format, so Meta can match the buyer to their account.
     var raw = (o.tel || '').trim(), ph = raw.replace(/\D/g, '');
-    if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else ph = '212' + ph.replace(/^0/, '');
+    if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else if (!/^212/.test(ph)) ph = '212' + ph.replace(/^0/, '');
     ph = ph.replace(/^2120/, '212');
     if (ph.length < 11) ph = '';
     // Count one sale per phone per day, even if the client goes back and sends the form again.
@@ -1036,7 +1041,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   });
 
   // ---- the answers go to Google Sheet (+ email); then WhatsApp opens, where the client sends photos and PDFs ----
-  function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function orderId() {
+    var id = ''; try { id = localStorage.getItem('procv-oid') || ''; } catch (err) {}
+    if (!id) { id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7); try { localStorage.setItem('procv-oid', id); } catch (err) {} }
+    return id;
+  }
   // text/plain body: no preflight. The Apps Script answer is readable (CORS *), so we know the row was saved.
   // If a browser blocks reading it, send blind like before so the order still goes out.
   function post(obj) {
@@ -1053,14 +1062,14 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     var short = ar
       ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' + (nom ? '\nالسمية: ' + nom : '') + '\nالمعلومات صيفطتهم فالموقع، ودابا غادي نصيفط التصويرة والوثائق هنا.'
       : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅' + (nom ? '\nNom : ' + nom : '') + '\nInformations envoyées par le site ; j’envoie ici ma photo et mes documents.';
-    var saved = SAVE_URL ? post({ type: 'form', id: newId(), data: o, message: text, nfiles: 0 }) : Promise.reject(new Error('off'));
+    var saved = SAVE_URL ? post({ type: 'form', id: orderId(), data: o, message: text, nfiles: 0 }) : Promise.reject(new Error('off'));
     // wait up to 25 s for Google (it also sends the email before answering).
     // Not confirmed: the full answers go in the WhatsApp message, and they stay on the phone in case it is not sent.
     var late = new Promise(function (r, j) { setTimeout(function () { j(new Error('timeout')); }, 25000); });
     Promise.race([saved, late]).then(function () { return true; }, function () { return false; }).then(function (ok) {
       sending = false; doneMsg = ok ? short : text;
       if (ok) {
-        try { localStorage.removeItem(KEY); } catch (err) {}
+        try { localStorage.removeItem(KEY); localStorage.removeItem('procv-oid'); } catch (err) {}
         form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
         go(1);
       }
@@ -1107,10 +1116,11 @@ go(st0);
     afterClose(); // the native close event is not reliable in every browser
   }
   fd.addEventListener('close', afterClose);
+  fd.addEventListener('cancel', function (e) { if (!form.hidden && cur > 1) { e.preventDefault(); go(cur - 1); } });
   window.addEventListener('popstate', function () {
     backPending = false;
     if (!fd.open) return;
-    if (!form.hidden && cur > 1) { go(cur - 1); try { history.pushState({ fd: 1 }, ''); } catch (err) {} }
+    if (!form.hidden && cur > 1) { go(cur - 1); if (!h.classList.contains('only-form')) { try { history.pushState({ fd: 1 }, ''); } catch (err) {} } }
     else { popClose = true; closeForm(); }
   });
   document.getElementById('fd-x').addEventListener('click', closeForm);
@@ -1130,7 +1140,6 @@ go(st0);
   if (h.classList.contains('only-form')) {
     document.getElementById('of-slot').appendChild(fd);
     fd.classList.add('inline'); fd.setAttribute('open', '');
-    try { history.pushState({ fd: 1 }, ''); } catch (err) {}
     if (window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
     go(cur);
   } else if (location.hash === '#commande') openForm();
