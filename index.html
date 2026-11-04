@@ -872,6 +872,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   var CAN = !!(SAVE_URL && window.File && window.FileReader);
   try { CAN = CAN || !!(navigator.canShare && window.File && navigator.canShare({ files: [new File(['x'], 'x.jpg', { type: 'image/jpeg' })] })); } catch (e) {}
   if (!CAN) form.querySelectorAll('.doc').forEach(function (d) { d.classList.add('nodoc'); });
+  // Instagram/Facebook in-app browsers on Android block the picker when PDFs are allowed
+  // ("autoriser tous les contenus multimédias"); photos only always opens the gallery
+  if (/Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent)) form.querySelectorAll('.doc input[type=file]').forEach(function (i) { i.accept = 'image/*'; });
   var noexp = form.querySelector('[name=noexp]');
   function expUI() { expRep.classList.toggle('off', noexp.checked); }
   noexp.addEventListener('change', expUI);
