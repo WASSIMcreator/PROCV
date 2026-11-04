@@ -741,9 +741,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p id="thx-ok"><span lang="ar">المعلومات والتصاور ديالك وصلونا. غادي نبداو نكتبو الملف ديالك ونتواصلو معاك فواتساب.</span><span lang="fr">Vos informations et vos fichiers nous sont parvenus. Nous commençons votre dossier et revenons vers vous sur WhatsApp.</span></p>
+        <p id="thx-ok"><span lang="ar">المعلومات والتصاور ديالك وصلونا. واتساب غادي يتحل دابا: كليكي على ➤ باش نبداو الملف ديالك.</span><span lang="fr">Vos informations et vos fichiers nous sont parvenus. WhatsApp va s'ouvrir : touchez ➤ pour lancer votre dossier.</span></p>
         <p id="thx-miss" hidden><span lang="ar">المعلومات ديالك وصلونا، ولكن شي تصاور ما وصلوش. صيفطهم لينا فواتساب.</span><span lang="fr">Vos informations nous sont parvenues, mais certains fichiers manquent. Envoyez-les-nous sur WhatsApp.</span></p>
-        <a class="wa" href="#"><span lang="ar">عندك سؤال؟ هضر معانا فواتساب</span><span lang="fr">Une question ? Écrivez-nous sur WhatsApp</span></a>
+        <button class="btn go" type="button" id="thx-wa"><span lang="ar">حل واتساب</span><span lang="fr">Ouvrir WhatsApp</span></button>
       </div>
 </dialog>
 
@@ -1234,7 +1234,13 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       finish(false);
     });
   }
+  // short WhatsApp message the client sends once everything reached Google (the details are in Gmail / Sheet)
+  var doneMsg = '';
   function finish(skipped) {
+    var ar = h.dataset.l === 'ar', nom = (data().nom || '').trim();
+    doneMsg = ar
+      ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' + (nom ? '\nالسمية: ' + nom : '') + (skipped ? '\nشي تصاور غادي نصيفطهم هنا.' : '\nالمعلومات والتصاور صيفطتهم فالموقع.')
+      : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅' + (nom ? '\nNom : ' + nom : '') + (skipped ? '\nJ’envoie ici les fichiers qui manquent.' : '\nInformations et fichiers envoyés par le site.');
     try { ['procv-step2', 'procv-n', KEY, 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); } catch (err) {}
     upDone = {}; formSent = false; keepId = false;
     files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
@@ -1242,7 +1248,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     go(1);
     document.getElementById('thx-ok').hidden = skipped; document.getElementById('thx-miss').hidden = !skipped;
     step2.hidden = true; form.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
+    goWhatsApp(doneMsg); // opens WhatsApp with the message ready; the client only taps ➤
   }
+  document.getElementById('thx-wa').addEventListener('click', function () {
+    goWhatsApp(doneMsg || (h.dataset.l === 'ar' ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅'));
+  });
   var keepId = false;
   document.getElementById('s2-retry').addEventListener('click', startSend);
   document.getElementById('s2-skip').addEventListener('click', function () {
