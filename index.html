@@ -294,9 +294,15 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form [hidden], .form .nodoc { display: none !important; }
 .form .prep { margin: -6px 0 16px; padding: 10px 14px; border-radius: 10px; background: var(--blue-soft); color: var(--navy); font-size: 14px; }
 .form #doc-note { padding: 10px 14px; border-radius: 10px; background: #eaf5ee; color: #23402f; font-size: 15px; }
+.form #doc-warn { padding: 10px 14px; border-radius: 10px; background: #fdecec; color: #7a1f1f; font-size: 15px; }
 .fd-r { display: flex; align-items: center; gap: 8px; }
 .fd-lang { min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 14px var(--font); cursor: pointer; }
-.s2-files { display: grid; gap: 16px; }
+.s2-bar { height: 10px; border-radius: 99px; background: #e3e8f2; overflow: hidden; }
+.s2-bar span { display: block; height: 100%; width: 0; background: #1f5fd1; border-radius: 99px; transition: width .3s; }
+.s2-count { text-align: center; font-weight: 600; color: var(--navy); }
+.s2-err { display: grid; gap: 12px; }
+.s2-err[hidden] { display: none; }
+.s2-err p { padding: 10px 14px; border-radius: 10px; background: #fdecec; color: #7a1f1f; }
 .ask-sec { padding: 8px 0 clamp(28px, 4vw, 48px); }
 .ask { background: #fff; border-radius: 18px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 0 0 1px var(--line), 0 20px 44px -30px rgba(20,37,74,.45); display: grid; gap: 16px; }
 .ask-h { display: grid; gap: 4px; }
@@ -698,6 +704,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
           <div class="part"><i>10</i><span lang="ar">التصويرة والوثائق</span><span lang="fr">Photo et documents</span></div>
+          <div class="full" id="doc-warn" hidden><span lang="ar"></span><span lang="fr"></span></div>
           <div class="full" id="doc-note"><span lang="ar">إلا ما عندكش التصاور دابا، ماشي مشكل: تقدر تصيفطهم من بعد فنفس المحادثة فواتساب.</span><span lang="fr">Pas de photos sous la main ? Pas de souci : vous pourrez les envoyer ensuite dans la même conversation WhatsApp.</span></div>
           <div class="full doc" data-doc="photo"><span class="lbl"><span lang="ar">صورة شخصية</span><span lang="fr">Photo d'identité</span></span>
             <small class="hint"><span lang="ar">من القدام، خلفية بيضاء. غادي تكون فالـ Deckblatt والـ Lebenslauf.</span><span lang="fr">De face, fond blanc. Elle ira sur le Deckblatt et le Lebenslauf.</span></small>
@@ -713,27 +720,29 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         </div>
         <div class="foot">
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
-          <button class="btn go" type="submit" id="pg-send"><span lang="ar">صيفط المعلومات فواتساب</span><span lang="fr">Envoyer sur WhatsApp</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="btn go" type="submit" id="pg-send"><span lang="ar">صيفط المعلومات</span><span lang="fr">Envoyer</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
           <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
+      <!-- sending screen: the form and files go straight to Google (Sheet + Drive), no WhatsApp step -->
       <div class="form step2" id="step2" hidden>
-        <div class="part"><i>✓</i><span lang="ar">الميساج واجد فواتساب</span><span lang="fr">Votre message est prêt dans WhatsApp</span></div>
-        <p><span lang="ar">فواتساب، كليكي على ➤ (صيفط) باش توصلنا المعلومات ديالك. ما تحلّش واتساب ولا ما لقيتيش الميساج؟ كليكي هنا:</span><span lang="fr">Dans WhatsApp, touchez ➤ (Envoyer) pour que vos informations nous arrivent. WhatsApp ne s'est pas ouvert, ou le message n'y est pas ? Touchez ici :</span></p>
-        <button class="btn go" type="button" id="s2-wa"><span lang="ar">حل واتساب بالمعلومات ديالي</span><span lang="fr">Ouvrir WhatsApp avec mes réponses</span></button>
-        <div class="s2-files" id="s2-files">
-          <p id="s2-how"><span lang="ar">من بعد صيفط التصاور: كليكي على الزر، اختار واتساب، ومن بعد المحادثة ديال PRO CV (غادي تكون اللولة).</span><span lang="fr">Ensuite, les fichiers : touchez le bouton, choisissez WhatsApp, puis la conversation PRO CV (elle sera en premier).</span></p>
-          <div class="thumbs big" id="s2-thumbs"></div>
-          <button class="btn go" type="button" id="s2-share"><span lang="ar">📎 صيفط التصاور فواتساب</span><span lang="fr">📎 Envoyer les fichiers sur WhatsApp</span></button>
-          <p class="saved" id="s2-alt" hidden><span lang="ar">التليفون ديالك ما خلاناش نصيفطوهم نيشان. حل المحادثة ديال PRO CV فواتساب، كليكي على 📎 وصيفط التصويرة والوثائق.</span><span lang="fr">Votre téléphone ne permet pas l'envoi direct. Ouvrez la conversation PRO CV sur WhatsApp, touchez 📎 et envoyez la photo et les documents.</span></p>
+        <div class="part"><i>⏳</i><span lang="ar">كنصيفطو المعلومات ديالك…</span><span lang="fr">Envoi de vos informations…</span></div>
+        <p><span lang="ar">بقا فهاد الصفحة حتى يسالي الإرسال، ما تسدّهاش.</span><span lang="fr">Restez sur cette page jusqu'à la fin de l'envoi, ne la fermez pas.</span></p>
+        <div class="s2-bar"><span id="s2-fill"></span></div>
+        <p class="s2-count" id="s2-count"></p>
+        <div class="s2-err" id="s2-err" hidden>
+          <p id="s2-net"><span lang="ar">⚠️ شي حاجة ما وصلاتش، تأكد من الأنترنت وعاود جرب.</span><span lang="fr">⚠️ Une partie n'est pas arrivée. Vérifiez votre connexion et réessayez.</span></p>
+          <p id="s2-lost" hidden><span lang="ar">⚠️ التصاور ما بقاوش فالتليفون. رجع وزيدهم من جديد.</span><span lang="fr">⚠️ Les fichiers ne sont plus sur le téléphone. Revenez les ajouter à nouveau.</span></p>
+          <button class="btn go" type="button" id="s2-back" hidden><span lang="ar">زيد التصاور من جديد</span><span lang="fr">Ajouter les fichiers à nouveau</span></button>
+          <button class="btn go" type="button" id="s2-retry"><span lang="ar">عاود الإرسال</span><span lang="fr">Réessayer l'envoi</span></button>
+          <button class="btn soft" type="button" id="s2-skip"><span lang="ar">كمل بلا هاد الملفات</span><span lang="fr">Continuer sans ces fichiers</span></button>
         </div>
-        <button class="btn soft" type="button" id="s2-edit"><span lang="ar">بدّل الأجوبة ديالي</span><span lang="fr">Modifier mes réponses</span></button>
-        <button class="btn soft" type="button" id="s2-done"><span lang="ar">صيفطت كلشي، شكرا</span><span lang="fr">Tout est envoyé, merci</span></button>
       </div>
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p><span lang="ar">غادي نبداو نكتبو الملف ديالك ونتواصلو معاك فواتساب.</span><span lang="fr">Nous commençons votre dossier et revenons vers vous sur WhatsApp.</span></p>
+        <p id="thx-ok"><span lang="ar">المعلومات والتصاور ديالك وصلونا. غادي نبداو نكتبو الملف ديالك ونتواصلو معاك فواتساب.</span><span lang="fr">Vos informations et vos fichiers nous sont parvenus. Nous commençons votre dossier et revenons vers vous sur WhatsApp.</span></p>
+        <p id="thx-miss" hidden><span lang="ar">المعلومات ديالك وصلونا، ولكن شي تصاور ما وصلوش. صيفطهم لينا فواتساب.</span><span lang="fr">Vos informations nous sont parvenues, mais certains fichiers manquent. Envoyez-les-nous sur WhatsApp.</span></p>
         <a class="wa" href="#"><span lang="ar">عندك سؤال؟ هضر معانا فواتساب</span><span lang="fr">Une question ? Écrivez-nous sur WhatsApp</span></a>
       </div>
 </dialog>
@@ -885,10 +894,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   try {
     var rq = indexedDB.open('procv', 1);
     rq.onupgradeneeded = function () { rq.result.createObjectStore('kv'); };
-    rq.onsuccess = function () { DB = rq.result; dbGet('docs', function (v) { if (v) { files = v; drawDocs(); if (!step2.hidden) showStep2(); } resume(); }); };
+    rq.onsuccess = function () { DB = rq.result; dbGet('docs', function (v) { if (v) { files = v; drawDocs(); } resume(); }); };
     rq.onerror = function () { resume(); };
-  } catch (e) {}
-  setTimeout(resume, 1500); // in case IndexedDB never answers
+  } catch (e) { setTimeout(resume, 0); }
+  // IndexedDB stuck: resume anyway; startSend notices if saved files did not come back
+  setTimeout(resume, 4000);
   function dbPut(k, v) { try { DB.transaction('kv', 'readwrite').objectStore('kv').put(v, k); } catch (e) {} }
   function dbGet(k, cb) { try { var r = DB.transaction('kv').objectStore('kv').get(k); r.onsuccess = function () { cb(r.result); }; r.onerror = function () { cb(null); }; } catch (e) { cb(null); } }
   function thumb(f, i, doc) {
@@ -909,9 +919,18 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   form.querySelectorAll('.doc input[type=file]').forEach(function (inp) {
     inp.addEventListener('change', function () {
       var d = inp.closest('.doc'), k = d.dataset.doc, list = Array.prototype.slice.call(inp.files || []);
+      inp.value = '';
+      // same limits as the Google script: 15 MB per file (photos are shrunk before sending), 15 files per order
+      var big = list.filter(function (f) { return !/^image\/(jpeg|png|webp)$/.test(f.type) && f.size > 15e6; });
+      list = list.filter(function (f) { return big.indexOf(f) < 0; });
+      var room = 15 - allFiles().length + (k === 'photo' ? files.photo.length : 0);
+      var tooMany = list.length > room; if (tooMany) list = list.slice(0, Math.max(0, room));
+      var w = document.getElementById('doc-warn');
+      w.hidden = !(big.length || tooMany);
+      w.querySelector('[lang=ar]').textContent = big.length ? 'الملف كبير بزاف (أكثر من 15 ميغا): ' + big.map(function (f) { return f.name; }).join('، ') + '. صيفطو من بعد فواتساب.' : 'وصلتي للحد: 15 ملف فالطلب.';
+      w.querySelector('[lang=fr]').textContent = big.length ? 'Fichier trop lourd (plus de 15 Mo) : ' + big.map(function (f) { return f.name; }).join(', ') + '. Envoyez-le ensuite sur WhatsApp.' : 'Limite atteinte : 15 fichiers par demande.';
       if (!list.length) return;
       files[k] = k === 'photo' ? list.slice(0, 1) : files[k].concat(list);
-      inp.value = '';
       d.classList.remove('bad');
       drawDocs(); if (DB) dbPut('docs', files);
     });
@@ -1073,7 +1092,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     if (files.attest.length) docs.push(ar ? 'شهادات العمل والديبلومات' : 'Attestations et diplômes');
     var todo = [ar ? 'الصورة الشخصية' : "Photo d'identité"];
     if (o.permis_ok === 'oui') todo.push(ar ? 'رخصة السياقة' : 'Permis de conduire');
-    out.push('', '📎 ' + (ar ? 'غادي نصيفط دابا فهاد المحادثة: ' : "J'envoie maintenant dans cette conversation : ") + (docs.length ? docs : todo).join(ar ? '، ' : ', '));
+    if (SAVE_URL && docs.length) out.push('', '📎 ' + (ar ? 'الوثائق المرفوعة فالموقع: ' : 'Fichiers envoyés par le site : ') + docs.join(ar ? '، ' : ', '));
+    else out.push('', '📎 ' + (ar ? 'غادي نصيفط من بعد فواتساب: ' : 'J’enverrai ensuite sur WhatsApp : ') + (docs.length ? docs : todo).join(ar ? '، ' : ', '));
     return out.join('\n');
   }
 
@@ -1104,15 +1124,19 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
-    try { localStorage.setItem('procv-step2', String(Date.now())); } catch (err) {}
-    var text = message(o), btn = document.getElementById('pg-send');
-    btn.disabled = true;
-    // give the copy to Google a few seconds before leaving for WhatsApp; uploads keep going in the background
-    Promise.race([backup(o, text), new Promise(function (r) { setTimeout(r, 4000); })]).then(function () {
-      btn.disabled = false;
-      showStep2();
-      goWhatsApp(text);
-    });
+    var text = message(o);
+    // no Google link configured: fall back to sending the answers through WhatsApp
+    if (!SAVE_URL) { goWhatsApp(text); return; }
+    // a new submit is a new order: fresh id, nothing marked as uploaded yet
+    // (except when the client came back from the sending screen to add lost files)
+    if (!keepId) upDone = {};
+    try {
+      if (!keepId) ['procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); });
+      keepId = false;
+      localStorage.setItem('procv-n', String(sendList().length)); // lets a reload notice files that did not come back
+      localStorage.setItem('procv-step2', String(Date.now()));
+    } catch (err) {}
+    startSend();
   });
 
   // ---- copy of the order to Google (Sheet + Drive), so nothing is lost if WhatsApp is never sent ----
@@ -1124,10 +1148,13 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     }
     return id;
   }
+  // text/plain body: no preflight. The Apps Script answer is readable (CORS *), so we know the row/file was saved.
+  // If a browser blocks reading it, send blind like before so the order still goes out.
   function post(obj) {
     var body = JSON.stringify(obj);
-    // text/plain + no-cors: no preflight, works from any browser; keepalive lets small requests finish after leaving the page
-    return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body, keepalive: body.length < 60000 });
+    return fetch(SAVE_URL, { method: 'POST', body: body, redirect: 'follow' }).then(function (r) { return r.json(); }, function () {
+      return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body }).then(function () { return { ok: true }; });
+    }).then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'not saved'); return j; });
   }
   var upDone = {};
   try { upDone = JSON.parse(localStorage.getItem('procv-up') || '{}'); } catch (err) {}
@@ -1149,72 +1176,90 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       rd.onerror = j; rd.readAsDataURL(f);
     });
   }
-  function uploadFiles(id) {
+  function sendList() {
     var list = [];
     ['photo', 'permis', 'certificat', 'attest'].forEach(function (k) {
       if (k === 'permis' && !permisOn()) return;
-      files[k].forEach(function (f) { if (!upDone[id + '|' + fileKey(f)]) list.push([k, f]); });
+      files[k].forEach(function (f) { list.push([k, f]); });
     });
-    return Promise.all(list.map(function (x) {
+    return list;
+  }
+  // uploads the files not sent yet; onOne(ok) is called after each file. Resolves to the number that failed.
+  function uploadFiles(id, onOne) {
+    var list = sendList().filter(function (x) { return !upDone[id + '|' + fileKey(x[1])]; });
+    var failed = 0, next = 0;
+    function one(x) {
       var key = id + '|' + fileKey(x[1]);
       return shrink(x[1]).then(function (f) {
         return b64(f).then(function (data) { return post({ type: 'file', id: id, kind: x[0], name: f.name, mime: f.type, b64: data }); });
       }).then(function () {
         upDone[key] = 1; try { localStorage.setItem('procv-up', JSON.stringify(upDone)); } catch (err) {}
-      }).catch(function () {});
-    }));
-  }
-  function backup(o, text) {
-    if (!SAVE_URL) return Promise.resolve();
-    var id = orderId(), n = 0;
-    // tell Google how many files are coming, so the email waits for them and attaches them
-    ['photo', 'permis', 'certificat', 'attest'].forEach(function (k) { if (k !== 'permis' || permisOn()) n += files[k].length; });
-    return Promise.all([post({ type: 'form', id: id, data: o, message: text, nfiles: n }).catch(function () {}), uploadFiles(id)]);
+        if (onOne) onOne(true);
+      }, function () { failed++; if (onOne) onOne(false); });
+    }
+    // two at a time: phones on mobile data stay fast, and the Google script is not flooded
+    function lane() { return next < list.length ? one(list[next++]).then(lane) : Promise.resolve(); }
+    return Promise.all([lane(), lane()]).then(function () { return failed; });
   }
 
-  // step 2: send the photo and documents to the PRO CV chat through the phone's share sheet
-  function showStep2() {
-    form.hidden = true; step2.hidden = false;
-    if (SAVE_URL) uploadFiles(orderId()); // retry any file that did not reach Google yet
-    var all = allFiles(), t2 = document.getElementById('s2-thumbs'); t2.innerHTML = '';
-    all.forEach(function (f, i) { t2.appendChild(thumb(f, i)); });
-    var ok = false; try { ok = !!(all.length && navigator.canShare && navigator.canShare({ files: all })); } catch (err) {}
-    document.getElementById('s2-files').hidden = !all.length;
-    document.getElementById('s2-how').hidden = !ok;
-    document.getElementById('s2-share').hidden = !ok;
-    document.getElementById('s2-alt').hidden = ok;
-    fdTop();
-  }
-  document.getElementById('s2-wa').addEventListener('click', function () { goWhatsApp(message(data())); });
-  document.getElementById('s2-edit').addEventListener('click', function () {
-    try { localStorage.removeItem('procv-step2'); } catch (err) {}
-    step2.hidden = true; form.hidden = false; go(1);
-  });
-  document.getElementById('s2-share').addEventListener('click', function () {
-    var all = allFiles();
-    navigator.share({ files: all }).catch(function (err) {
-      if (err && err.name === 'AbortError') return;
-      var imgs = all.filter(function (f) { return /^image\//.test(f.type); });
-      if (imgs.length && imgs.length < all.length && navigator.canShare({ files: imgs })) navigator.share({ files: imgs }).catch(function () {});
-      document.getElementById('s2-alt').hidden = false;
+  // ---- sending screen: form + files go straight to Google (Sheet, Drive, email); no WhatsApp step for the client ----
+  var sending = false, formSent = false;
+  function startSend() {
+    if (sending) return; sending = true;
+    var o = data(), text = message(o), id = orderId(), all = sendList(), total = all.length;
+    var done = all.filter(function (x) { return upDone[id + '|' + fileKey(x[1])]; }).length;
+    var fill = document.getElementById('s2-fill'), count = document.getElementById('s2-count'), ar = function () { return h.dataset.l === 'ar'; };
+    function draw() {
+      var steps = total + 1, now = done + (formSent ? 1 : 0);
+      fill.style.width = Math.round(now / steps * 100) + '%';
+      count.textContent = total ? (ar() ? 'التصاور والوثائق: ' : 'Photos et documents : ') + done + ' / ' + total : '';
+    }
+    // after a reload, files saved on the phone may not come back (IndexedDB slow or unsupported)
+    var expected = 0; try { expected = +localStorage.getItem('procv-n') || 0; } catch (err) {}
+    var lost = total < expected;
+    form.hidden = true; document.getElementById('thanks').hidden = true; step2.hidden = false;
+    document.getElementById('s2-err').hidden = true; draw(); fdTop();
+    // tell Google how many files are coming, so the email waits for them and attaches them
+    var p1 = post({ type: 'form', id: id, data: o, message: text, nfiles: Math.max(total, expected) }).then(function () { formSent = true; draw(); return 0; }, function () { return 1; });
+    var p2 = uploadFiles(id, function (ok) { if (ok) done++; draw(); });
+    Promise.all([p1, p2]).then(function (r) {
+      sending = false;
+      if (r[0] + r[1] || lost) {
+        document.getElementById('s2-err').hidden = false;
+        document.getElementById('s2-net').hidden = lost && !(r[0] + r[1]);
+        document.getElementById('s2-lost').hidden = !lost;
+        document.getElementById('s2-back').hidden = !lost;
+        return;
+      }
+      finish(false);
     });
-  });
-  document.getElementById('s2-done').addEventListener('click', function () {
-    try { ['procv-step2', KEY, 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); } catch (err) {}
-    upDone = {};
+  }
+  function finish(skipped) {
+    try { ['procv-step2', 'procv-n', KEY, 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); } catch (err) {}
+    upDone = {}; formSent = false; keepId = false;
     files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
     form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI(); drawDocs();
-    step2.hidden = true;
-    if (h.classList.contains('only-form')) { go(1); form.hidden = true; document.getElementById('thanks').hidden = false; fdTop(); return; }
-    form.hidden = false; go(1);
-    closeForm();
+    go(1);
+    document.getElementById('thx-ok').hidden = skipped; document.getElementById('thx-miss').hidden = !skipped;
+    step2.hidden = true; form.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
+  }
+  var keepId = false;
+  document.getElementById('s2-retry').addEventListener('click', startSend);
+  document.getElementById('s2-skip').addEventListener('click', function () {
+    // the form itself must reach Google; only the files may be skipped
+    if (!formSent) { startSend(); return; }
+    finish(true);
   });
-  // back from WhatsApp (even after a reload): reopen on step 2 if the documents are not sent yet
+  // files lost after a reload: go back to the photo step to add them again, same order
+  document.getElementById('s2-back').addEventListener('click', function () {
+    keepId = true; step2.hidden = true; form.hidden = false; go(NSTEP); fdTop();
+  });
+  // page reloaded or reopened during sending: continue where it stopped
   var resumed = false;
   function resume() {
     if (resumed) return; resumed = true;
     var t = 0; try { t = +localStorage.getItem('procv-step2') || 0; } catch (err) {}
-    if (t && Date.now() - t < 6 * 3600e3) { openForm(null, true); showStep2(); }
+    if (t && Date.now() - t < 6 * 3600e3 && SAVE_URL) { openForm(null, true); startSend(); }
   }
 go(st0);
 
@@ -1230,6 +1275,9 @@ go(st0);
     // one history entry while the form is open, so the phone's Back button stays on the page
     try { if (!(history.state && history.state.fd)) history.pushState({ fd: 1 }, ''); } catch (err) {}
     if (!silent && !icSent && window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
+    // reopened after a finished order (popup on the home page): start a new empty form
+    var th = document.getElementById('thanks');
+    if (!silent && !th.hidden && !sending && !h.classList.contains('only-form')) { th.hidden = true; form.hidden = false; }
     if (!silent && !form.hidden) go(cur);
     if (!silent) setTimeout(function () { if (form.hidden) return; var n = firstEmpty(); if (n) n.focus({ preventScroll: true }); }, 60);
   }

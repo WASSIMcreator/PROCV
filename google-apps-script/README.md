@@ -26,7 +26,26 @@ Chaque formulaire envoyé sur le site est aussi enregistré dans votre Google :
    ```
    puis publiez le site (commit + push).
 
+## Alerte WhatsApp automatique (optionnel)
+
+À chaque commande, le script peut vous envoyer sur WhatsApp les informations du client
+et le lien Drive des photos (les fichiers eux-mêmes restent dans Drive).
+
+1. Ajoutez le numéro **+34 644 66 32 62** (CallMeBot) dans vos contacts, puis envoyez-lui
+   sur WhatsApp : `I allow callmebot to send me messages`. Il vous répond avec un **apikey**.
+2. Dans Apps Script : ⚙ **Paramètres du projet** → **Propriétés du script** → ajoutez
+   `WA_PHONE` = votre numéro (ex. `212706828446`) et `WA_APIKEY` = l'apikey reçu.
+3. Choisissez la fonction **testWhatsApp** → **▶ Exécuter** : vous devez recevoir un message.
+
+Sans ces deux propriétés, rien n'est envoyé sur WhatsApp (l'email marche toujours).
+
 ## Modifier le script plus tard
 
-Après un changement dans `Code.gs` : **Déployer** → **Gérer les déploiements** → ✏ →
-Version : **Nouvelle version** → **Déployer**. L'URL reste la même.
+Après un changement dans `Code.gs`, **dans cet ordre** :
+
+1. Collez le nouveau code et enregistrez (Ctrl+S).
+2. Choisissez la fonction **setup** → **▶ Exécuter**, et acceptez les nouvelles autorisations
+   si Google les demande. **Obligatoire** : sans ça, le site reçoit des erreurs
+   (« Autorisation requise ») et la vérification des 10 minutes n'existe pas.
+3. **Déployer** → **Gérer les déploiements** → ✏ → Version : **Nouvelle version** → **Déployer**.
+   L'URL reste la même.

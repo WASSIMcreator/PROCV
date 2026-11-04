@@ -15,20 +15,22 @@ var MAX_FILE_MB = 15;
 var MAX_FILES_PER_ORDER = 15;
 var HEAD = ['Date', 'ID', 'Nom', 'Téléphone', 'Email', 'Poste', 'Type', 'Allemand', 'Ville', 'Fichiers reçus', 'Dossier Drive', 'Message complet'];
 
+// The site reads this answer: {ok:false} makes it show "réessayer" instead of "merci".
 function doPost(e) {
   var lock = LockService.getScriptLock();
-  lock.waitLock(30000);
   try {
+    lock.waitLock(60000);
     var p = JSON.parse(e.postData.contents);
     var id = String(p.id || '').replace(/[^\w-]/g, '').slice(0, 40);
     if (!id) return out({ ok: false, error: 'no id' });
+    var res = null;
     if (p.type === 'form') saveForm(id, p);
-    else if (p.type === 'file') saveFile(id, p);
-    return out({ ok: true });
+    else if (p.type === 'file') res = saveFile(id, p);
+    return out(res || { ok: true });
   } catch (err) {
     return out({ ok: false, error: String(err) });
   } finally {
-    lock.releaseLock();
+    try { lock.releaseLock(); } catch (e2) {}
   }
 }
 
@@ -50,21 +52,23 @@ function saveForm(id, p) {
     var props = PropertiesService.getScriptProperties();
     var want = Math.min(+p.nfiles || 0, MAX_FILES_PER_ORDER);
     props.setProperty('N_' + id, String(want));
-    if (countFiles(folder) >= want) sendMail(id);
-    else props.setProperty('P_' + id, String(Date.now()));
+    props.setProperty('P_' + id, String(Date.now())); // pending until the email is really sent
+    ensureTrigger();
+    if (countFiles(folder) >= want) trySend(id);
   }
 }
 
+// The form/file is already saved: an email error must not make the site report a failure.
+function trySend(id) { try { sendMail(id); } catch (e) { console.warn('mail ' + id + ': ' + e); } }
+
+// Sends the email (and WhatsApp alert) once per order. Called under the script lock.
+// The order stays pending (P_) until the email is sent, so flushPending retries a failure.
 function sendMail(id) {
   var props = PropertiesService.getScriptProperties();
-  props.deleteProperty('P_' + id);
-  if (props.getProperty('S_' + id)) return; // already sent
-  props.setProperty('S_' + id, '1');
+  if (!props.getProperty('P_' + id)) return; // already sent
   var me = Session.getEffectiveUser().getEmail();
-  if (!me) return;
-
   var sh = sheet(), r = findRow(sh, id);
-  if (!r) return;
+  if (!me || !r) return;
   var v = sh.getRange(r, 1, 1, HEAD.length).getValues()[0];
   var nom = v[2], tel = String(v[3]).replace(/^'/, ''), message = v[11];
   var folder = orderFolder(id, null);
@@ -78,36 +82,86 @@ function sendMail(id) {
   }
   sh.getRange(r, 10).setValue(n);
 
+  var want = +(props.getProperty('N_' + id) || 0);
   var note = n ? '\n\n📎 ' + att.length + ' fichier(s) en pièce jointe' + (skipped ? ', ' + skipped + ' trop lourd(s), voir Drive' : '') + '.'
                : '\n\n📎 Aucune photo reçue par le site (le client peut les envoyer sur WhatsApp).';
-  MailApp.sendEmail({
+  if (n < want) note += '\n⚠️ ' + (want - n) + ' fichier(s) annoncé(s) mais pas reçu(s) : demandez-les au client sur WhatsApp.';
+  var mail = {
     to: me,
     subject: 'PRO CV – nouveau formulaire : ' + (nom || '?') + ' (' + tel + ')',
-    body: message + note + '\n\n📁 Photos et documents : ' + folder.getUrl() + '\n📊 Tableau : ' + sh.getParent().getUrl(),
-    attachments: att
-  });
+    body: message + note + '\n\n📁 Photos et documents : ' + folder.getUrl() + '\n📊 Tableau : ' + sh.getParent().getUrl()
+  };
+  try {
+    MailApp.sendEmail(Object.assign({ attachments: att }, mail));
+  } catch (e) {
+    // attachments refused (size, type…): send the text and the Drive link anyway
+    mail.body += '\n\n(Pièces jointes non envoyées : ' + String(e).slice(0, 200) + ')';
+    MailApp.sendEmail(mail); // if this throws too, P_ stays and flushPending retries
+  }
+  props.deleteProperty('P_' + id);
+  props.deleteProperty('N_' + id);
+
+  sendWhatsApp('🆕 PRO CV – nouvelle commande\n👤 ' + (nom || '?') + '\n📞 ' + tel +
+    '\n💼 ' + (v[5] || '-') + ' (' + (v[6] || '-') + ')\n🇩🇪 ' + (v[7] || '-') + '\n📍 ' + (v[8] || '-') +
+    '\n📎 ' + n + ' fichier(s)' + (n < want ? ' (' + (want - n) + ' manquant(s))' : '') +
+    '\n📁 ' + folder.getUrl() + '\n✉️ Détails complets dans Gmail.');
 }
+
+// WhatsApp alert to the owner through CallMeBot (text only: files stay in Drive, the link is in the message).
+// Off until both script properties are set: WA_PHONE (e.g. 212706828446) and WA_APIKEY (from CallMeBot).
+// CallMeBot takes the text in the URL, and Apps Script refuses long URLs: keep the alert short.
+function sendWhatsApp(text) {
+  var props = PropertiesService.getScriptProperties();
+  var phone = props.getProperty('WA_PHONE'), key = props.getProperty('WA_APIKEY');
+  if (!phone || !key) return;
+  var t = String(text);
+  while (t.length > 20 && encodeURIComponent(t).length > 1500) t = t.slice(0, Math.floor(t.length * 0.9));
+  try {
+    var res = UrlFetchApp.fetch('https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(phone) +
+      '&apikey=' + encodeURIComponent(key) + '&text=' + encodeURIComponent(t), { muteHttpExceptions: true });
+    if (res.getResponseCode() >= 300) console.warn('CallMeBot ' + res.getResponseCode() + ': ' + res.getContentText().slice(0, 200));
+  } catch (e) { console.warn('CallMeBot failed: ' + e); /* the email is already sent */ }
+}
+
+// Run once from the editor after setting WA_PHONE and WA_APIKEY: you should get a WhatsApp message.
+function testWhatsApp() { sendWhatsApp('✅ PRO CV : les alertes WhatsApp marchent.'); }
 
 // Runs every 10 min (trigger made by setup): sends the email for clients whose photos
-// never all arrived, with whatever is in Drive.
+// never all arrived, with whatever is in Drive. Also retries emails that failed.
 function flushPending() {
-  var props = PropertiesService.getScriptProperties(), all = props.getProperties();
-  Object.keys(all).forEach(function (k) {
-    if (k.indexOf('P_') === 0 && Date.now() - (+all[k]) > 10 * 60 * 1000) sendMail(k.slice(2));
-  });
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(60000)) return; // busy with uploads: next run
+  try {
+    var props = PropertiesService.getScriptProperties(), all = props.getProperties();
+    Object.keys(all).forEach(function (k) {
+      if (k.indexOf('P_') === 0 && Date.now() - (+all[k]) > 10 * 60 * 1000) {
+        try { sendMail(k.slice(2)); } catch (e) { console.warn('flush ' + k + ': ' + e); }
+      }
+    });
+  } finally { lock.releaseLock(); }
 }
 
+// The 10-minute check is created by setup(); this also creates it if setup was not run again.
+function ensureTrigger() {
+  try {
+    var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'flushPending'; });
+    if (!has) ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(10).create();
+  } catch (e) { console.warn('trigger: ' + e); }
+}
+
+// Returns {ok:false} when a file is refused, so the site can tell the client.
 function saveFile(id, p) {
   var folder = orderFolder(id, null);
   var n = countFiles(folder);
-  if (n >= MAX_FILES_PER_ORDER) return;
   var bytes = Utilities.base64Decode(p.b64 || '');
-  if (!bytes.length || bytes.length > MAX_FILE_MB * 1024 * 1024) return;
+  if (!bytes.length) return { ok: false, error: 'empty file' };
+  if (bytes.length > MAX_FILE_MB * 1024 * 1024) return { ok: false, error: 'file too big' };
   var mime = /^(image\/[\w.+-]+|application\/pdf)$/.test(p.mime) ? p.mime : 'application/octet-stream';
   var name = (p.kind || 'doc') + ' - ' + String(p.name || 'fichier').replace(/[\\\/:*?"<>|]/g, '_').slice(0, 80);
   // the site may retry a file that already arrived: skip exact duplicates (same name and size)
   var same = folder.getFilesByName(name);
-  while (same.hasNext()) if (same.next().getSize() === bytes.length) return;
+  while (same.hasNext()) if (same.next().getSize() === bytes.length) return null;
+  if (n >= MAX_FILES_PER_ORDER) return { ok: false, error: 'too many files' };
   folder.createFile(Utilities.newBlob(bytes, mime, name));
 
   var sh = sheet(), r = findRow(sh, id);
@@ -115,7 +169,8 @@ function saveFile(id, p) {
 
   // last announced photo arrived: send the email now
   var props = PropertiesService.getScriptProperties();
-  if (props.getProperty('P_' + id) && n + 1 >= +(props.getProperty('N_' + id) || 0)) sendMail(id);
+  if (props.getProperty('P_' + id) && n + 1 >= +(props.getProperty('N_' + id) || 0)) trySend(id);
+  return null;
 }
 
 // ---- helpers ----
