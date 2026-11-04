@@ -3,7 +3,8 @@
  *
  * - One row per client in the "Commandes" sheet (all answers + the full WhatsApp text).
  * - Photos and documents go into Drive: "PRO CV – Clients" / <date name phone>.
- * - You get an email for every new form.
+ * - You get one email per new client, with the photos and documents attached
+ *   (sent when the last photo arrives, or after 10 minutes at most).
  *
  * Setup: see google-apps-script/README.md
  */
@@ -43,14 +44,57 @@ function saveForm(id, p) {
   if (r) sh.getRange(r, 1, 1, row.length).setValues([row]);
   else sh.appendRow(row);
 
+  // One email per new client, with the photos attached. Photos upload after the form,
+  // so wait until all the announced files are in Drive (or 10 min, see flushPending).
   if (!r) {
-    var me = Session.getEffectiveUser().getEmail();
-    if (me) MailApp.sendEmail({
-      to: me,
-      subject: 'PRO CV – nouveau formulaire : ' + (o.nom || '?') + ' (' + (o.tel || '') + ')',
-      body: (p.message || '') + '\n\n📁 Photos et documents : ' + folder.getUrl() + '\n📊 Tableau : ' + sh.getParent().getUrl()
-    });
+    var props = PropertiesService.getScriptProperties();
+    var want = Math.min(+p.nfiles || 0, MAX_FILES_PER_ORDER);
+    props.setProperty('N_' + id, String(want));
+    if (countFiles(folder) >= want) sendMail(id);
+    else props.setProperty('P_' + id, String(Date.now()));
   }
+}
+
+function sendMail(id) {
+  var props = PropertiesService.getScriptProperties();
+  props.deleteProperty('P_' + id);
+  if (props.getProperty('S_' + id)) return; // already sent
+  props.setProperty('S_' + id, '1');
+  var me = Session.getEffectiveUser().getEmail();
+  if (!me) return;
+
+  var sh = sheet(), r = findRow(sh, id);
+  if (!r) return;
+  var v = sh.getRange(r, 1, 1, HEAD.length).getValues()[0];
+  var nom = v[2], tel = String(v[3]).replace(/^'/, ''), message = v[11];
+  var folder = orderFolder(id, null);
+
+  // attach the files (Gmail limit is 25 MB per email; keep a margin)
+  var att = [], total = 0, skipped = 0, n = 0, it = folder.getFiles();
+  while (it.hasNext()) {
+    var f = it.next(); n++;
+    if (total + f.getSize() > 20 * 1024 * 1024) { skipped++; continue; }
+    att.push(f.getBlob()); total += f.getSize();
+  }
+  sh.getRange(r, 10).setValue(n);
+
+  var note = n ? '\n\n📎 ' + att.length + ' fichier(s) en pièce jointe' + (skipped ? ', ' + skipped + ' trop lourd(s), voir Drive' : '') + '.'
+               : '\n\n📎 Aucune photo reçue par le site (le client peut les envoyer sur WhatsApp).';
+  MailApp.sendEmail({
+    to: me,
+    subject: 'PRO CV – nouveau formulaire : ' + (nom || '?') + ' (' + tel + ')',
+    body: message + note + '\n\n📁 Photos et documents : ' + folder.getUrl() + '\n📊 Tableau : ' + sh.getParent().getUrl(),
+    attachments: att
+  });
+}
+
+// Runs every 10 min (trigger made by setup): sends the email for clients whose photos
+// never all arrived, with whatever is in Drive.
+function flushPending() {
+  var props = PropertiesService.getScriptProperties(), all = props.getProperties();
+  Object.keys(all).forEach(function (k) {
+    if (k.indexOf('P_') === 0 && Date.now() - (+all[k]) > 10 * 60 * 1000) sendMail(k.slice(2));
+  });
 }
 
 function saveFile(id, p) {
@@ -61,10 +105,17 @@ function saveFile(id, p) {
   if (!bytes.length || bytes.length > MAX_FILE_MB * 1024 * 1024) return;
   var mime = /^(image\/[\w.+-]+|application\/pdf)$/.test(p.mime) ? p.mime : 'application/octet-stream';
   var name = (p.kind || 'doc') + ' - ' + String(p.name || 'fichier').replace(/[\\\/:*?"<>|]/g, '_').slice(0, 80);
+  // the site may retry a file that already arrived: skip exact duplicates (same name and size)
+  var same = folder.getFilesByName(name);
+  while (same.hasNext()) if (same.next().getSize() === bytes.length) return;
   folder.createFile(Utilities.newBlob(bytes, mime, name));
 
   var sh = sheet(), r = findRow(sh, id);
   if (r) sh.getRange(r, 10).setValue(n + 1);
+
+  // last announced photo arrived: send the email now
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('P_' + id) && n + 1 >= +(props.getProperty('N_' + id) || 0)) sendMail(id);
 }
 
 // ---- helpers ----
@@ -126,9 +177,12 @@ function out(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// Run this once from the editor (▶ Run) to grant access and create the sheet + folder.
+// Run this once from the editor (▶ Run) to grant access and create the sheet + folder
+// and the 10-minute check that emails orders whose photos never all arrived.
 function setup() {
   var sh = sheet();
   orderFolder('test', { nom: 'TEST', tel: '' });
+  var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'flushPending'; });
+  if (!has) ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(10).create();
   Logger.log('Sheet: ' + sh.getParent().getUrl());
 }

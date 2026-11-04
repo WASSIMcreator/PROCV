@@ -3,7 +3,8 @@
 Chaque formulaire envoyé sur le site est aussi enregistré dans votre Google :
 - **Google Sheet "PRO CV – Commandes"** : une ligne par client (nom, téléphone, poste, message complet).
 - **Google Drive "PRO CV – Clients"** : un dossier par client avec sa photo et ses documents.
-- **Un email** à chaque nouveau formulaire.
+- **Un email** par nouveau client, avec la photo et les documents en pièce jointe
+  (envoyé quand la dernière photo arrive, ou au plus tard après 10 minutes).
 
 Ça marche même si le client n'appuie jamais sur "Envoyer" dans WhatsApp.
 

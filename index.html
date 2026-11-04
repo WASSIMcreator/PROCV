@@ -1166,8 +1166,10 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   }
   function backup(o, text) {
     if (!SAVE_URL) return Promise.resolve();
-    var id = orderId();
-    return Promise.all([post({ type: 'form', id: id, data: o, message: text }).catch(function () {}), uploadFiles(id)]);
+    var id = orderId(), n = 0;
+    // tell Google how many files are coming, so the email waits for them and attaches them
+    ['photo', 'permis', 'certificat', 'attest'].forEach(function (k) { if (k !== 'permis' || permisOn()) n += files[k].length; });
+    return Promise.all([post({ type: 'form', id: id, data: o, message: text, nfiles: n }).catch(function () {}), uploadFiles(id)]);
   }
 
   // step 2: send the photo and documents to the PRO CV chat through the phone's share sheet
