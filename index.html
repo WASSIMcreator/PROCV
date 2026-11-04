@@ -868,8 +868,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     document.getElementById('doc-permis').hidden = !yes;
   }
   form.querySelectorAll('[name=permis_ok]').forEach(function (r) { r.addEventListener('change', permisUI); });
-  var CAN = false;
-  try { CAN = !!(navigator.canShare && window.File && navigator.canShare({ files: [new File(['x'], 'x.jpg', { type: 'image/jpeg' })] })); } catch (e) {}
+  // show the upload boxes when files can reach us: saved to Google Drive (SAVE_URL), or shared to WhatsApp from the phone
+  var CAN = !!(SAVE_URL && window.File && window.FileReader);
+  try { CAN = CAN || !!(navigator.canShare && window.File && navigator.canShare({ files: [new File(['x'], 'x.jpg', { type: 'image/jpeg' })] })); } catch (e) {}
   if (!CAN) form.querySelectorAll('.doc').forEach(function (d) { d.classList.add('nodoc'); });
   var noexp = form.querySelector('[name=noexp]');
   function expUI() { expRep.classList.toggle('off', noexp.checked); }
