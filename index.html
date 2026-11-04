@@ -294,6 +294,9 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form [hidden], .form .nodoc { display: none !important; }
 .form .prep { margin: -6px 0 16px; padding: 10px 14px; border-radius: 10px; background: var(--blue-soft); color: var(--navy); font-size: 14px; }
 .form #doc-note { padding: 10px 14px; border-radius: 10px; background: #eaf5ee; color: #23402f; font-size: 15px; }
+.form .inapp { display: grid; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #fff7e6; color: #5a3b00; font-size: 15px; margin-bottom: 4px; }
+.form .inapp[hidden], .form .inapp [hidden] { display: none; }
+.form #doc-inapp { padding: 10px 14px; border-radius: 10px; background: #fff7e6; color: #5a3b00; font-size: 14px; }
 .form #doc-warn { padding: 10px 14px; border-radius: 10px; background: #fdecec; color: #7a1f1f; font-size: 15px; }
 .fd-r { display: flex; align-items: center; gap: 8px; }
 .fd-lang { min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 14px var(--font); cursor: pointer; }
@@ -653,6 +656,12 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
 <form class="form" id="order" novalidate>
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
+        <!-- shown only inside the Instagram / Facebook app: their browser often blocks choosing photos -->
+        <div class="inapp" id="inapp" hidden>
+          <p><span lang="ar">📷 Instagram ولا Facebook كيمنعو بزاف ديال المرات اختيار التصاور. باش تصيفط التصويرة بلا مشكل، حل الاستمارة فـ Chrome قبل ما تبدا.</span><span lang="fr">📷 Instagram et Facebook bloquent souvent le choix des photos. Pour envoyer votre photo sans souci, ouvrez le formulaire dans votre navigateur avant de commencer.</span></p>
+          <a class="btn go" id="inapp-open" href="#"><span lang="ar">حل فـ Chrome</span><span lang="fr">Ouvrir dans Chrome</span></a>
+          <p class="inapp-ios" hidden><span lang="ar">كليكي على ⋯ لفوق ومن بعد « Ouvrir dans le navigateur ».</span><span lang="fr">Touchez ⋯ en haut, puis « Ouvrir dans le navigateur ».</span></p>
+        </div>
         <p class="prep" id="prep"><span lang="ar">وجّد قبل ما تبدا: تواريخ الخدمة والدراسة (الشهر والعام كافيين) وتصويرة ليك من القدام. إلا خرجتي، المعلومات ديالك كتبقى مسجلة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">
           <div class="part"><i>1</i><span lang="ar">الخدمة ولا التكوين اللي باغي</span><span lang="fr">Poste / formation souhaité(e)</span></div>
@@ -704,6 +713,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
           <div class="part"><i>10</i><span lang="ar">التصويرة والوثائق</span><span lang="fr">Photo et documents</span></div>
+          <div class="full" id="doc-inapp" hidden><span lang="ar">طلع ليك ميساج « Veuillez autoriser tous les contenus multimédias »؟ هادي إذن ديال Instagram: Paramètres ← Applications ← Instagram ← Autorisations ← Photos et vidéos ← <b>Toujours tout autoriser</b>، ومن بعد رجع هنا وكليكي مرة أخرى.</span><span lang="fr">Message « Veuillez autoriser tous les contenus multimédias » ? C'est une autorisation d'Instagram : Paramètres → Applications → Instagram → Autorisations → Photos et vidéos → <b>Toujours tout autoriser</b>, puis revenez ici et touchez à nouveau.</span></div>
           <div class="full" id="doc-warn" hidden><span lang="ar"></span><span lang="fr"></span></div>
           <div class="full" id="doc-note"><span lang="ar">إلا ما عندكش التصاور دابا، ماشي مشكل: تقدر تصيفطهم من بعد فنفس المحادثة فواتساب.</span><span lang="fr">Pas de photos sous la main ? Pas de souci : vous pourrez les envoyer ensuite dans la même conversation WhatsApp.</span></div>
           <div class="full doc" data-doc="photo"><span class="lbl"><span lang="ar">صورة شخصية</span><span lang="fr">Photo d'identité</span></span>
@@ -883,7 +893,20 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   if (!CAN) form.querySelectorAll('.doc').forEach(function (d) { d.classList.add('nodoc'); });
   // Instagram/Facebook in-app browsers on Android block the picker when PDFs are allowed
   // ("autoriser tous les contenus multimédias"); photos only always opens the gallery
-  if (/Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent)) form.querySelectorAll('.doc input[type=file]').forEach(function (i) { i.accept = 'image/*'; });
+  var INAPP = /Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent), ANDROID = /Android/i.test(navigator.userAgent);
+  if (INAPP) {
+    form.querySelectorAll('.doc input[type=file]').forEach(function (i) { i.accept = 'image/*'; });
+    document.getElementById('inapp').hidden = false;
+    if (ANDROID) document.getElementById('doc-inapp').hidden = false; // the permission message is an Android one
+    var op = document.getElementById('inapp-open');
+    if (ANDROID) {
+      // Android: an intent link opens the same page in Chrome (falls back to the normal link)
+      op.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(location.href) + ';end';
+    } else {
+      // iPhone: no link can leave the Instagram browser; explain the ⋯ menu instead
+      op.hidden = true; document.querySelector('#inapp .inapp-ios').hidden = false;
+    }
+  }
   var noexp = form.querySelector('[name=noexp]');
   function expUI() { expRep.classList.toggle('off', noexp.checked); }
   noexp.addEventListener('change', expUI);
