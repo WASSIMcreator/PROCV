@@ -294,18 +294,12 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form [hidden], .form .nodoc { display: none !important; }
 .form .prep { margin: -6px 0 16px; padding: 10px 14px; border-radius: 10px; background: var(--blue-soft); color: var(--navy); font-size: 14px; }
 .form #doc-note { padding: 10px 14px; border-radius: 10px; background: #eaf5ee; color: #23402f; font-size: 15px; }
-.form .inapp { display: grid; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #fff7e6; color: #5a3b00; font-size: 15px; margin-bottom: 4px; }
-.form .inapp[hidden], .form .inapp [hidden] { display: none; }
-.form #doc-inapp { padding: 10px 14px; border-radius: 10px; background: #fff7e6; color: #5a3b00; font-size: 14px; }
-.form #doc-warn { padding: 10px 14px; border-radius: 10px; background: #fdecec; color: #7a1f1f; font-size: 15px; }
+
 .fd-r { display: flex; align-items: center; gap: 8px; }
 .fd-lang { min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 14px var(--font); cursor: pointer; }
 .s2-bar { height: 10px; border-radius: 99px; background: #e3e8f2; overflow: hidden; }
-.s2-bar span { display: block; height: 100%; width: 0; background: #1f5fd1; border-radius: 99px; transition: width .3s; }
-.s2-count { text-align: center; font-weight: 600; color: var(--navy); }
-.s2-err { display: grid; gap: 12px; }
-.s2-err[hidden] { display: none; }
-.s2-err p { padding: 10px 14px; border-radius: 10px; background: #fdecec; color: #7a1f1f; }
+.s2-bar span { display: block; height: 100%; width: 35%; background: #1f5fd1; border-radius: 99px; animation: s2go 1.2s ease-in-out infinite; }
+@keyframes s2go { from { margin-left: -35%; } to { margin-left: 100%; } }
 .ask-sec { padding: 8px 0 clamp(28px, 4vw, 48px); }
 .ask { background: #fff; border-radius: 18px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 0 0 1px var(--line), 0 20px 44px -30px rgba(20,37,74,.45); display: grid; gap: 16px; }
 .ask-h { display: grid; gap: 4px; }
@@ -656,12 +650,6 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
 <form class="form" id="order" novalidate>
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
-        <!-- shown only inside the Instagram / Facebook app: their browser often blocks choosing photos -->
-        <div class="inapp" id="inapp" hidden>
-          <p><span lang="ar">📷 Instagram ولا Facebook كيمنعو بزاف ديال المرات اختيار التصاور. باش تصيفط التصويرة بلا مشكل، حل الاستمارة فـ Chrome قبل ما تبدا.</span><span lang="fr">📷 Instagram et Facebook bloquent souvent le choix des photos. Pour envoyer votre photo sans souci, ouvrez le formulaire dans votre navigateur avant de commencer.</span></p>
-          <a class="btn go" id="inapp-open" href="#"><span lang="ar">حل فـ Chrome</span><span lang="fr">Ouvrir dans Chrome</span></a>
-          <p class="inapp-ios" hidden><span lang="ar">كليكي على ⋯ لفوق ومن بعد « Ouvrir dans le navigateur ».</span><span lang="fr">Touchez ⋯ en haut, puis « Ouvrir dans le navigateur ».</span></p>
-        </div>
         <p class="prep" id="prep"><span lang="ar">وجّد قبل ما تبدا: تواريخ الخدمة والدراسة (الشهر والعام كافيين) وتصويرة ليك من القدام. إلا خرجتي، المعلومات ديالك كتبقى مسجلة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">
           <div class="part"><i>1</i><span lang="ar">الخدمة ولا التكوين اللي باغي</span><span lang="fr">Poste / formation souhaité(e)</span></div>
@@ -713,20 +701,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
           <div class="part"><i>10</i><span lang="ar">التصويرة والوثائق</span><span lang="fr">Photo et documents</span></div>
-          <div class="full" id="doc-inapp" hidden><span lang="ar">طلع ليك ميساج « Veuillez autoriser tous les contenus multimédias »؟ هادي إذن ديال Instagram: Paramètres ← Applications ← Instagram ← Autorisations ← Photos et vidéos ← <b>Toujours tout autoriser</b>، ومن بعد رجع هنا وكليكي مرة أخرى.</span><span lang="fr">Message « Veuillez autoriser tous les contenus multimédias » ? C'est une autorisation d'Instagram : Paramètres → Applications → Instagram → Autorisations → Photos et vidéos → <b>Toujours tout autoriser</b>, puis revenez ici et touchez à nouveau.</span></div>
-          <div class="full" id="doc-warn" hidden><span lang="ar"></span><span lang="fr"></span></div>
-          <div class="full" id="doc-note"><span lang="ar">إلا ما عندكش التصاور دابا، ماشي مشكل: تقدر تصيفطهم من بعد فنفس المحادثة فواتساب.</span><span lang="fr">Pas de photos sous la main ? Pas de souci : vous pourrez les envoyer ensuite dans la même conversation WhatsApp.</span></div>
-          <div class="full doc" data-doc="photo"><span class="lbl"><span lang="ar">صورة شخصية</span><span lang="fr">Photo d'identité</span></span>
-            <small class="hint"><span lang="ar">من القدام، خلفية بيضاء. غادي تكون فالـ Deckblatt والـ Lebenslauf.</span><span lang="fr">De face, fond blanc. Elle ira sur le Deckblatt et le Lebenslauf.</span></small>
-            <label class="drop"><input type="file" accept="image/*"><span class="thumbs"></span><span class="drop-t"><span lang="ar">📷 كليكي باش تختار التصويرة</span><span lang="fr">📷 Touchez pour choisir la photo</span></span></label>
-            </div>
-          <div class="full doc" data-doc="permis" id="doc-permis" hidden><span class="lbl"><span lang="ar">رخصة السياقة</span><span lang="fr">Permis de conduire</span></span>
-            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 تصويرة الرخصة (القدام واللور)</span><span lang="fr">📎 Photo du permis (recto-verso)</span></span></label>
-            </div>
-          <div class="full doc" data-doc="certificat"><span class="lbl"><span lang="ar">شهادة الألمانية (إلا كانت)</span><span lang="fr">Certificat d'allemand (si disponible)</span></span>
-            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 زيد الشهادة</span><span lang="fr">📎 Ajouter le certificat</span></span></label></div>
-          <div class="full doc" data-doc="attest"><span class="lbl"><span lang="ar">شهادات العمل والديبلومات (إلا كانو)</span><span lang="fr">Attestations de travail et diplômes (si disponibles)</span></span>
-            <label class="drop"><input type="file" accept="image/*,application/pdf" multiple><span class="thumbs"></span><span class="drop-t"><span lang="ar">📎 تقدر تختار بزاف ديال الملفات</span><span lang="fr">📎 Vous pouvez choisir plusieurs fichiers</span></span></label></div>
+          <div class="full" id="doc-note"><span lang="ar">📎 التصويرة الشخصية، رخصة السياقة والشهادات (تصاور ولا PDF): صيفطهم لينا فواتساب من بعد ما تصيفط المعلومات. واتساب غادي يتحل بوحدو.</span><span lang="fr">📎 Photo d'identité, permis et certificats (photos ou PDF) : envoyez-les-nous sur WhatsApp après l'envoi du formulaire. WhatsApp s'ouvrira tout seul.</span></div>
         </div>
         <div class="foot">
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
@@ -734,25 +709,16 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <span class="saved" id="saved"><span lang="ar">المعلومات كتتسجل فالتليفون ديالك حتى تصيفطها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
-      <!-- sending screen: the form and files go straight to Google (Sheet + Drive), no WhatsApp step -->
+      <!-- sending screen: the answers are saved to Google Sheet, then WhatsApp opens -->
       <div class="form step2" id="step2" hidden>
         <div class="part"><i>⏳</i><span lang="ar">كنصيفطو المعلومات ديالك…</span><span lang="fr">Envoi de vos informations…</span></div>
-        <p><span lang="ar">بقا فهاد الصفحة حتى يسالي الإرسال، ما تسدّهاش.</span><span lang="fr">Restez sur cette page jusqu'à la fin de l'envoi, ne la fermez pas.</span></p>
-        <div class="s2-bar"><span id="s2-fill"></span></div>
-        <p class="s2-count" id="s2-count"></p>
-        <div class="s2-err" id="s2-err" hidden>
-          <p id="s2-net"><span lang="ar">⚠️ شي حاجة ما وصلاتش، تأكد من الأنترنت وعاود جرب.</span><span lang="fr">⚠️ Une partie n'est pas arrivée. Vérifiez votre connexion et réessayez.</span></p>
-          <p id="s2-lost" hidden><span lang="ar">⚠️ التصاور ما بقاوش فالتليفون. رجع وزيدهم من جديد.</span><span lang="fr">⚠️ Les fichiers ne sont plus sur le téléphone. Revenez les ajouter à nouveau.</span></p>
-          <button class="btn go" type="button" id="s2-back" hidden><span lang="ar">زيد التصاور من جديد</span><span lang="fr">Ajouter les fichiers à nouveau</span></button>
-          <button class="btn go" type="button" id="s2-retry"><span lang="ar">عاود الإرسال</span><span lang="fr">Réessayer l'envoi</span></button>
-          <button class="btn soft" type="button" id="s2-skip"><span lang="ar">كمل بلا هاد الملفات</span><span lang="fr">Continuer sans ces fichiers</span></button>
-        </div>
+        <div class="s2-bar"><span></span></div>
       </div>
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p id="thx-ok"><span lang="ar">المعلومات والتصاور ديالك وصلونا. واتساب غادي يتحل دابا: كليكي على ➤ باش نبداو الملف ديالك.</span><span lang="fr">Vos informations et vos fichiers nous sont parvenus. WhatsApp va s'ouvrir : touchez ➤ pour lancer votre dossier.</span></p>
-        <p id="thx-miss" hidden><span lang="ar">المعلومات ديالك وصلونا، ولكن شي تصاور ما وصلوش. صيفطهم لينا فواتساب.</span><span lang="fr">Vos informations nous sont parvenues, mais certains fichiers manquent. Envoyez-les-nous sur WhatsApp.</span></p>
+        <p id="thx-ok"><span lang="ar">المعلومات ديالك وصلونا ✅ واتساب غادي يتحل دابا: كليكي على ➤، ومن بعد صيفط لينا التصويرة والوثائق فنفس المحادثة.</span><span lang="fr">Vos informations nous sont parvenues ✅ WhatsApp va s'ouvrir : touchez ➤, puis envoyez-nous votre photo et vos documents dans la même conversation.</span></p>
+        <p id="thx-send" hidden><span lang="ar">⚠️ الأنترنت ضعيف وما تأكدناش واش وصلونا المعلومات. واتساب غادي يتحل فيه الأجوبة ديالك: كليكي على ➤ باش توصلنا، ومن بعد صيفط التصويرة والوثائق.</span><span lang="fr">⚠️ Connexion faible : nous n'avons pas pu confirmer la réception. WhatsApp va s'ouvrir avec vos réponses : touchez ➤ pour nous les envoyer, puis envoyez votre photo et vos documents.</span></p>
         <button class="btn go" type="button" id="thx-wa"><span lang="ar">حل واتساب</span><span lang="fr">Ouvrir WhatsApp</span></button>
       </div>
 </dialog>
@@ -785,13 +751,15 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   // so WhatsApp is opened in the same page, after the pixel has had time to send.
   // On phones, whatsapp:// opens the app directly and skips the "Ouvrir l'application" page;
   // if the app doesn't open (page still visible), fall back to wa.me.
-  function goWhatsApp(text) {
+  // auto = opened by the page itself, not by a tap: on phones only try the app, so a blocked attempt
+  // leaves the thank-you screen (and its WhatsApp button) instead of jumping to the wa.me page
+  function goWhatsApp(text, auto) {
     var web = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text);
     var phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     setTimeout(function () {
       if (!phone) { location.href = web; return; }
       location.href = 'whatsapp://send?phone=' + PHONE + '&text=' + encodeURIComponent(text);
-      setTimeout(function () { if (!document.hidden) location.href = web; }, 1500);
+      if (!auto) setTimeout(function () { if (!document.hidden) location.href = web; }, 1500);
     }, 400);
   }
   // "ask before ordering" buttons: open WhatsApp with the chosen question
@@ -880,92 +848,14 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     });
   });
 
-  // driving licence: show categories and the licence upload only when "yes"
+  // driving licence: show the categories only when "yes"
   function permisUI() {
-    var yes = form.querySelector('[name=permis_ok][value=oui]').checked;
-    document.getElementById('cats').hidden = !yes;
-    document.getElementById('doc-permis').hidden = !yes;
+    document.getElementById('cats').hidden = !form.querySelector('[name=permis_ok][value=oui]').checked;
   }
   form.querySelectorAll('[name=permis_ok]').forEach(function (r) { r.addEventListener('change', permisUI); });
-  // show the upload boxes when files can reach us: saved to Google Drive (SAVE_URL), or shared to WhatsApp from the phone
-  var CAN = !!(SAVE_URL && window.File && window.FileReader);
-  try { CAN = CAN || !!(navigator.canShare && window.File && navigator.canShare({ files: [new File(['x'], 'x.jpg', { type: 'image/jpeg' })] })); } catch (e) {}
-  if (!CAN) form.querySelectorAll('.doc').forEach(function (d) { d.classList.add('nodoc'); });
-  // Instagram/Facebook in-app browsers on Android block the picker when PDFs are allowed
-  // ("autoriser tous les contenus multimédias"); photos only always opens the gallery
-  var INAPP = /Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent), ANDROID = /Android/i.test(navigator.userAgent);
-  if (INAPP) {
-    form.querySelectorAll('.doc input[type=file]').forEach(function (i) { i.accept = 'image/*'; });
-    document.getElementById('inapp').hidden = false;
-    if (ANDROID) document.getElementById('doc-inapp').hidden = false; // the permission message is an Android one
-    var op = document.getElementById('inapp-open');
-    if (ANDROID) {
-      // Android: an intent link opens the same page in Chrome (falls back to the normal link)
-      op.href = 'intent://' + location.host + location.pathname + location.search + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(location.href) + ';end';
-    } else {
-      // iPhone: no link can leave the Instagram browser; explain the ⋯ menu instead
-      op.hidden = true; document.querySelector('#inapp .inapp-ios').hidden = false;
-    }
-  }
   var noexp = form.querySelector('[name=noexp]');
   function expUI() { expRep.classList.toggle('off', noexp.checked); }
   noexp.addEventListener('change', expUI);
-
-  // documents: kept in memory and in IndexedDB, so they survive the trip to WhatsApp
-  var files = { photo: [], permis: [], certificat: [], attest: [] };
-  var DB = null;
-  try {
-    var rq = indexedDB.open('procv', 1);
-    rq.onupgradeneeded = function () { rq.result.createObjectStore('kv'); };
-    rq.onsuccess = function () { DB = rq.result; dbGet('docs', function (v) { if (v) { files = v; drawDocs(); } resume(); }); };
-    rq.onerror = function () { resume(); };
-  } catch (e) { setTimeout(resume, 0); }
-  // IndexedDB stuck: resume anyway; startSend notices if saved files did not come back
-  setTimeout(resume, 4000);
-  function dbPut(k, v) { try { DB.transaction('kv', 'readwrite').objectStore('kv').put(v, k); } catch (e) {} }
-  function dbGet(k, cb) { try { var r = DB.transaction('kv').objectStore('kv').get(k); r.onsuccess = function () { cb(r.result); }; r.onerror = function () { cb(null); }; } catch (e) { cb(null); } }
-  function thumb(f, i, doc) {
-    var s = document.createElement('span'); s.className = 'th';
-    if (/^image\//.test(f.type)) { var im = document.createElement('img'); im.src = URL.createObjectURL(f); im.alt = ''; s.appendChild(im); }
-    else { var p = document.createElement('em'); p.textContent = '📄 ' + (f.name || 'PDF'); s.appendChild(p); }
-    if (doc) { var x = document.createElement('button'); x.type = 'button'; x.className = 'thx'; x.textContent = '×'; x.dataset.doc = doc; x.dataset.i = i; s.appendChild(x); }
-    return s;
-  }
-  function drawDocs() {
-    form.querySelectorAll('.doc').forEach(function (d) {
-      var k = d.dataset.doc, box = d.querySelector('.thumbs');
-      box.innerHTML = '';
-      files[k].forEach(function (f, i) { box.appendChild(thumb(f, i, k)); });
-      d.classList.toggle('has', files[k].length > 0);
-    });
-  }
-  form.querySelectorAll('.doc input[type=file]').forEach(function (inp) {
-    inp.addEventListener('change', function () {
-      var d = inp.closest('.doc'), k = d.dataset.doc, list = Array.prototype.slice.call(inp.files || []);
-      inp.value = '';
-      // same limits as the Google script: 15 MB per file (photos are shrunk before sending), 15 files per order
-      var big = list.filter(function (f) { return !/^image\/(jpeg|png|webp)$/.test(f.type) && f.size > 15e6; });
-      list = list.filter(function (f) { return big.indexOf(f) < 0; });
-      var room = 15 - allFiles().length + (k === 'photo' ? files.photo.length : 0);
-      var tooMany = list.length > room; if (tooMany) list = list.slice(0, Math.max(0, room));
-      var w = document.getElementById('doc-warn');
-      w.hidden = !(big.length || tooMany);
-      w.querySelector('[lang=ar]').textContent = big.length ? 'الملف كبير بزاف (أكثر من 15 ميغا): ' + big.map(function (f) { return f.name; }).join('، ') + '. صيفطو من بعد فواتساب.' : 'وصلتي للحد: 15 ملف فالطلب.';
-      w.querySelector('[lang=fr]').textContent = big.length ? 'Fichier trop lourd (plus de 15 Mo) : ' + big.map(function (f) { return f.name; }).join(', ') + '. Envoyez-le ensuite sur WhatsApp.' : 'Limite atteinte : 15 fichiers par demande.';
-      if (!list.length) return;
-      files[k] = k === 'photo' ? list.slice(0, 1) : files[k].concat(list);
-      d.classList.remove('bad');
-      drawDocs(); if (DB) dbPut('docs', files);
-    });
-  });
-  form.addEventListener('click', function (e) {
-    var x = e.target.closest('.thx'); if (!x) return;
-    e.preventDefault(); e.stopPropagation();
-    files[x.dataset.doc].splice(+x.dataset.i, 1);
-    drawDocs(); if (DB) dbPut('docs', files);
-  });
-  function permisOn() { return form.querySelector('[name=permis_ok][value=oui]').checked; }
-  function allFiles() { return [].concat(files.photo, permisOn() ? files.permis : [], files.certificat, files.attest); }
 
   function phs() {
     form.querySelectorAll('[data-ph]').forEach(function (el) { el.placeholder = el.dataset.ph; });
@@ -1108,15 +998,10 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     head('8- رخصة السياقة', '8- Mobilité');
     out.push(o.permis_ok === 'oui' ? (ar ? 'إيه' : 'Oui') + (o.permis.length ? ' (' + o.permis.join(', ') + ')' : '') : (ar ? 'لا' : 'Non'));
     if (o.loisirs) { head('9- الهوايات', '9- Loisirs'); out.push(o.loisirs); }
-    var docs = [];
-    if (files.photo.length) docs.push(ar ? 'الصورة الشخصية' : "Photo d'identité");
-    if (o.permis_ok === 'oui' && files.permis.length) docs.push(ar ? 'رخصة السياقة' : 'Permis de conduire');
-    if (files.certificat.length) docs.push(ar ? 'شهادة الألمانية' : "Certificat d'allemand");
-    if (files.attest.length) docs.push(ar ? 'شهادات العمل والديبلومات' : 'Attestations et diplômes');
     var todo = [ar ? 'الصورة الشخصية' : "Photo d'identité"];
     if (o.permis_ok === 'oui') todo.push(ar ? 'رخصة السياقة' : 'Permis de conduire');
-    if (SAVE_URL && docs.length) out.push('', '📎 ' + (ar ? 'الوثائق المرفوعة فالموقع: ' : 'Fichiers envoyés par le site : ') + docs.join(ar ? '، ' : ', '));
-    else out.push('', '📎 ' + (ar ? 'غادي نصيفط من بعد فواتساب: ' : 'J’enverrai ensuite sur WhatsApp : ') + (docs.length ? docs : todo).join(ar ? '، ' : ', '));
+    todo.push(ar ? 'الشهادات' : 'Certificats');
+    out.push('', '📎 ' + (ar ? 'غادي نصيفط فواتساب: ' : 'J’envoie sur WhatsApp : ') + todo.join(ar ? '، ' : ', '));
     return out.join('\n');
   }
 
@@ -1147,31 +1032,12 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
-    var text = message(o);
-    // no Google link configured: fall back to sending the answers through WhatsApp
-    if (!SAVE_URL) { goWhatsApp(text); return; }
-    // a new submit is a new order: fresh id, nothing marked as uploaded yet
-    // (except when the client came back from the sending screen to add lost files)
-    if (!keepId) upDone = {};
-    try {
-      if (!keepId) ['procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); });
-      keepId = false;
-      localStorage.setItem('procv-n', String(sendList().length)); // lets a reload notice files that did not come back
-      localStorage.setItem('procv-step2', String(Date.now()));
-    } catch (err) {}
-    startSend();
+    sendOrder(o, message(o));
   });
 
-  // ---- copy of the order to Google (Sheet + Drive), so nothing is lost if WhatsApp is never sent ----
-  function orderId() {
-    var id = ''; try { id = localStorage.getItem('procv-id') || ''; } catch (err) {}
-    if (!id) {
-      id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-      try { localStorage.setItem('procv-id', id); } catch (err) {}
-    }
-    return id;
-  }
-  // text/plain body: no preflight. The Apps Script answer is readable (CORS *), so we know the row/file was saved.
+  // ---- the answers go to Google Sheet (+ email); then WhatsApp opens, where the client sends photos and PDFs ----
+  function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  // text/plain body: no preflight. The Apps Script answer is readable (CORS *), so we know the row was saved.
   // If a browser blocks reading it, send blind like before so the order still goes out.
   function post(obj) {
     var body = JSON.stringify(obj);
@@ -1179,121 +1045,35 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body }).then(function () { return { ok: true }; });
     }).then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'not saved'); return j; });
   }
-  var upDone = {};
-  try { upDone = JSON.parse(localStorage.getItem('procv-up') || '{}'); } catch (err) {}
-  function fileKey(f) { return [f.name, f.size, f.lastModified].join('|'); }
-  // phone photos are often 3-8 MB: shrink big images to 2000 px so they upload fast on mobile data
-  function shrink(f) {
-    if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size < 1.5e6 || !window.createImageBitmap) return Promise.resolve(f);
-    return createImageBitmap(f).then(function (bm) {
-      var k = Math.min(1, 2000 / Math.max(bm.width, bm.height)), c = document.createElement('canvas');
-      c.width = Math.round(bm.width * k); c.height = Math.round(bm.height * k);
-      c.getContext('2d').drawImage(bm, 0, 0, c.width, c.height);
-      return new Promise(function (r) { c.toBlob(function (b) { r(b && b.size < f.size ? new File([b], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }) : f); }, 'image/jpeg', 0.88); });
-    }).catch(function () { return f; });
-  }
-  function b64(f) {
-    return new Promise(function (r, j) {
-      var rd = new FileReader();
-      rd.onload = function () { r(String(rd.result).split(',')[1] || ''); };
-      rd.onerror = j; rd.readAsDataURL(f);
-    });
-  }
-  function sendList() {
-    var list = [];
-    ['photo', 'permis', 'certificat', 'attest'].forEach(function (k) {
-      if (k === 'permis' && !permisOn()) return;
-      files[k].forEach(function (f) { list.push([k, f]); });
-    });
-    return list;
-  }
-  // uploads the files not sent yet; onOne(ok) is called after each file. Resolves to the number that failed.
-  function uploadFiles(id, onOne) {
-    var list = sendList().filter(function (x) { return !upDone[id + '|' + fileKey(x[1])]; });
-    var failed = 0, next = 0;
-    function one(x) {
-      var key = id + '|' + fileKey(x[1]);
-      return shrink(x[1]).then(function (f) {
-        return b64(f).then(function (data) { return post({ type: 'file', id: id, kind: x[0], name: f.name, mime: f.type, b64: data }); });
-      }).then(function () {
-        upDone[key] = 1; try { localStorage.setItem('procv-up', JSON.stringify(upDone)); } catch (err) {}
-        if (onOne) onOne(true);
-      }, function () { failed++; if (onOne) onOne(false); });
-    }
-    // two at a time: phones on mobile data stay fast, and the Google script is not flooded
-    function lane() { return next < list.length ? one(list[next++]).then(lane) : Promise.resolve(); }
-    return Promise.all([lane(), lane()]).then(function () { return failed; });
-  }
-
-  // ---- sending screen: form + files go straight to Google (Sheet, Drive, email); no WhatsApp step for the client ----
-  var sending = false, formSent = false;
-  function startSend() {
+  var sending = false, doneMsg = '';
+  function sendOrder(o, text) {
     if (sending) return; sending = true;
-    var o = data(), text = message(o), id = orderId(), all = sendList(), total = all.length;
-    var done = all.filter(function (x) { return upDone[id + '|' + fileKey(x[1])]; }).length;
-    var fill = document.getElementById('s2-fill'), count = document.getElementById('s2-count'), ar = function () { return h.dataset.l === 'ar'; };
-    function draw() {
-      var steps = total + 1, now = done + (formSent ? 1 : 0);
-      fill.style.width = Math.round(now / steps * 100) + '%';
-      count.textContent = total ? (ar() ? 'التصاور والوثائق: ' : 'Photos et documents : ') + done + ' / ' + total : '';
-    }
-    // after a reload, files saved on the phone may not come back (IndexedDB slow or unsupported)
-    var expected = 0; try { expected = +localStorage.getItem('procv-n') || 0; } catch (err) {}
-    var lost = total < expected;
-    form.hidden = true; document.getElementById('thanks').hidden = true; step2.hidden = false;
-    document.getElementById('s2-err').hidden = true; draw(); fdTop();
-    // tell Google how many files are coming, so the email waits for them and attaches them
-    var p1 = post({ type: 'form', id: id, data: o, message: text, nfiles: Math.max(total, expected) }).then(function () { formSent = true; draw(); return 0; }, function () { return 1; });
-    var p2 = uploadFiles(id, function (ok) { if (ok) done++; draw(); });
-    Promise.all([p1, p2]).then(function (r) {
-      sending = false;
-      if (r[0] + r[1] || lost) {
-        document.getElementById('s2-err').hidden = false;
-        document.getElementById('s2-net').hidden = lost && !(r[0] + r[1]);
-        document.getElementById('s2-lost').hidden = !lost;
-        document.getElementById('s2-back').hidden = !lost;
-        return;
+    form.hidden = true; document.getElementById('thanks').hidden = true; step2.hidden = false; fdTop();
+    var ar = h.dataset.l === 'ar', nom = (o.nom || '').trim();
+    var short = ar
+      ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' + (nom ? '\nالسمية: ' + nom : '') + '\nالمعلومات صيفطتهم فالموقع، ودابا غادي نصيفط التصويرة والوثائق هنا.'
+      : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅' + (nom ? '\nNom : ' + nom : '') + '\nInformations envoyées par le site ; j’envoie ici ma photo et mes documents.';
+    var saved = SAVE_URL ? post({ type: 'form', id: newId(), data: o, message: text, nfiles: 0 }) : Promise.reject(new Error('off'));
+    // wait up to 25 s for Google (it also sends the email before answering).
+    // Not confirmed: the full answers go in the WhatsApp message, and they stay on the phone in case it is not sent.
+    var late = new Promise(function (r, j) { setTimeout(function () { j(new Error('timeout')); }, 25000); });
+    Promise.race([saved, late]).then(function () { return true; }, function () { return false; }).then(function (ok) {
+      sending = false; doneMsg = ok ? short : text;
+      if (ok) {
+        try { localStorage.removeItem(KEY); } catch (err) {}
+        form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
+        go(1);
       }
-      finish(false);
+      document.getElementById('thx-ok').hidden = !ok; document.getElementById('thx-send').hidden = ok;
+      step2.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
+      goWhatsApp(doneMsg, true); // WhatsApp opens with the message ready; the client taps ➤ and sends the photos there
     });
-  }
-  // short WhatsApp message the client sends once everything reached Google (the details are in Gmail / Sheet)
-  var doneMsg = '';
-  function finish(skipped) {
-    var ar = h.dataset.l === 'ar', nom = (data().nom || '').trim();
-    doneMsg = ar
-      ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' + (nom ? '\nالسمية: ' + nom : '') + (skipped ? '\nشي تصاور غادي نصيفطهم هنا.' : '\nالمعلومات والتصاور صيفطتهم فالموقع.')
-      : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅' + (nom ? '\nNom : ' + nom : '') + (skipped ? '\nJ’envoie ici les fichiers qui manquent.' : '\nInformations et fichiers envoyés par le site.');
-    try { ['procv-step2', 'procv-n', KEY, 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); } catch (err) {}
-    upDone = {}; formSent = false; keepId = false;
-    files = { photo: [], permis: [], certificat: [], attest: [] }; if (DB) dbPut('docs', files);
-    form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI(); drawDocs();
-    go(1);
-    document.getElementById('thx-ok').hidden = skipped; document.getElementById('thx-miss').hidden = !skipped;
-    step2.hidden = true; form.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
-    goWhatsApp(doneMsg); // opens WhatsApp with the message ready; the client only taps ➤
   }
   document.getElementById('thx-wa').addEventListener('click', function () {
     goWhatsApp(doneMsg || (h.dataset.l === 'ar' ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅'));
   });
-  var keepId = false;
-  document.getElementById('s2-retry').addEventListener('click', startSend);
-  document.getElementById('s2-skip').addEventListener('click', function () {
-    // the form itself must reach Google; only the files may be skipped
-    if (!formSent) { startSend(); return; }
-    finish(true);
-  });
-  // files lost after a reload: go back to the photo step to add them again, same order
-  document.getElementById('s2-back').addEventListener('click', function () {
-    keepId = true; step2.hidden = true; form.hidden = false; go(NSTEP); fdTop();
-  });
-  // page reloaded or reopened during sending: continue where it stopped
-  var resumed = false;
-  function resume() {
-    if (resumed) return; resumed = true;
-    var t = 0; try { t = +localStorage.getItem('procv-step2') || 0; } catch (err) {}
-    if (t && Date.now() - t < 6 * 3600e3 && SAVE_URL) { openForm(null, true); startSend(); }
-  }
+  // clean what the upload version of the form left on the phone
+  try { ['procv-step2', 'procv-n', 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); indexedDB.deleteDatabase('procv'); } catch (err) {}
 go(st0);
 
   // order buttons -> form dialog
