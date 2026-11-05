@@ -8,7 +8,7 @@
 <link rel="icon" href="assets/brand/logo-96.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <script>
   (function () {
     var l = 'ar';
@@ -30,9 +30,10 @@
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
+n.queue=[];
+// the pixel script is heavy (~1 MB): load it once the page is shown; events wait in the queue
+var go=function(){t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)};
+if(b.readyState==='complete')setTimeout(go,300);else f.addEventListener('load',function(){setTimeout(go,300)})}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1814127609805768');
 fbq('track', 'PageView');
@@ -455,11 +456,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         </ul>
       </div>
       <div class="stack">
-        <img class="s1" src="assets/cv/l3.jpg" alt="Lebenslauf LKW-Fahrer" width="607" height="858">
-        <img class="s2" src="assets/cv/p3.jpg" alt="Lebenslauf Kfz-Mechatroniker" width="900" height="1270">
-        <img class="s3" src="assets/cv/l1.jpg" alt="Deckblatt Bewerbung LKW-Fahrer" width="607" height="858">
+        <img class="s1" src="assets/cv/l3.webp" alt="Lebenslauf LKW-Fahrer" width="607" height="858">
+        <img class="s2" src="assets/cv/p3.webp" alt="Lebenslauf Kfz-Mechatroniker" width="900" height="1270">
+        <img class="s3" src="assets/cv/l1.webp" alt="Deckblatt Bewerbung LKW-Fahrer" width="607" height="858">
         <span class="tag"><span lang="ar">ملف حقيقي لزبون عندنا</span><span lang="fr">Dossier réel d'un client</span></span>
-        <div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="ring-hero" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#ring-hero" textLength="498" lengthAdjust="spacing">PRO CV · BEWERBUNG AUF DEUTSCH · 200 DH ·</textPath></text></svg><img src="assets/brand/logo.png" alt="" width="160" height="160"></div>
+        <div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="ring-hero" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#ring-hero" textLength="498" lengthAdjust="spacing">PRO CV · BEWERBUNG AUF DEUTSCH · 200 DH ·</textPath></text></svg><img src="assets/brand/logo.webp" alt="" width="160" height="160"></div>
       </div>
     </div>
   </section>
@@ -484,17 +485,17 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <button role="tab" aria-selected="false" data-t="kfz">Kfz-Mechatroniker</button>
       </div>
       <div class="pages" id="t-lkw">
-        <figure><button type="button" data-src="assets/cv/l1.jpg"><img src="assets/cv/l1.jpg" alt="Deckblatt" loading="lazy" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/l2.jpg"><img src="assets/cv/l2.jpg" alt="Anschreiben" loading="lazy" width="607" height="858"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/l3.jpg"><img src="assets/cv/l3.jpg" alt="Lebenslauf" loading="lazy" width="607" height="858"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/l4.jpg"><img src="assets/cv/l4.jpg" alt="Vielen Dank" loading="lazy" width="607" height="858"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l1.webp"><img src="assets/cv/l1.webp" alt="Deckblatt" loading="lazy" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l2.webp"><img src="assets/cv/l2.webp" alt="Anschreiben" loading="lazy" width="607" height="858"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l3.webp"><img src="assets/cv/l3.webp" alt="Lebenslauf" loading="lazy" width="607" height="858"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l4.webp"><img src="assets/cv/l4.webp" alt="Vielen Dank" loading="lazy" width="607" height="858"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
       </div>
       <div class="pages" id="t-kfz" hidden>
-        <figure><button type="button" data-src="assets/cv/p1.jpg"><img src="assets/cv/p1.jpg" alt="Deckblatt" loading="lazy" width="900" height="1270"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/p2.jpg"><img src="assets/cv/p2.jpg" alt="Anschreiben" loading="lazy" width="900" height="1270"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/p3.jpg"><img src="assets/cv/p3.jpg" alt="Lebenslauf" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/p4.jpg"><img src="assets/cv/p4.jpg" alt="Lebenslauf Seite 2" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf (2)</b> · <span lang="ar">السيرة الذاتية (2)</span><span lang="fr">CV (2)</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/p5.jpg"><img src="assets/cv/p5.jpg" alt="Vielen Dank" loading="lazy" width="900" height="1270"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p1.webp"><img src="assets/cv/p1.webp" alt="Deckblatt" loading="lazy" width="900" height="1270"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p2.webp"><img src="assets/cv/p2.webp" alt="Anschreiben" loading="lazy" width="900" height="1270"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p3.webp"><img src="assets/cv/p3.webp" alt="Lebenslauf" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p4.webp"><img src="assets/cv/p4.webp" alt="Lebenslauf Seite 2" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf (2)</b> · <span lang="ar">السيرة الذاتية (2)</span><span lang="fr">CV (2)</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/p5.webp"><img src="assets/cv/p5.webp" alt="Vielen Dank" loading="lazy" width="900" height="1270"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
       </div>
       <p class="note"><span lang="ar">خبّينا الوجوه والمعلومات الشخصية ديال الزبناء.</span><span lang="fr">Visages et coordonnées des clients masqués.</span></p>
     </div>
@@ -523,9 +524,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         </div>
       </div>
       <div class="cards">
-        <figure class="card rv"><button type="button" data-src="assets/clients/a.jpg"><img src="assets/clients/a.jpg" alt="Messages vocaux d'un client satisfait" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">زبون فرحان بالملف ديالو</span><span lang="fr">Un client satisfait</span></figcaption></figure>
-        <figure class="card rv"><button type="button" data-src="assets/clients/b.jpg"><img src="assets/clients/b.jpg" alt="Virement de 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء 200 درهم بالتحويل البنكي</span><span lang="fr">Paiement de 200 DH par virement</span></figcaption></figure>
-        <figure class="card rv"><button type="button" data-src="assets/clients/c.jpg"><img src="assets/clients/c.jpg" alt="Reçu Cash Plus 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء بـ Cash Plus</span><span lang="fr">Paiement par Cash Plus</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/a.webp"><img src="assets/clients/a.webp" alt="Messages vocaux d'un client satisfait" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">زبون فرحان بالملف ديالو</span><span lang="fr">Un client satisfait</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/b.webp"><img src="assets/clients/b.webp" alt="Virement de 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء 200 درهم بالتحويل البنكي</span><span lang="fr">Paiement de 200 DH par virement</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/c.webp"><img src="assets/clients/c.webp" alt="Reçu Cash Plus 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء بـ Cash Plus</span><span lang="fr">Paiement par Cash Plus</span></figcaption></figure>
       </div>
       <div class="cta-row rv">
         <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي بحالهم</span><span lang="fr">Je veux mon dossier aussi</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
@@ -549,7 +550,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           </ol>
         </div>
         <div class="scan rv" aria-hidden="true">
-          <img src="assets/cv/p3.jpg" alt="" width="900" height="1270" loading="lazy">
+          <img src="assets/cv/p3.webp" alt="" width="900" height="1270" loading="lazy">
           <div class="bar"></div>
           <div class="read">
             <div class="t">ATS liest den Lebenslauf:</div>
@@ -614,7 +615,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
   <section class="block final dark" id="infos">
     <div class="wrap rv">
-      <div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="ring-final" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#ring-final" textLength="498" lengthAdjust="spacing">PRO CV · BEWERBUNG AUF DEUTSCH · 200 DH ·</textPath></text></svg><img src="assets/brand/logo.png" alt="" width="160" height="160"></div>
+      <div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="ring-final" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#ring-final" textLength="498" lengthAdjust="spacing">PRO CV · BEWERBUNG AUF DEUTSCH · 200 DH ·</textPath></text></svg><img src="assets/brand/logo.webp" alt="" width="160" height="160"></div>
       <h2><span lang="ar">واجد تطلب ملفك؟</span><span lang="fr">Prêt à commander ?</span></h2>
       <p class="lead"><span lang="ar">عمّر الاستمارة (5 مراحل قصار، تقريبا 5 دقايق)، بالدارجة ولا بالفرنسية. المعلومات كتبقى مسجلة إلا خرجتي، وكتوصلنا مرتبة فواتساب، والملف ديالك يقدر يكون جاهز غدا.</span><span lang="fr">Remplissez le formulaire (5 étapes courtes, environ 5 min), en darija ou en français. Vos réponses restent enregistrées si vous quittez, elles nous arrivent sur WhatsApp, et votre dossier peut être prêt demain.</span></p>
       <a class="btn go order" href="#infos"><span lang="ar">عمّر الاستمارة دابا</span><span lang="fr">Remplir le formulaire</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
@@ -634,7 +635,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
 <footer>
   <div class="wrap">
-    <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo.png" alt="PRO CV" width="60" height="60"></a>
+    <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo.webp" alt="PRO CV" width="60" height="60"></a>
     <span><span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
     <span class="links"><a class="tel-link ltr" href="#">07 06 82 84 46</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
   </div>
