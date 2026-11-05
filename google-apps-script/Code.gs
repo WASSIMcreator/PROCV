@@ -2,7 +2,7 @@
  * PRO CV – saves every order form sent from the site.
  *
  * - One row per client in the "Commandes" sheet (all answers + the full WhatsApp text).
- * - Photos and documents go into Drive: "PRO CV – Clients" / <date name phone>.
+ * - Photos and documents come by WhatsApp; the script refuses files.
  * - You get one email per new client, with the photos and documents attached
  *   (sent when the last photo arrives, or after 10 minutes at most).
  *
@@ -15,23 +15,50 @@ var MAX_FILE_MB = 15;
 var MAX_FILES_PER_ORDER = 15;
 var HEAD = ['Date', 'ID', 'Nom', 'Téléphone', 'Email', 'Poste', 'Type', 'Allemand', 'Ville', 'Fichiers reçus', 'Dossier Drive', 'Message complet'];
 
-// The site reads this answer: {ok:false} makes it show "réessayer" instead of "merci".
+// Anti-spam: anyone who finds the /exec link can post to it, so new orders are capped.
+var MAX_BODY_CHARS = 100000;   // a real form is a few KB
+var MAX_NEW_PER_HOUR = 20;     // new orders per hour, all clients together
+var MAX_NEW_PER_PHONE = 3;     // new orders per phone number in 6 hours
+
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
-    lock.waitLock(60000);
-    var p = JSON.parse(e.postData.contents);
+    var raw = (e && e.postData && e.postData.contents) || '';
+    if (raw.length > MAX_BODY_CHARS) return out({ ok: false, error: 'too big' });
+    var p = JSON.parse(raw);
+    // photos and documents now come by WhatsApp: the script no longer takes files
+    if (p.type !== 'form') return out({ ok: false, error: 'not accepted' });
+    var o = p.data || {};
+    // hidden field that people never see: only robots fill it. Answer ok so they do not retry.
+    if (o.pc_check) return out({ ok: true });
+    var digits = String(o.tel || '').replace(/\D/g, '');
+    if (!String(o.nom || '').trim() || digits.length < 8 || digits.length > 15) return out({ ok: false, error: 'missing name or phone' });
     var id = String(p.id || '').replace(/[^\w-]/g, '').slice(0, 40);
     if (!id) return out({ ok: false, error: 'no id' });
-    var res = null;
-    if (p.type === 'form') saveForm(id, p);
-    else if (p.type === 'file') res = saveFile(id, p);
-    return out(res || { ok: true });
+    lock.waitLock(60000);
+    var limit = spamLimit(id, digits);
+    if (limit) return out({ ok: false, error: limit });
+    saveForm(id, p);
+    return out({ ok: true });
   } catch (err) {
     return out({ ok: false, error: String(err) });
   } finally {
     try { lock.releaseLock(); } catch (e2) {}
   }
+}
+
+// Counts only new orders (an id already in the sheet is the same client sending again).
+// Returns an error text when a cap is reached, else ''.
+function spamLimit(id, digits) {
+  if (findRow(sheet(), id)) return '';
+  var cache = CacheService.getScriptCache();
+  var hourKey = 'H_' + Utilities.formatDate(new Date(), 'Africa/Casablanca', 'yyyyMMddHH'), phoneKey = 'T_' + digits.slice(-9);
+  var nHour = +(cache.get(hourKey) || 0), nPhone = +(cache.get(phoneKey) || 0);
+  if (nHour >= MAX_NEW_PER_HOUR) return 'too many orders this hour';
+  if (nPhone >= MAX_NEW_PER_PHONE) return 'too many orders for this phone';
+  cache.put(hourKey, String(nHour + 1), 3600);
+  cache.put(phoneKey, String(nPhone + 1), 21600);
+  return '';
 }
 
 // Opening the /exec link in a browser just says it works.
@@ -151,30 +178,6 @@ function ensureTrigger() {
     var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'flushPending'; });
     if (!has) ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(10).create();
   } catch (e) { console.warn('trigger: ' + e); }
-}
-
-// Returns {ok:false} when a file is refused, so the site can tell the client.
-function saveFile(id, p) {
-  var folder = orderFolder(id, null);
-  var n = countFiles(folder);
-  var bytes = Utilities.base64Decode(p.b64 || '');
-  if (!bytes.length) return { ok: false, error: 'empty file' };
-  if (bytes.length > MAX_FILE_MB * 1024 * 1024) return { ok: false, error: 'file too big' };
-  var mime = /^(image\/[\w.+-]+|application\/pdf)$/.test(p.mime) ? p.mime : 'application/octet-stream';
-  var name = (p.kind || 'doc') + ' - ' + String(p.name || 'fichier').replace(/[\\\/:*?"<>|]/g, '_').slice(0, 80);
-  // the site may retry a file that already arrived: skip exact duplicates (same name and size)
-  var same = folder.getFilesByName(name);
-  while (same.hasNext()) if (same.next().getSize() === bytes.length) return null;
-  if (n >= MAX_FILES_PER_ORDER) return { ok: false, error: 'too many files' };
-  folder.createFile(Utilities.newBlob(bytes, mime, name));
-
-  var sh = sheet(), r = findRow(sh, id);
-  if (r) sh.getRange(r, 10).setValue(n + 1);
-
-  // last announced photo arrived: send the email now
-  var props = PropertiesService.getScriptProperties();
-  if (props.getProperty('P_' + id) && n + 1 >= +(props.getProperty('N_' + id) || 0)) trySend(id);
-  return null;
 }
 
 // ---- helpers ----

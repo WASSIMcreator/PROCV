@@ -360,6 +360,7 @@ html.only-form dialog.fd.inline .fd-top { position: static; border-radius: 18px 
 .thumbs em { display: grid; place-items: center; width: 64px; height: 80px; padding: 4px; font-style: normal; font-size: 11px; text-align: center; overflow: hidden; word-break: break-all; border-radius: 8px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
 .thumbs .thx { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: var(--bad); color: #fff; font: 700 15px/1 var(--font); cursor: pointer; }
 .thumbs.big { justify-content: center; }
+.hp { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
 .step2 { display: grid; gap: 16px; }
 .step2[hidden] { display: none; }
 .step2 .part { display: flex; }
@@ -649,6 +650,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   </div>
   <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
 <form class="form" id="order" novalidate>
+        <div class="hp" aria-hidden="true"><label>Ne pas remplir <input type="text" name="pc_check" tabindex="-1" autocomplete="off"></label></div>
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
         <p class="prep" id="prep"><span lang="ar">وجّد قبل ما تبدا: تواريخ الخدمة والدراسة (الشهر والعام كافيين) وتصويرة ليك من القدام. إلا خرجتي، المعلومات ديالك كتبقى مسجلة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">

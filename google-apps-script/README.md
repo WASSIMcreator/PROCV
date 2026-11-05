@@ -39,6 +39,18 @@ et le lien Drive des photos (les fichiers eux-mêmes restent dans Drive).
 
 Sans ces deux propriétés, rien n'est envoyé sur WhatsApp (l'email marche toujours).
 
+## Protection anti-spam
+
+Le lien `/exec` est visible dans le code du site, donc n'importe qui peut lui envoyer des données.
+Le script refuse :
+- les fichiers (les photos et documents arrivent par WhatsApp) ;
+- les formulaires sans nom ou sans téléphone, et les envois trop gros ;
+- les robots qui remplissent le champ caché `pc_check` ;
+- plus de **20** nouvelles commandes par heure, et plus de **3** par numéro de téléphone en 6 h
+  (à changer en haut de `Code.gs` : `MAX_NEW_PER_HOUR`, `MAX_NEW_PER_PHONE`).
+
+Un client refusé envoie quand même ses réponses dans WhatsApp : rien n'est perdu.
+
 ## Modifier le script plus tard
 
 Après un changement dans `Code.gs`, **dans cet ordre** :
