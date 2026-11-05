@@ -656,7 +656,6 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div><label><span class="req"><span lang="ar">سمية الخدمة ولا التكوين</span><span lang="fr">Nom du poste ou formation</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><span class="req lbl"><span lang="ar">النوع</span><span lang="fr">Type</span></span>
             <div class="chips" style="margin-top:8px"><label><input type="radio" name="but" value="Arbeit" required> Arbeit <span lang="ar">(خدمة)</span><span lang="fr">(emploi)</span></label><label><input type="radio" name="but" value="Ausbildung"> Ausbildung <span lang="ar">(تكوين مهني)</span><span lang="fr">(formation)</span></label></div><span class="err"><span lang="ar">اختار واحد</span><span lang="fr">Choisissez une option</span></span></div>
-          <div class="full"><label><span><span lang="ar">رابط الإعلان (إلا كان)</span><span lang="fr">Lien de l'annonce (si vous l'avez)</span></span><input type="url" name="annonce" data-ph="https://" dir="ltr" autocomplete="off"></label></div>
 
           <div class="part"><i>2</i><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></div>
           <div class="full"><span class="req lbl"><span lang="ar">المستوى ديالك</span><span lang="fr">Votre niveau</span></span>
@@ -978,7 +977,6 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     head('2- الخدمة ولا التكوين', '2- Poste / formation');
     line('السمية', 'Nom', o.metier);
     line('النوع', 'Type', o.but);
-    line('رابط الإعلان', "Lien de l'annonce", o.annonce);
     head('3- مستوى الألمانية', "3- Niveau d'allemand");
     line('المستوى', 'Niveau', lvl(o.allemand));
     line('الشهادة', 'Certificat', o.certificat);
