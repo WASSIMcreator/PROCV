@@ -716,7 +716,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرا! توصلنا بالطلب ديالك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p id="thx-ok"><span lang="ar">المعلومات ديالك وصلونا ✅ كليكي على « حل واتساب » وصيفط الميساج، ومن بعد صيفط لينا التصويرة والوثائق فنفس المحادثة.</span><span lang="fr">Vos informations nous sont parvenues ✅ Touchez « Ouvrir WhatsApp » et envoyez le message, puis votre photo et vos documents dans la même conversation.</span></p>
+        <p id="thx-ok"><span lang="ar">المعلومات ديالك تصيفطو ✅ واتساب كيتحل دابا: كليكي على ➤ باش يوصلنا الميساج، ومن بعد صيفط لينا التصويرة والوثائق فنفس المحادثة. إلا ما تحلش، كليكي على « حل واتساب ».</span><span lang="fr">Vos informations sont envoyées ✅ WhatsApp s'ouvre : touchez ➤ pour nous envoyer le message, puis votre photo et vos documents dans la même conversation. S'il ne s'ouvre pas, touchez « Ouvrir WhatsApp ».</span></p>
         <p id="thx-send" hidden><span lang="ar">⚠️ الأنترنت ضعيف وما تأكدناش واش وصلونا المعلومات. كليكي على « حل واتساب »: الأجوبة ديالك غادي تكون فالميساج، صيفطها باش توصلنا، ومن بعد صيفط التصويرة والوثائق.</span><span lang="fr">⚠️ Connexion faible : nous n'avons pas pu confirmer la réception. Touchez « Ouvrir WhatsApp » : vos réponses seront dans le message, envoyez-le, puis votre photo et vos documents.</span></p>
         <button class="btn go" type="button" id="thx-wa"><span lang="ar">حل واتساب</span><span lang="fr">Ouvrir WhatsApp</span></button>
       </div>
@@ -1052,29 +1052,29 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body }).then(function () { return { ok: true }; });
     }).then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'not saved'); return j; });
   }
+  // Background send that survives the page leaving for WhatsApp (beacon, else keepalive fetch, else normal post).
+  function postNow(obj) {
+    var body = JSON.stringify(obj);
+    try { if (navigator.sendBeacon && navigator.sendBeacon(SAVE_URL, new Blob([body], { type: 'text/plain;charset=utf-8' }))) return true; } catch (err) {}
+    try { if (body.length < 60000) { fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: body }); return true; } } catch (err) {}
+    post(obj).catch(function () {});
+    return true;
+  }
   var sending = false, doneMsg = '';
+  // No waiting: the answers leave for Google in the background and WhatsApp opens in the same tap
+  // (a tap is needed, Instagram blocks WhatsApp opened later by the page). The full answers also go in the
+  // WhatsApp message, so the order still reaches us if Google missed it.
   function sendOrder(o, text) {
     if (sending) return; sending = true;
-    form.hidden = true; document.getElementById('thanks').hidden = true; step2.hidden = false; fdTop();
-    var ar = h.dataset.l === 'ar', nom = (o.nom || '').trim();
-    var short = ar
-      ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' + (nom ? '\nالسمية: ' + nom : '') + '\nالمعلومات صيفطتهم فالموقع، ودابا غادي نصيفط التصويرة والوثائق هنا.'
-      : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅' + (nom ? '\nNom : ' + nom : '') + '\nInformations envoyées par le site ; j’envoie ici ma photo et mes documents.';
-    var saved = SAVE_URL ? post({ type: 'form', id: orderId(), data: o, message: text, nfiles: 0 }) : Promise.reject(new Error('off'));
-    // wait up to 25 s for Google (it also sends the email before answering).
-    // Not confirmed: the full answers go in the WhatsApp message, and they stay on the phone in case it is not sent.
-    var late = new Promise(function (r, j) { setTimeout(function () { j(new Error('timeout')); }, 25000); });
-    Promise.race([saved, late]).then(function () { return true; }, function () { return false; }).then(function (ok) {
-      sending = false; doneMsg = ok ? short : text;
-      if (ok) {
-        try { localStorage.removeItem(KEY); localStorage.removeItem('procv-oid'); } catch (err) {}
-        form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
-        go(1);
-      }
-      document.getElementById('thx-ok').hidden = !ok; document.getElementById('thx-send').hidden = ok;
-      step2.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
-      goWhatsApp(doneMsg, true); // WhatsApp opens with the message ready; the client taps ➤ and sends the photos there
-    });
+    if (SAVE_URL) postNow({ type: 'form', id: orderId(), data: o, message: text, nfiles: 0 });
+    doneMsg = text;
+    try { localStorage.removeItem(KEY); localStorage.removeItem('procv-oid'); } catch (err) {}
+    form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
+    go(1);
+    document.getElementById('thx-ok').hidden = false; document.getElementById('thx-send').hidden = true;
+    form.hidden = true; step2.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
+    goWhatsApp(doneMsg);
+    setTimeout(function () { sending = false; }, 1500);
   }
   document.getElementById('thx-wa').addEventListener('click', function () {
     goWhatsApp(doneMsg || (h.dataset.l === 'ar' ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅'));
