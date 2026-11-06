@@ -113,7 +113,7 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .hero h1 { font-size: clamp(36px, 5vw, 70px); line-height: 1.12; }
 .hero h1 .price { white-space: nowrap; color: var(--blue); }
 .hero .lead { margin-top: 18px; }
-.hero .cta { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+.ex .cta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; }
 .btn.ask-cta { background: #fff; color: var(--wa); border: 2px solid var(--wa); }
 .btn.ask-cta:hover { background: #f1faf4; }
 .checks { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 26px; font-size: 16px; font-weight: 500; color: var(--text); }
@@ -164,7 +164,7 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 
 /* clients */
 .clients { background: var(--navy-2); }
-.clients .top-row { display: grid; grid-template-columns: 1fr minmax(300px, 420px); gap: clamp(24px, 4vw, 56px); align-items: end; margin-bottom: clamp(28px, 4vw, 44px); }
+.clients .top-row { display: grid; grid-template-columns: 1fr; gap: clamp(24px, 4vw, 56px); align-items: end; margin-bottom: clamp(28px, 4vw, 44px); }
 .clients .head { margin-bottom: 0; }
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .card button { display: block; width: 100%; aspect-ratio: 760 / 880; border: 0; padding: 0; border-radius: var(--r); overflow: hidden; background: #0d1422; cursor: zoom-in; transition: transform .25s; }
@@ -173,24 +173,6 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .card figcaption { margin-top: 12px; font-size: 15px; color: #c4cde0; display: flex; gap: 8px; align-items: center; }
 .card figcaption::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: #1f9a55 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; flex: none; }
 .clients .cta-row { margin-top: 32px; }
-
-/* voice note */
-.vn-box p { color: #c4cde0; font-size: 15px; margin-bottom: 10px; font-weight: 500; }
-.vn { direction: ltr; position: relative; display: grid; grid-template-columns: 52px 40px 1fr; align-items: center; gap: 12px; background: #005c4b; border-radius: 16px 4px 16px 16px; padding: 12px 16px 26px 12px; }
-.vn::after { content: ""; position: absolute; top: 0; right: -8px; border: 8px solid transparent; border-top-color: #005c4b; border-left-color: #005c4b; }
-.vn img { width: 52px; height: 52px; border-radius: 50%; background: #fff; }
-.vn-play { width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent; color: #e9f5f1; cursor: pointer; display: grid; place-items: center; }
-.vn-play svg { width: 26px; height: 26px; }
-.vn-play .pa { display: none; }
-.vn.playing .vn-play .pl { display: none; }
-.vn.playing .vn-play .pa { display: block; }
-.vn-wave { display: flex; align-items: center; gap: 2px; height: 34px; cursor: pointer; }
-.vn-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: rgba(233,245,241,.45); transition: background .15s; }
-.vn-wave i.on { background: #e9f5f1; }
-.vn-time, .vn-meta { position: absolute; bottom: 6px; font-size: 12px; color: #b7d8cf; font-variant-numeric: tabular-nums; }
-.vn-time { left: 116px; }
-.vn-meta { right: 14px; display: flex; gap: 4px; align-items: center; }
-.vn-meta svg { width: 16px; height: 16px; color: #53bdeb; }
 
 /* ATS */
 .ats .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
@@ -389,7 +371,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 }
 @media (max-width: 700px) {
   body { font-size: 16px; }
-  .hero .cta .btn, .final .btn, .clients .cta-row .btn { width: 100%; }
+  .ex .cta .btn, .final .btn, .clients .cta-row .btn { width: 100%; }
   .vs .row { grid-template-columns: 1fr; }
   .vs .row > div + div { border-inline-start: 0; border-top: 1px solid var(--line); }
   .vs .hd { display: none !important; }
@@ -440,6 +422,10 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="head rv">
         <h1><span lang="ar">شوف بعينيك شنو كتستلم</span><span lang="fr">Voyez ce que vous recevez</span></h1>
         <p class="lead"><span lang="ar">هادو ملفات حقيقية درناها لزبناء من المغرب. كليكي على أي صفحة باش تكبّرها.</span><span lang="fr">Ce sont de vrais dossiers faits pour des clients au Maroc. Touchez une page pour l'agrandir.</span></p>
+        <div class="cta">
+          <a class="btn go order" href="#infos"><span lang="ar">عمّر الفورمولير دابا</span><span lang="fr">Remplir le formulaire</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
+          <a class="btn ask-cta wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">صيفط لينا ميساج فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a>
+        </div>
       </div>
       <div class="tabs" role="tablist">
         <button role="tab" aria-selected="true" data-t="lkw">LKW-Fahrer</button>
@@ -468,20 +454,6 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <div class="head rv">
           <h2><span lang="ar">زبناء وثقو فينا</span><span lang="fr">Ils nous ont fait confiance</span></h2>
           <p class="lead"><span lang="ar">رسائل وأداءات حقيقية من زبناء PRO CV. خبّينا الأسماء والأرقام ديالهم.</span><span lang="fr">De vrais messages et paiements de clients PRO CV. Noms et numéros masqués.</span></p>
-        </div>
-        <div class="vn-box rv">
-          <p><span lang="ar">اسمع رسالة صوتية من PRO CV</span><span lang="fr">Écoutez un message vocal de PRO CV</span></p>
-          <div class="vn" id="vn">
-            <img src="assets/brand/logo-96.png" alt="PRO CV" width="52" height="52">
-            <button type="button" class="vn-play" id="vn-play" aria-label="Play">
-              <svg class="pl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
-              <svg class="pa" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
-            </button>
-            <div class="vn-wave" id="vn-wave"><i style="height:100%"></i><i style="height:100%"></i><i style="height:85%"></i><i style="height:36%"></i><i style="height:36%"></i><i style="height:63%"></i><i style="height:50%"></i><i style="height:82%"></i><i style="height:78%"></i><i style="height:42%"></i><i style="height:47%"></i><i style="height:34%"></i><i style="height:37%"></i><i style="height:38%"></i><i style="height:25%"></i><i style="height:17%"></i><i style="height:29%"></i><i style="height:53%"></i><i style="height:46%"></i><i style="height:33%"></i><i style="height:21%"></i><i style="height:31%"></i><i style="height:34%"></i><i style="height:45%"></i><i style="height:38%"></i><i style="height:25%"></i><i style="height:56%"></i><i style="height:81%"></i><i style="height:76%"></i><i style="height:64%"></i><i style="height:66%"></i><i style="height:54%"></i><i style="height:50%"></i><i style="height:53%"></i><i style="height:69%"></i><i style="height:28%"></i><i style="height:33%"></i><i style="height:14%"></i><i style="height:49%"></i><i style="height:54%"></i><i style="height:81%"></i><i style="height:31%"></i><i style="height:14%"></i><i style="height:14%"></i></div>
-            <span class="vn-time" id="vn-time">0:20</span>
-            <span class="vn-meta">PRO CV <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M2 13l4 4L15 7M10 15l2 2 9-10"/></svg></span>
-            <audio id="vn-audio" src="assets/clients/voice.m4a" preload="none"></audio>
-          </div>
         </div>
       </div>
       <div class="cards">
@@ -1102,24 +1074,6 @@ go(st0);
     if (window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
     go(cur);
   } else if (location.hash === '#commande') openForm();
-
-  // voice note
-  var au = document.getElementById('vn-audio'), vn = document.getElementById('vn');
-  var bars = vn.querySelectorAll('.vn-wave i'), tEl = document.getElementById('vn-time');
-  function fmt(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
-  document.getElementById('vn-play').addEventListener('click', function () { if (au.paused) au.play(); else au.pause(); });
-  au.addEventListener('play', function () { vn.classList.add('playing'); });
-  au.addEventListener('pause', function () { vn.classList.remove('playing'); });
-  au.addEventListener('ended', function () { vn.classList.remove('playing'); au.currentTime = 0; });
-  au.addEventListener('timeupdate', function () {
-    var d = au.duration || 20, k = au.currentTime / d * bars.length;
-    bars.forEach(function (b, i) { b.classList.toggle('on', i < k); });
-    tEl.textContent = au.currentTime > 0 ? fmt(au.currentTime) : fmt(d);
-  });
-  document.getElementById('vn-wave').addEventListener('click', function (e) {
-    var r = this.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
-    if (au.duration) { au.currentTime = x * au.duration; if (au.paused) au.play(); }
-  });
 
   document.querySelectorAll('.tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
