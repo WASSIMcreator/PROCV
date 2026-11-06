@@ -72,7 +72,7 @@ a { color: inherit; }
 html[data-l="ar"] [lang="fr"], html[data-l="fr"] [lang="ar"] { display: none !important; }
 .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--m); }
 h1, h2, h3 { line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; color: var(--navy); }
-h2 { font-size: clamp(28px, 4vw, 44px); }
+h2, .ex .head h1 { font-size: clamp(28px, 4vw, 44px); }
 .lead { color: var(--text); font-size: 18px; max-width: 58ch; }
 .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
 section[id] { scroll-margin-top: 84px; }
@@ -434,50 +434,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 </section>
 
 <main>
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <h1>
-          <span lang="ar">ملف ترشيح ألماني كامل بـ <span class="price">200 درهم</span></span>
-          <span lang="fr">Votre dossier allemand complet pour <span class="price">200 DH</span></span>
-        </h1>
-        <p class="lead">
-          <span lang="ar">Deckblatt + Anschreiben + Lebenslauf، مكتوبين بالألمانية حسب المهنة ديالك، ومقروءين من أنظمة الفرز الآلي (ATS) اللي كتستعملها الشركات الألمانية.</span>
-          <span lang="fr">Deckblatt + Anschreiben + Lebenslauf, rédigés en allemand pour votre métier, et lisibles par les logiciels de tri (ATS) des entreprises allemandes.</span>
-        </p>
-        <div class="cta">
-          <a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك دابا</span><span lang="fr">Commander mon dossier</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
-          <a class="btn ask-cta wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">عندك سؤال؟ سولنا فواتساب</span><span lang="fr">Une question ? Écrivez-nous</span></a>
-        </div>
-        <ul class="checks">
-          <li><span lang="ar">جاهز في 24 ساعة</span><span lang="fr">Prêt en 24 h</span></li>
-          <li><span lang="ar">الملف كنكتبوه ليك بالألمانية</span><span lang="fr">Dossier rédigé en allemand pour vous</span></li>
-          <li><span lang="ar">تعديلات فابور حتى بعد الدفع</span><span lang="fr">Modifications gratuites après paiement</span></li>
-        </ul>
-      </div>
-      <div class="stack">
-        <img class="s1" src="assets/cv/l3.webp" alt="Lebenslauf LKW-Fahrer" width="607" height="858">
-        <img class="s2" src="assets/cv/p3.webp" alt="Lebenslauf Kfz-Mechatroniker" width="900" height="1270">
-        <img class="s3" src="assets/cv/l1.webp" alt="Deckblatt Bewerbung LKW-Fahrer" width="607" height="858">
-        <span class="tag"><span lang="ar">ملف حقيقي لزبون عندنا</span><span lang="fr">Dossier réel d'un client</span></span>
-        <div class="seal" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="ring-hero" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs><text><textPath href="#ring-hero" textLength="498" lengthAdjust="spacing">PRO CV · BEWERBUNG AUF DEUTSCH · 200 DH ·</textPath></text></svg><img src="assets/brand/logo.webp" alt="" width="160" height="160"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- QUESTIONS BEFORE ORDERING -->
-  <section class="ask-sec"><div class="wrap">
-    <div class="ask ">
-      <div class="ask-h"><b><span lang="ar">عندك سؤال؟ سولنا قبل ما تطلب</span><span lang="fr">Une question ? Posez-la avant de commander</span></b><small><span lang="ar">كليكي على السؤال، وكنجاوبوك فواتساب بسرعة. بلا حتى التزام.</span><span lang="fr">Touchez votre question, nous répondons vite sur WhatsApp. Sans engagement.</span></small></div>
-      <div class="ask-q"><button type="button" class="ask-b" data-ar="واش خاصني نعرف الألمانية؟" data-fr="Dois-je parler allemand ?"><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></button><button type="button" class="ask-b" data-ar="شحال كياخد ديال الوقت؟" data-fr="Combien de temps ça prend ?"><span lang="ar">شحال كياخد ديال الوقت؟</span><span lang="fr">Combien de temps ça prend ?</span></button><button type="button" class="ask-b" data-ar="كيفاش نخلص؟" data-fr="Comment je paie ?"><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment je paie ?</span></button><button type="button" class="ask-b" data-ar="واش كيصلح للـ Ausbildung؟" data-fr="Ça marche pour une Ausbildung ?"><span lang="ar">واش كيصلح للـ Ausbildung؟</span><span lang="fr">Ça marche pour une Ausbildung ?</span></button><button type="button" class="ask-b" data-ar="واش كتكتبو للمهنة ديالي؟" data-fr="Vous faites mon métier ?"><span lang="ar">واش كتكتبو للمهنة ديالي؟</span><span lang="fr">Vous faites mon métier ?</span></button><button type="button" class="ask-b other"><span lang="ar">💬 سؤال آخر</span><span lang="fr">💬 Autre question</span></button></div>
-    </div>
-  </div></section>
-
   <!-- EXAMPLES -->
   <section class="block ex" id="exemples">
     <div class="wrap">
       <div class="head rv">
-        <h2><span lang="ar">شوف بعينيك شنو كتستلم</span><span lang="fr">Voyez ce que vous recevez</span></h2>
+        <h1><span lang="ar">شوف بعينيك شنو كتستلم</span><span lang="fr">Voyez ce que vous recevez</span></h1>
         <p class="lead"><span lang="ar">هادو ملفات حقيقية درناها لزبناء من المغرب. كليكي على أي صفحة باش تكبّرها.</span><span lang="fr">Ce sont de vrais dossiers faits pour des clients au Maroc. Touchez une page pour l'agrandir.</span></p>
       </div>
       <div class="tabs" role="tablist">
@@ -654,17 +615,17 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
         <p class="prep" id="prep"><span lang="ar">وجّد قبل ما تبدا: تواريخ الخدمة والدراسة (الشهر والعام كافيين) وتصويرة ليك من القدام. إلا خرجتي، المعلومات ديالك كتبقى مسجلة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">
-          <div class="part"><i>1</i><span lang="ar">الخدمة ولا التكوين اللي باغي</span><span lang="fr">Poste / formation souhaité(e)</span></div>
+          <div class="part" data-s="1"><i>1.1</i><span lang="ar">الخدمة ولا التكوين اللي باغي</span><span lang="fr">Poste / formation souhaité(e)</span></div>
           <div><label><span class="req"><span lang="ar">سمية الخدمة ولا التكوين</span><span lang="fr">Nom du poste ou formation</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><span class="req lbl"><span lang="ar">النوع</span><span lang="fr">Type</span></span>
             <div class="chips" style="margin-top:8px"><label><input type="radio" name="but" value="Arbeit" required> Arbeit <span lang="ar">(خدمة)</span><span lang="fr">(emploi)</span></label><label><input type="radio" name="but" value="Ausbildung"> Ausbildung <span lang="ar">(تكوين مهني)</span><span lang="fr">(formation)</span></label></div><span class="err"><span lang="ar">اختار واحد</span><span lang="fr">Choisissez une option</span></span></div>
 
-          <div class="part"><i>2</i><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></div>
+          <div class="part" data-s="2"><i>2.1</i><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></div>
           <div class="full"><span class="req lbl"><span lang="ar">المستوى ديالك</span><span lang="fr">Votre niveau</span></span>
             <div class="chips" style="margin-top:8px"><label><input type="radio" name="allemand" value="Keine" required> <span lang="ar">مازال ما بديت</span><span lang="fr">Pas encore</span></label><label><input type="radio" name="allemand" value="A1"> A1</label><label><input type="radio" name="allemand" value="A2"> A2</label><label><input type="radio" name="allemand" value="B1"> B1</label><label><input type="radio" name="allemand" value="B2"> B2</label><label><input type="radio" name="allemand" value="C1"> C1</label><label><input type="radio" name="allemand" value="C2"> C2</label></div><span class="err"><span lang="ar">اختار المستوى</span><span lang="fr">Choisissez un niveau</span></span></div>
           <div class="full"><label><span><span lang="ar">الشهادة (إلا كانت)</span><span lang="fr">Certificat (si vous en avez)</span></span><input type="text" name="certificat" data-ph="Goethe B1, telc B2, ÖSD…" autocomplete="off"></label></div>
 
-          <div class="part"><i>3</i><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
+          <div class="part" data-s="3"><i>3.1</i><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
           <div><label><span class="req"><span lang="ar">الاسم الكامل</span><span lang="fr">Nom et prénom</span></span><small><span lang="ar">كيف مكتوب فالباسبور</span><span lang="fr">Comme sur le passeport</span></small><input type="text" name="nom" data-ph="" required autocomplete="name"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span class="req"><span lang="ar">تاريخ الازدياد</span><span lang="fr">Date de naissance</span></span><small>&nbsp;</small><input type="date" name="naissance" data-ph="" required dir="ltr" min="1955-01-01" max="2010-12-31" autocomplete="bday"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span class="req"><span lang="ar">المدينة والبلاد فين ساكن</span><span lang="fr">Ville et pays de résidence</span></span><input type="text" name="ville" data-ph="Casablanca, Maroc" required autocomplete="off"></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
@@ -672,33 +633,33 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div><label><span class="req"><span lang="ar">الإيميل</span><span lang="fr">E-mail</span></span><input type="email" name="email" data-ph="nom@gmail.com" required dir="ltr" autocomplete="email"></label><span class="err"><span lang="ar">كتب إيميل صحيح، مثلا nom@gmail.com</span><span lang="fr">Entrez un e-mail valide, ex. nom@gmail.com</span></span></div>
           <div><label><span class="req"><span lang="ar">الحالة العائلية</span><span lang="fr">Situation familiale</span></span><select name="famille" required><option value="" data-ar="اختار…" data-fr="Choisir…">اختار…</option><option value="Ledig" data-ar="عزب / عزبة" data-fr="Célibataire">عزب / عزبة</option><option value="Verheiratet" data-ar="مزوج / مزوجة" data-fr="Marié(e)">مزوج / مزوجة</option><option value="Geschieden" data-ar="مطلق / مطلقة" data-fr="Divorcé(e)">مطلق / مطلقة</option><option value="Verwitwet" data-ar="أرمل / أرملة" data-fr="Veuf / veuve">أرمل / أرملة</option></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
 
-          <div class="part"><i>4</i><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></div>
+          <div class="part" data-s="4"><i>4.1</i><span lang="ar">الخبرة المهنية</span><span lang="fr">Expérience professionnelle</span></div>
           <div class="full rep" id="exp"><div class="list"></div>
             <span class="err"><span lang="ar">عمّر خدمة وحدة على الأقل (الفترة، الخدمة، الشركة)، ولا علّم "ما عنديش خبرة"</span><span lang="fr">Remplissez au moins une expérience (période, poste, entreprise), ou cochez « Pas d'expérience »</span></span>
             <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ زيد خدمة أخرى</span><span lang="fr">+ Ajouter une expérience</span></button>
             <label class="none"><input type="checkbox" name="noexp"> <span lang="ar">ما عنديش خبرة</span><span lang="fr">Pas d'expérience</span></label></div></div>
 
-          <div class="part"><i>5</i><span lang="ar">الدراسة والتكوين</span><span lang="fr">Études / formations</span></div>
+          <div class="part" data-s="4"><i>4.2</i><span lang="ar">الدراسة والتكوين</span><span lang="fr">Études / formations</span></div>
           <div class="full rep" id="etu"><div class="list"></div>
             <span class="err"><span lang="ar">عمّر دراسة وحدة على الأقل (الفترة، الديبلوم، المؤسسة)</span><span lang="fr">Remplissez au moins une formation (période, diplôme, établissement)</span></span>
             <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ زيد دراسة أخرى</span><span lang="fr">+ Ajouter une formation</span></button></div></div>
 
-          <div class="part"><i>6</i><span lang="ar">المهارات</span><span lang="fr">Compétences</span></div>
+          <div class="part" data-s="5"><i>5.1</i><span lang="ar">المهارات</span><span lang="fr">Compétences</span></div>
           <div class="full"><label><span class="req"><span lang="ar">شنو كتعرف دير</span><span lang="fr">Ce que je sais faire</span></span><small><span lang="ar">مثلا: سياقة الكاميو، Excel، اللحام، خدمة مع الكليان… غير كلمات، ماشي جمل</span><span lang="fr">Ex. : conduite poids lourd, Excel, soudure, service client… Quelques mots suffisent</span></small><textarea name="competences" data-ph="Permis CE, Excel, soudure, service client…" required></textarea></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
 
-          <div class="part"><i>7</i><span lang="ar">اللغات</span><span lang="fr">Langues</span></div>
+          <div class="part" data-s="5"><i>5.2</i><span lang="ar">اللغات</span><span lang="fr">Langues</span></div>
           <div><label><span class="req"><span lang="ar">العربية</span><span lang="fr">Arabe</span></span><select name="l_ar" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span class="req"><span lang="ar">الفرنسية</span><span lang="fr">Français</span></span><select name="l_fr" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span class="req"><span lang="ar">الإنجليزية</span><span lang="fr">Anglais</span></span><select name="l_en" class="lvl" required></select></label><span class="err"><span lang="ar">هاد الخانة ضرورية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><label><span><span lang="ar">لغة أخرى (إلا كانت)</span><span lang="fr">Autre langue</span></span><input type="text" name="l_autre" data-ph="Tamazight, Español…" autocomplete="off"></label></div>
 
-          <div class="part"><i>8</i><span lang="ar">رخصة السياقة</span><span lang="fr">Mobilité</span></div>
+          <div class="part" data-s="5"><i>5.3</i><span lang="ar">رخصة السياقة</span><span lang="fr">Mobilité</span></div>
           <div class="full"><span class="req lbl"><span lang="ar">عندك رخصة السياقة؟</span><span lang="fr">Permis de conduire ?</span></span>
             <div class="chips" style="margin-top:8px"><label><input type="radio" name="permis_ok" value="oui" required> <span lang="ar">إيه</span><span lang="fr">Oui</span></label><label><input type="radio" name="permis_ok" value="non"> <span lang="ar">لا</span><span lang="fr">Non</span></label></div>
             <span class="err"><span lang="ar">اختار إيه ولا لا</span><span lang="fr">Choisissez oui ou non</span></span>
             <div class="chips" id="cats" hidden style="margin-top:10px"><label><input type="checkbox" name="permis" value="B"> B</label><label><input type="checkbox" name="permis" value="C"> C</label><label><input type="checkbox" name="permis" value="CE"> CE</label><label><input type="checkbox" name="permis" value="D"> D</label></div></div>
 
-          <div class="part"><i>9</i><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></div>
+          <div class="part" data-s="5"><i>5.4</i><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></div>
           <div class="full"><label><span><span lang="ar">شنو كتحب دير فوقت الفراغ</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
         </div>
@@ -896,11 +857,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   form.addEventListener('input', function (e) { var w = box(e.target); if (w) w.classList.remove('bad'); save(); });
   form.addEventListener('change', function (e) { var w = box(e.target); if (w) w.classList.remove('bad'); save(); });
 
-  // wizard: 5 short steps instead of one long page
-  var STEPS = { 1: 1, 2: 1, 3: 2, 4: 3, 5: 3, 6: 4, 7: 4, 8: 4, 9: 4 }, NSTEP = 4, cur = 1;
-  var STEP_T = [null, ['الخدمة والألمانية', 'Poste et allemand'], ['المعلومات ديالك', 'Vos informations'], ['الخبرة والدراسة', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues'], ['التصويرة والوثائق', 'Photo et documents']];
+  // wizard: 5 short steps. Each topic header carries its step in data-s; step 1 is only the job and goal.
+  var NSTEP = 5, cur = 1;
+  var STEP_T = [null, ['الخدمة والهدف', 'Poste et objectif'], ['مستوى الألمانية', "Niveau d'allemand"], ['المعلومات ديالك', 'Vos informations'], ['الخبرة والدراسة', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues']];
   var cells = Array.prototype.slice.call(form.querySelector('.g').children), sNow = 1;
-  cells.forEach(function (el) { if (el.classList.contains('part')) sNow = STEPS[+el.querySelector('i').textContent] || sNow; el.dataset.step = sNow; });
+  cells.forEach(function (el) { if (el.classList.contains('part')) sNow = +el.dataset.s || sNow; el.dataset.step = sNow; });
   var reached = {};
   var wentAt = 0;
   function go(n) {
@@ -1178,9 +1139,9 @@ go(st0);
   document.getElementById('lbx').addEventListener('click', function () { lb.close(); });
   lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
 
-  var dock = document.getElementById('dock'), hero = document.querySelector('.hero');
+  // the page has no hero any more, so the phone order bar is always shown
+  document.getElementById('dock').classList.add('on');
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { dock.classList.toggle('on', !e[0].isIntersecting); }).observe(hero);
     var ro = new IntersectionObserver(function (es) {
       es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); ro.unobserve(x.target); } });
     }, { threshold: 0.12 });
