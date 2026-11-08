@@ -125,7 +125,9 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 @keyframes urg-ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
 .seen { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
 .seen[hidden] { display: none; }
-.seen b { color: var(--navy); font-size: 15px; }
+.seen b { display: inline-block; min-width: 2ch; text-align: center; color: var(--navy); font-size: 15px; font-variant-numeric: tabular-nums; }
+.seen.tick b { animation: seen-pop .5s 1.2s ease-out; }
+@keyframes seen-pop { 40% { transform: scale(1.35); color: var(--red); } }
 .seen-dot { flex: none; position: relative; width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
 .seen-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #16a34a; animation: urg-ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
 @keyframes urg-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,67,43,0); } 50% { box-shadow: 0 0 0 6px rgba(224,67,43,.12); } }
@@ -687,7 +689,27 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   // "more than 20 a day" (the owner's own traffic figure) until today's count reaches 20.
   (function () {
     var box = document.getElementById('seen');
-    if (!box || !SAVE_URL || !window.fetch) return;
+    if (!box) return;
+    // the number counts up from 0 when the line comes into view, and again when the real count arrives
+    var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var target = 20, shown = false;
+    function countUp() {
+      var bs = box.querySelectorAll('b'), from = shown ? +bs[0].textContent || 0 : 0, to = target, t0 = 0;
+      if (calm) { bs.forEach(function (b) { b.textContent = to; }); return; }
+      // runs only on real animation frames, so a page that never paints keeps the right number
+      requestAnimationFrame(function step(t) {
+        if (!t0) { t0 = t; box.classList.remove('tick'); void box.offsetWidth; box.classList.add('tick'); }
+        var p = Math.min(1, (t - t0) / 1400), v = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+        bs.forEach(function (b) { b.textContent = v; });
+        if (p < 1) requestAnimationFrame(step);
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es, io) {
+        if (es[0].isIntersecting) { io.disconnect(); countUp(); shown = true; }
+      }, { threshold: 0.6 }).observe(box);
+    } else shown = true;
+    if (!SAVE_URL || !window.fetch) return;
     var id = '';
     try { id = localStorage.getItem('procv-vid') || ''; } catch (e) {}
     if (!/^[a-z0-9]{10}$/.test(id)) {
@@ -699,8 +721,11 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     fetch(SAVE_URL + '?a=seen&id=' + id).then(function (r) { return r.json(); }).then(function (j) {
       var n = Math.floor(j && +j.n);
       if (!(n >= 20)) return;
-      box.querySelector('[lang="ar"]').innerHTML = '<b>' + n + '</b> شخص زار PRO CV اليوم';
-      box.querySelector('[lang="fr"]').innerHTML = '<b>' + n + '</b> personnes ont visité PRO CV aujourd\'hui';
+      var cur = box.querySelector('b').textContent;
+      box.querySelector('[lang="ar"]').innerHTML = '<b>' + cur + '</b> شخص زار PRO CV اليوم';
+      box.querySelector('[lang="fr"]').innerHTML = '<b>' + cur + '</b> personnes ont visité PRO CV aujourd\'hui';
+      target = n;
+      if (shown) countUp();
     }).catch(function () {});
   })();
 
