@@ -123,6 +123,11 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .urg-dot { flex: none; position: relative; width: 10px; height: 10px; border-radius: 50%; background: #e0432b; }
 .urg-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #e0432b; animation: urg-ping 1.6s cubic-bezier(0, 0, .2, 1) infinite; }
 @keyframes urg-ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+.seen { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.seen[hidden] { display: none; }
+.seen b { color: var(--navy); font-size: 15px; }
+.seen-dot { flex: none; position: relative; width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
+.seen-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #16a34a; animation: urg-ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
 @keyframes urg-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(224,67,43,0); } 50% { box-shadow: 0 0 0 6px rgba(224,67,43,.12); } }
 .btn.ask-cta { background: #fff; color: var(--wa); border: 2px solid var(--wa); }
 .btn.ask-cta:hover { background: #f1faf4; }
@@ -434,6 +439,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <a class="btn ask-cta wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">صيفط لينا ميساج فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a>
         </div>
         <p class="urg"><i class="urg-dot" aria-hidden="true"></i><span lang="ar">إلا ما طلبتيش دابا، غادي تستنى أكثر من <b>48</b> ساعة.</span><span lang="fr">Sans commande maintenant, l'attente dépasse <b>48</b> h.</span></p>
+        <p class="seen" id="seen" hidden><i class="seen-dot" aria-hidden="true"></i><span lang="ar"><b class="seen-n"></b> شخص زار PRO CV اليوم</span><span lang="fr"><b class="seen-n"></b> personnes ont visité PRO CV aujourd'hui</span></p>
       </div>
       <div class="tabs" role="tablist">
         <button role="tab" aria-selected="true" data-t="lkw">LKW-Fahrer</button>
@@ -675,6 +681,27 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   // Google Apps Script web app that keeps a copy of every form + photos (Sheet + Drive + email).
   // Empty = off. Setup: google-apps-script/README.md
   var SAVE_URL = 'https://script.google.com/macros/s/AKfycbzgv2FyFIPnSp7VxJ39ofa8LLK6Od-Cn9PF4VzkLLwC1-hgg8MdUEfEGdAYycyMEOtwtw/exec';
+
+  // ---- Today's visitors: the real count kept by the Apps Script (seen in Code.gs).
+  // Each browser keeps one random id so a visitor counts once a day. Shown from 5 visitors up.
+  (function () {
+    var box = document.getElementById('seen');
+    if (!box || !SAVE_URL || !window.fetch) return;
+    var id = '';
+    try { id = localStorage.getItem('procv-vid') || ''; } catch (e) {}
+    if (!/^[a-z0-9]{10}$/.test(id)) {
+      id = '';
+      while (id.length < 10) id += Math.random().toString(36).slice(2);
+      id = id.slice(0, 10);
+      try { localStorage.setItem('procv-vid', id); } catch (e) {}
+    }
+    fetch(SAVE_URL + '?a=seen&id=' + id).then(function (r) { return r.json(); }).then(function (j) {
+      var n = j && +j.n;
+      if (!(n >= 5)) return;
+      box.querySelectorAll('.seen-n').forEach(function (b) { b.textContent = n; });
+      box.hidden = false;
+    }).catch(function () {});
+  })();
 
   var h = document.documentElement;
   function msg() {

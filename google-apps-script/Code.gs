@@ -62,7 +62,43 @@ function spamLimit(id, digits) {
 }
 
 // Opening the /exec link in a browser just says it works.
-function doGet() { return out({ ok: true, service: 'PRO CV form' }); }
+// ?a=seen&id=… counts today's visitors for the site (see seen below).
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.a === 'seen') return out(seen(p.id));
+  return out({ ok: true, service: 'PRO CV form' });
+}
+
+// Today's real visitors (Moroccan time), shown on the site.
+// Each browser sends a random id it keeps (no name, no IP); an id counts once a day.
+var MAX_SEEN_IDS = 500;        // ids kept per day (a script property holds about 9 KB)
+var MAX_SEEN_PER_HOUR = 300;   // anyone can call the link: caps how fast the count can be pushed up
+
+function seen(id) {
+  id = String(id || '').replace(/[^a-z0-9]/gi, '').slice(0, 10);
+  var props = PropertiesService.getScriptProperties();
+  var day = Utilities.formatDate(new Date(), 'Africa/Casablanca', 'yyyy-MM-dd');
+  var lock = LockService.getScriptLock();
+  var read = function () { var s = JSON.parse(props.getProperty('SEEN') || '{}'); return s.day === day ? s : { day: day, n: 0, ids: [] }; };
+  if (!lock.tryLock(5000)) return { ok: true, n: read().n }; // busy with an order: show the count, skip this visit
+  try {
+    var s = read();
+    if (id.length === 10 && s.ids.indexOf(id) < 0) {
+      var cache = CacheService.getScriptCache(), hourKey = 'S_' + Utilities.formatDate(new Date(), 'Africa/Casablanca', 'yyyyMMddHH');
+      var nHour = +(cache.get(hourKey) || 0);
+      if (nHour < MAX_SEEN_PER_HOUR) {
+        cache.put(hourKey, String(nHour + 1), 3600);
+        s.n++;
+        s.ids.push(id);
+        if (s.ids.length > MAX_SEEN_IDS) s.ids = s.ids.slice(-MAX_SEEN_IDS);
+        props.setProperty('SEEN', JSON.stringify(s));
+      }
+    }
+    return { ok: true, n: s.n };
+  } finally {
+    lock.releaseLock();
+  }
+}
 
 // Text typed by the client: a leading = + - @ would make Sheets read it as a formula.
 function safe(v) { v = String(v == null ? '' : v); return /^[=+\-@]/.test(v) ? "'" + v : v; }

@@ -51,6 +51,25 @@ Le script refuse :
 
 Un client refusé envoie quand même ses réponses dans WhatsApp : rien n'est perdu.
 
+## Compteur de visiteurs du jour
+
+Sous la ligne « 48 h », le site affiche « X شخص زار PRO CV اليوم » : le vrai nombre de
+visiteurs du jour (heure du Maroc), compté par ce script. Chaque navigateur garde un
+identifiant au hasard (pas de nom, pas d'IP) et compte une seule fois par jour.
+La ligne reste cachée tant qu'il y a moins de 5 visiteurs, ou si le script ne répond pas.
+
+Pour compter aussi vos **autres sites PRO CV**, collez ce code juste avant `</body>`
+(ou dans « code personnalisé / scripts » de votre plateforme). Il compte la visite sans rien afficher :
+
+```html
+<script>
+(function(){var u='https://script.google.com/macros/s/AKfycbzgv2FyFIPnSp7VxJ39ofa8LLK6Od-Cn9PF4VzkLLwC1-hgg8MdUEfEGdAYycyMEOtwtw/exec',k='procv-vid',id='';try{id=localStorage.getItem(k)||''}catch(e){}if(!/^[a-z0-9]{10}$/.test(id)){id='';while(id.length<10)id+=Math.random().toString(36).slice(2);id=id.slice(0,10);try{localStorage.setItem(k,id)}catch(e){}}if(window.fetch)fetch(u+'?a=seen&id='+id).catch(function(){});})();
+</script>
+```
+
+Une même personne qui ouvre deux sites différents compte deux fois (chaque site a sa
+propre mémoire dans le navigateur).
+
 ## Modifier le script plus tard
 
 Après un changement dans `Code.gs`, **dans cet ordre** :
