@@ -48,7 +48,6 @@ src="https://www.facebook.com/tr?id=1814127609805768&ev=PageView&noscript=1"
   --paper: #ffffff;
   --navy: #14254a;
   --navy-2: #0c1730;
-  --brand-red: #e11d2e;
   --blue: #1f5fd1;
   --blue-2: #184cae;
   --sky: #6fa2ff;
@@ -105,8 +104,8 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .lang { background: none; border: 1px solid var(--line); border-radius: 10px; min-height: 42px; padding: 0 14px; font: 500 15px var(--font); color: var(--ink); cursor: pointer; }
 .lang:hover { border-color: var(--navy); }
 
-.wordmark { display: inline-flex; align-items: center; gap: 0; direction: ltr; text-decoration: none; font-weight: 800; font-size: 23px; color: var(--navy); letter-spacing: -.01em; }
-.wordmark b { color: var(--brand-red); font-weight: 800; }
+.wordmark { display: inline-flex; align-items: center; direction: ltr; text-decoration: none; }
+.wordmark img { display: block; height: 24px; width: auto; }
 
 /* hero */
 .hero { overflow-x: clip; padding: clamp(32px, 5vw, 72px) 0 clamp(48px, 7vw, 96px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
@@ -394,7 +393,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
 <header class="top">
   <div class="wrap">
-    <a class="wordmark" href="#" aria-label="PRO CV"><b>PRO</b>CV</a>
+    <a class="wordmark" href="#" aria-label="PRO CV"><img src="assets/brand/wordmark.svg" alt="PRO CV" width="120" height="24"></a>
     <span class="sp"></span>
     <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
     <a class="btn go sm order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
