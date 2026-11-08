@@ -48,6 +48,8 @@ src="https://www.facebook.com/tr?id=1814127609805768&ev=PageView&noscript=1"
   --paper: #ffffff;
   --navy: #14254a;
   --navy-2: #0c1730;
+  --red: #e11d2e;
+  --red-2: #c3172a;
   --blue: #1f5fd1;
   --blue-2: #184cae;
   --sky: #6fa2ff;
@@ -83,6 +85,8 @@ section[id] { scroll-margin-top: 84px; }
 .btn svg { width: 20px; height: 20px; flex: none; }
 .btn.go { background: var(--blue); color: #fff; box-shadow: 0 12px 26px -12px rgba(31,95,209,.85); }
 .btn.go:hover { background: var(--blue-2); transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(31,95,209,.95); }
+.btn.go.red { background: var(--red); box-shadow: 0 12px 26px -12px rgba(225,29,46,.8); }
+.btn.go.red:hover { background: var(--red-2); box-shadow: 0 16px 30px -12px rgba(225,29,46,.9); }
 .btn.go .arr { transition: transform .2s; }
 .btn:disabled { opacity: .65; cursor: progress; transform: none; }
 .btn.go:hover .arr { transform: translateX(-4px); }
@@ -140,7 +144,7 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .seal img { position: absolute; inset: 9%; width: 82%; height: 82%; border-radius: 50%; object-fit: contain; }
 .stack .seal { position: absolute; z-index: 5; width: 34%; top: -6%; right: -4%; transform: rotate(-8deg); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .stack:hover .seal { transform: rotate(4deg) scale(1.05); }
-.final .seal { width: 128px; margin-bottom: 22px; box-shadow: 0 0 0 8px rgba(255,255,255,.08); }
+.final .seal { width: 128px; margin-bottom: 22px; box-shadow: 0 0 0 6px var(--red); }
 
 /* sections */
 section.block { padding: clamp(60px, 8vw, 110px) 0; }
@@ -248,9 +252,9 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
 dialog.fd.fallback { position: fixed; inset: 0; z-index: 100; display: block; width: 100%; height: 100%; max-height: none; border-radius: 0; }
 dialog.fd { border: 0; padding: 0; width: min(780px, 100%); max-width: 100%; max-height: 94vh; margin: auto; border-radius: 18px; background: var(--bg); color: var(--ink); overflow: auto; }
 dialog.fd::backdrop { background: rgba(12,23,48,.7); }
-.fd-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--navy); color: #fff; }
+.fd-top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: var(--red); color: #fff; }
 .fd-top b { font-size: 19px; display: flex; gap: 10px; align-items: center; }
-.fd-top img { width: 34px; height: 34px; border-radius: 50%; }
+.fd-top img { width: 38px; height: 38px; border-radius: 50%; background: #fff; }
 .fd-top .x { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 24px; cursor: pointer; }
 .fd .q-small { padding: 14px 24px 0; }
 .form { padding: clamp(18px, 3vw, 28px); }
@@ -396,7 +400,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     <a class="wordmark" href="#" aria-label="PRO CV"><img src="assets/brand/wordmark.svg" alt="PRO CV" width="120" height="24"></a>
     <span class="sp"></span>
     <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
-    <a class="btn go sm order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
+    <a class="btn go red sm order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
   </div>
 </header>
 
@@ -426,7 +430,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <h1><span lang="ar">شوف بعينيك شنو كتستلم</span><span lang="fr">Voyez ce que vous recevez</span></h1>
         <p class="lead"><span lang="ar">هادو ملفات حقيقية درناها لزبناء من المغرب. كليكي على أي صفحة باش تكبّرها.</span><span lang="fr">Ce sont de vrais dossiers faits pour des clients au Maroc. Touchez une page pour l'agrandir.</span></p>
         <div class="cta">
-          <a class="btn go order" href="#infos"><span lang="ar">عمّر الفورمولير دابا</span><span lang="fr">Remplir le formulaire</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
+          <a class="btn go red order" href="#infos"><span lang="ar">عمّر الفورمولير دابا</span><span lang="fr">Remplir le formulaire</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
           <a class="btn ask-cta wa" href="#"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg><span lang="ar">صيفط لينا ميساج فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a>
         </div>
         <p class="urg"><i class="urg-dot" aria-hidden="true"></i><span lang="ar">إلا ما طلبتيش دابا، غادي تستنى أكثر من <b>48</b> ساعة.</span><span lang="fr">Sans commande maintenant, l'attente dépasse <b>48</b> h.</span></p>
@@ -449,6 +453,21 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <figure><button type="button" data-src="assets/cv/p5.webp"><img src="assets/cv/p5.webp" alt="Vielen Dank" loading="lazy" width="900" height="1270"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
       </div>
       <p class="note"><span lang="ar">خبّينا الوجوه والمعلومات الشخصية ديال الزبناء.</span><span lang="fr">Visages et coordonnées des clients masqués.</span></p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block faq" id="questions">
+    <div class="wrap">
+      <div class="head rv"><h2><span lang="ar">أسئلة كتجينا بزاف</span><span lang="fr">Questions fréquentes</span></h2></div>
+      <div class="list">
+        <details><summary><span lang="ar">واش كتبيعو الكونترا ولا كتترجمو الوثائق؟</span><span lang="fr">Vendez-vous des contrats ou traduisez-vous des documents ?</span></summary><p><span lang="ar">لا. حنا ما كنبيعوش الكونترا ديال الخدمة، وما كنترجموش الوثائق (الديبلومات، الشواهد…). الترجمة ديال الوثائق خاصها مترجم محلَّف. حنا كنكتبو ليك ملف الترشيح بالألمانية: Deckblatt + Anschreiben + Lebenslauf.</span><span lang="fr">Non. Nous ne vendons pas de contrats de travail et nous ne traduisons pas les documents (diplômes, attestations…) : pour cela il faut un traducteur assermenté. Nous rédigeons votre dossier de candidature en allemand : Deckblatt + Anschreiben + Lebenslauf.</span></p></details>
+        <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">إيه، ضروري. خاصك تكون كتعرف الألمانية على الأقل A2، والأحسن B1، حيت الشركات والمدارس فألمانيا كيطلبو مستوى فالألمانية والمقابلة كتكون بالألمانية. ولكن الملف حنا اللي كنكتبوه: صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وحنا نكتبوه ليك بالألمانية.</span><span lang="fr">Oui, c'est indispensable. Il faut au moins le niveau A2, et B1 c'est mieux : les entreprises et les écoles en Allemagne demandent un niveau d'allemand, et l'entretien se fait en allemand. Mais le dossier, c'est nous qui l'écrivons : envoyez vos infos en darija, en arabe ou en français, nous le rédigeons en allemand.</span></p></details>
+        <details><summary><span lang="ar">فوقاش وكيفاش نخلص؟</span><span lang="fr">Quand et comment payer ?</span></summary><p><span lang="ar">الخلاص كيكون قبل ما نبداو الخدمة. تقدر تخلص بالتحويل البنكي لـ Attijariwafa bank ولا CIH Bank، ولا ب Cash Plus.</span><span lang="fr">Le paiement se fait avant de commencer le travail : par virement Attijariwafa bank ou CIH Bank, ou par Cash Plus.</span></p></details>
+        <details><summary><span lang="ar">واش الثمن فيه النقاش؟</span><span lang="fr">Le prix est-il négociable ?</span></summary><p><span lang="ar">لا. الثمن هو 150 درهم، وما فيهش النقاش.</span><span lang="fr">Non. Le prix est de 150 DH, non négociable.</span></p></details>
+        <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
+        <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقول لينا شنو بغيتي نبدلو وكنبدلوه ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-nous quoi changer, nous le changeons sans frais.</span></p></details>
+      </div>
     </div>
   </section>
 
@@ -504,7 +523,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <div class="row"><div><span class="x"></span><span lang="ar">CV مصوّر بالتليفون ولا scan</span><span lang="fr">CV photographié ou scanné</span></div><div><span class="v"></span><span lang="ar">PDF فيه نص حقيقي، البرنامج كيقراه كامل</span><span lang="fr">Un PDF avec du vrai texte, lisible en entier</span></div></div>
         <div class="row"><div><span class="x"></span><span lang="ar">عناوين بالفرنسية ولا مخترعة</span><span lang="fr">Titres en français ou inventés</span></div><div><span class="v"></span><span lang="ar">عناوين ألمانية: Berufserfahrung, Ausbildung, Sprachen</span><span lang="fr">Titres allemands : Berufserfahrung, Ausbildung, Sprachen</span></div></div>
         <div class="row"><div><span class="x"></span><span lang="ar">كلمات عامة ما فيهاش المهنة</span><span lang="fr">Mots vagues, sans le métier</span></div><div><span class="v"></span><span lang="ar">مصطلحات المهنة: Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span><span lang="fr">Les termes du métier : Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">ترجمة Google فيها أخطاء</span><span lang="fr">Traduction automatique avec des fautes</span></div><div><span class="v"></span><span lang="ar">ألمانية مهنية، ومستوى اللغة واضح (A1 حتى C2)</span><span lang="fr">Un allemand professionnel, niveau de langue clair (A1 à C2)</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">ترجمة Google فيها أخطاء</span><span lang="fr">Traduction automatique avec des fautes</span></div><div><span class="v"></span><span lang="ar">ألمانية مهنية، ومستوى اللغة واضح</span><span lang="fr">Un allemand professionnel, niveau de langue clair</span></div></div>
         <div class="row"><div><span class="x"></span><span lang="ar">تواريخ ناقصة ولا مخلّطة</span><span lang="fr">Dates manquantes ou en désordre</span></div><div><span class="v"></span><span lang="ar">كل تجربة بالشهر والعام: 01.2020 – 12.2025</span><span lang="fr">Chaque poste au mois près : 01.2020 – 12.2025</span></div></div>
       </div>
     </div>
@@ -538,21 +557,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="block faq" id="questions">
-    <div class="wrap">
-      <div class="head rv"><h2><span lang="ar">أسئلة كتجينا بزاف</span><span lang="fr">Questions fréquentes</span></h2></div>
-      <div class="list">
-        <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">إيه. الشركات والمدارس فألمانيا كيطلبو مستوى فالألمانية (غالباً B1 ولا B2)، والمقابلة كتكون بالألمانية. ولكن الملف أنا اللي كنكتبو: صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وأنا نكتبو ليك بالألمانية.</span><span lang="fr">Oui. Les entreprises et les écoles en Allemagne demandent un niveau d'allemand (souvent B1 ou B2), et l'entretien se fait en allemand. Mais le dossier, c'est moi qui l'écris : envoyez vos infos en darija, en arabe ou en français, je le rédige en allemand.</span></p></details>
-        <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
-        <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقولي شنو بغيتي نبدل وكنبدلو ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-moi quoi changer, je le change sans frais.</span></p></details>
-      </div>
-    </div>
-  </section>
-
   <section class="block final dark" id="infos">
     <div class="wrap rv">
-      <div class="seal" aria-hidden="true"><img src="assets/brand/logo-512.png" alt="" width="160" height="160"></div>
+      <div class="seal" aria-hidden="true"><img src="assets/brand/logo-512.png" alt="" width="160" height="160" loading="lazy" decoding="async"></div>
       <h2><span lang="ar">واجد تطلب ملفك؟</span><span lang="fr">Prêt à commander ?</span></h2>
       <p class="lead"><span lang="ar">عمّر الاستمارة (مراحل قصار، تقريبا 5 دقايق)، بالدارجة ولا بالفرنسية. المعلومات كتبقى مسجلة إلا خرجتي، وكتوصلنا مرتبة فواتساب، والملف ديالك يقدر يكون جاهز غدا.</span><span lang="fr">Remplissez le formulaire (quelques étapes courtes, environ 5 min), en darija ou en français. Vos réponses restent enregistrées si vous quittez, elles nous arrivent sur WhatsApp, et votre dossier peut être prêt demain.</span></p>
       <a class="btn go order" href="#infos"><span lang="ar">عمّر الاستمارة دابا</span><span lang="fr">Remplir le formulaire</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
@@ -572,17 +579,17 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
 <footer>
   <div class="wrap">
-    <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo-512.png" alt="PRO CV" width="60" height="60"></a>
+    <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo-512.png" alt="PRO CV" width="60" height="60" loading="lazy" decoding="async"></a>
     <span><span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
     <span class="links"><a class="tel-link ltr" href="#">07 06 82 84 46</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
   </div>
 </footer>
 
-<div class="dock" id="dock"><a class="btn go order" href="#infos"><span lang="ar">اطلب ملفك · 150 درهم</span><span lang="fr">Commander · 150 DH</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a></div>
+<div class="dock" id="dock"><a class="btn go red order" href="#infos"><span lang="ar">اطلب ملفك · 150 درهم</span><span lang="fr">Commander · 150 DH</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a></div>
 
 <dialog class="fd" id="fd" aria-labelledby="fd-h">
   <div class="fd-top">
-    <b id="fd-h"><img src="assets/brand/logo-96.png" alt="" width="34" height="34"><span lang="ar">عمّر المعلومات ديالك</span><span lang="fr">Vos informations</span></b>
+    <b id="fd-h"><img src="assets/brand/logo-512.png" alt="" width="34" height="34"><span lang="ar">عمّر المعلومات ديالك</span><span lang="fr">Vos informations</span></b>
     <span class="fd-r"><button type="button" class="fd-lang" id="fd-lang"><span lang="ar">Français</span><span lang="fr">العربية</span></button><button type="button" class="x" id="fd-x" aria-label="Fermer">×</button></span>
   </div>
   <p class="q-small"><span lang="ar">عندك سؤال قبل؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">هضر معانا فواتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
