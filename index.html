@@ -6,6 +6,8 @@
 <title>PRO CV · Bewerbung auf Deutsch</title>
 <meta name="description" content="PRO CV: ملف ترشيح ألماني كامل (Deckblatt + Anschreiben + Lebenslauf) بـ150 درهم في 24 ساعة. Dossier de candidature allemand complet pour 150 DH.">
 <link rel="icon" href="assets/brand/logo-96.png">
+<!-- first CV page is the largest thing on screen: fetch it right away -->
+<link rel="preload" as="image" href="assets/cv/l1.webp" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -446,8 +448,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <button role="tab" aria-selected="false" data-t="kfz">Kfz-Mechatroniker</button>
       </div>
       <div class="pages" id="t-lkw">
-        <figure><button type="button" data-src="assets/cv/l1.webp"><img src="assets/cv/l1.webp" alt="Deckblatt" loading="lazy" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/l2.webp"><img src="assets/cv/l2.webp" alt="Anschreiben" loading="lazy" width="607" height="858"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l1.webp"><img src="assets/cv/l1.webp" alt="Deckblatt" fetchpriority="high" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l2.webp"><img src="assets/cv/l2.webp" alt="Anschreiben" width="607" height="858"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/l3.webp"><img src="assets/cv/l3.webp" alt="Lebenslauf" loading="lazy" width="607" height="858"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/l4.webp"><img src="assets/cv/l4.webp" alt="Vielen Dank" loading="lazy" width="607" height="858"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
       </div>
