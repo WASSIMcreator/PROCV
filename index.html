@@ -217,6 +217,9 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .offer .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
 .offer .big { font-size: clamp(72px, 10vw, 120px); font-weight: 700; line-height: 1; margin-top: 10px; color: var(--sky); }
 .offer .big small { font-size: .32em; font-weight: 600; color: #9fb4dc; }
+.was { font-weight: 600; font-size: .62em; color: var(--muted); text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: .1em; margin-inline-end: .15em; white-space: nowrap; }
+.offer .big .was { font-size: .4em; color: #9fb4dc; vertical-align: middle; }
+.deal { display: inline-block; margin-top: 16px; padding: 7px 14px; border-radius: 7px; background: var(--red); color: #fff; font-size: 14px; font-weight: 700; letter-spacing: 1px; direction: ltr; }
 .offer p { color: #c4cde0; margin-top: 12px; }
 .offer p.after { color: #fff; background: rgba(255,255,255,.07); border-inline-start: 4px solid var(--sky); padding: 14px 16px; border-radius: 8px; margin-top: 18px; }
 .offer .panel { background: rgba(255,255,255,.05); border-radius: 18px; padding: clamp(20px, 3vw, 32px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
@@ -415,7 +418,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 <!-- form-only page (/formulaire) -->
 <section class="of" id="of">
   <div class="wrap">
-    <h1><span lang="ar">ملف ترشيح ألماني كامل بـ <span class="price">200 درهم</span></span><span lang="fr">Votre dossier allemand complet pour <span class="price">200 DH</span></span></h1>
+    <h1><span lang="ar">ملف ترشيح ألماني كامل بـ <s class="was">300</s> <span class="price">200 درهم</span></span><span lang="fr">Votre dossier allemand complet pour <s class="was">300</s> <span class="price">200 DH</span></span></h1>
     <p class="lead"><span lang="ar">عمّر المعلومات ديالك هنا، بالدارجة ولا بالفرنسية، وحنا نكتبو ليك Deckblatt + Anschreiben + Lebenslauf بالألمانية حسب المهنة ديالك.</span><span lang="fr">Remplissez vos informations ici, en darija ou en français, et nous rédigeons votre Deckblatt + Anschreiben + Lebenslauf en allemand pour votre métier.</span></p>
     <ul class="checks">
       <li><span lang="ar">جاهز في 24 ساعة</span><span lang="fr">Prêt en 24 h</span></li>
@@ -543,7 +546,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     <div class="wrap">
       <div class="rv">
         <h2><span lang="ar">ثمن واحد، ملف كامل</span><span lang="fr">Un prix, un dossier complet</span></h2>
-        <div class="big"><span lang="ar">200 <small>درهم</small></span><span lang="fr">200 <small>DH</small></span></div>
+        <span class="deal">EXCLUSIVE DISCOUNT</span>
+        <div class="big"><span lang="ar"><s class="was">300</s> 200 <small>درهم</small></span><span lang="fr"><s class="was">300</s> 200 <small>DH</small></span></div>
         <p><span lang="ar">بلا مصاريف زايدة، والملف جاهز في 24 ساعة.</span><span lang="fr">Sans frais cachés, dossier prêt sous 24 h.</span></p>
         <p class="after"><b><span lang="ar">أحسن خدمة بعد البيع:</span><span lang="fr">Le meilleur service après-vente :</span></b> <span lang="ar">أي تعديل على الملف ديالك بعد الدفع، فابور.</span><span lang="fr">toute modification de votre dossier après paiement est gratuite.</span></p>
         <div class="steps">
@@ -594,7 +598,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   </div>
 </footer>
 
-<div class="dock" id="dock"><a class="btn go red order" href="#infos"><span lang="ar">اطلب ملفك · 150 درهم</span><span lang="fr">Commander · 150 DH</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a></div>
+<div class="dock" id="dock"><a class="btn go red order" href="#infos"><span lang="ar">اطلب ملفك · 200 درهم</span><span lang="fr">Commander · 200 DH</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a></div>
 
 <dialog class="fd" id="fd" aria-labelledby="fd-h">
   <div class="fd-top">
