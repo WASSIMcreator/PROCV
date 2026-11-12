@@ -164,7 +164,9 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 
 /* examples */
 .ex { background: var(--paper); }
-.tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 99px; margin-bottom: 24px; }
+.tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--bg); border-radius: 99px; margin-bottom: 24px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { flex: none; }
 .tabs button { font: 600 15px var(--font); min-height: 42px; padding: 0 18px; border-radius: 99px; border: 0; background: transparent; color: var(--muted); cursor: pointer; direction: ltr; transition: background .2s, color .2s; }
 .tabs button[aria-selected="true"] { background: var(--blue); color: #fff; }
 .pages { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
@@ -449,6 +451,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="tabs" role="tablist">
         <button role="tab" aria-selected="true" data-t="lkw">LKW-Fahrer</button>
         <button role="tab" aria-selected="false" data-t="kfz">Kfz-Mechatroniker</button>
+        <button role="tab" aria-selected="false" data-t="pflege">Pflegefachmann</button>
+        <button role="tab" aria-selected="false" data-t="koechin">Köchin</button>
       </div>
       <div class="pages" id="t-lkw">
         <figure><button type="button" data-src="assets/cv/l1.webp"><img src="assets/cv/l1.webp" alt="Deckblatt" fetchpriority="high" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
@@ -462,6 +466,16 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <figure><button type="button" data-src="assets/cv/p3.webp"><img src="assets/cv/p3.webp" alt="Lebenslauf" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/p4.webp"><img src="assets/cv/p4.webp" alt="Lebenslauf Seite 2" loading="lazy" width="900" height="1270"></button><figcaption><b>Lebenslauf (2)</b> · <span lang="ar">السيرة الذاتية (2)</span><span lang="fr">CV (2)</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/p5.webp"><img src="assets/cv/p5.webp" alt="Vielen Dank" loading="lazy" width="900" height="1270"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
+      </div>
+      <div class="pages" id="t-pflege" hidden>
+        <figure><button type="button" data-src="assets/cv/f1.jpg"><img src="assets/cv/f1.jpg" alt="Deckblatt" loading="lazy" width="571" height="810"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/f2.jpg"><img src="assets/cv/f2.jpg" alt="Lebenslauf" loading="lazy" width="572" height="811"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/f3.jpg"><img src="assets/cv/f3.jpg" alt="Vielen Dank" loading="lazy" width="572" height="811"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
+      </div>
+      <div class="pages" id="t-koechin" hidden>
+        <figure><button type="button" data-src="assets/cv/k1.jpg"><img src="assets/cv/k1.jpg" alt="Deckblatt" loading="lazy" width="572" height="810"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/k2.jpg"><img src="assets/cv/k2.jpg" alt="Anschreiben" loading="lazy" width="571" height="810"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/k3.jpg"><img src="assets/cv/k3.jpg" alt="Lebenslauf" loading="lazy" width="571" height="810"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
       </div>
       <p class="note"><span lang="ar">خبّينا الوجوه والمعلومات الشخصية ديال الزبناء.</span><span lang="fr">Visages et coordonnées des clients masqués.</span></p>
     </div>
@@ -1104,8 +1118,10 @@ go(st0);
   document.querySelectorAll('.tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('.tabs button').forEach(function (x) { x.setAttribute('aria-selected', x === b); });
-      document.getElementById('t-lkw').hidden = b.dataset.t !== 'lkw';
-      document.getElementById('t-kfz').hidden = b.dataset.t !== 'kfz';
+      document.querySelectorAll('.tabs button').forEach(function (x) {
+        var p = document.getElementById('t-' + x.dataset.t);
+        if (p) p.hidden = x !== b;
+      });
     });
   });
 
