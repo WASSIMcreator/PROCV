@@ -33,9 +33,9 @@
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
 n.queue=[];
-// the pixel script is heavy (~1 MB): load it once the page is shown; events wait in the queue
-var go=function(){t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)};
-if(b.readyState==='complete')setTimeout(go,300);else f.addEventListener('load',function(){setTimeout(go,300)})}(window, document,'script',
+// load the pixel right away (async, so it does not block the page): waiting for the page load
+// lost the PageView of every visitor who left first, so the ads saw far fewer visits than clicks
+t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1814127609805768');
 fbq('track', 'PageView');
@@ -991,6 +991,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     var bad = check();
     if (bad.length) { focusBad(bad[0]); return; }
     var o = data();
+    // Hidden field only robots fill: let them "succeed" (the script ignores them too), but send
+    // no Lead/Purchase, or Meta would learn from spam and bring more people like them.
+    if (o.pc_check) { o = null; form.reset(); form.hidden = true; step2.hidden = true; document.getElementById('thanks').hidden = false; return; }
     // Moroccan phone in 212 format, so Meta can match the buyer to their account.
     var raw = (o.tel || '').trim(), ph = raw.replace(/\D/g, '');
     if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else if (!/^212/.test(ph)) ph = '212' + ph.replace(/^0/, '');
@@ -999,7 +1002,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     // Count one sale per phone per day, even if the client goes back and sends the form again.
     var sentKey = ph + '|' + new Date().toISOString().slice(0, 10), already = false;
     try { already = localStorage.getItem('procv-sent') === sentKey; } catch (err) {}
-    if (window.fbq && !already) {
+    // Only a real Moroccan mobile/landline (212 + 5/6/7 + 8 digits) counts as a sale for Meta:
+    // junk numbers typed by spammers would teach the ads to find more of them.
+    if (window.fbq && !already && /^212[5-7]\d{8}$/.test(ph)) {
       var ud = { country: 'ma' }; if (ph) ud.ph = ph;
       if (o.email) ud.em = o.email.toLowerCase();
       fbq('init', '1814127609805768', ud);

@@ -3,8 +3,8 @@
  *
  * - One row per client in the "Commandes" sheet (all answers + the full WhatsApp text).
  * - Photos and documents come by WhatsApp; the script refuses files.
- * - You get one email per new client, with the photos and documents attached
- *   (sent when the last photo arrives, or after 10 minutes at most).
+ * - You get one email per new client within about a minute (sent by flushPending, not by the
+ *   request itself, so many clients ordering together are all saved).
  *
  * Setup: see google-apps-script/README.md
  */
@@ -16,8 +16,11 @@ var MAX_FILES_PER_ORDER = 15;
 var HEAD = ['Date', 'ID', 'Nom', 'Téléphone', 'Email', 'Poste', 'Type', 'Allemand', 'Ville', 'Fichiers reçus', 'Dossier Drive', 'Message complet'];
 
 // Anti-spam: anyone who finds the /exec link can post to it, so new orders are capped.
+// The per-phone cap stops one spammer. The hourly cap is only a safety net against a robot
+// flood: it must stay far above real traffic, or real clients are refused when ads run well
+// (it was 20, and spam plus a busy hour filled it, so real orders after that were lost).
 var MAX_BODY_CHARS = 100000;   // a real form is a few KB
-var MAX_NEW_PER_HOUR = 20;     // new orders per hour, all clients together
+var MAX_NEW_PER_HOUR = 300;    // new orders per hour, all clients together
 var MAX_NEW_PER_PHONE = 3;     // new orders per phone number in 6 hours
 
 function doPost(e) {
@@ -35,7 +38,9 @@ function doPost(e) {
     if (!String(o.nom || '').trim() || digits.length < 8 || digits.length > 15) return out({ ok: false, error: 'missing name or phone' });
     var id = String(p.id || '').replace(/[^\w-]/g, '').slice(0, 40);
     if (!id) return out({ ok: false, error: 'no id' });
-    lock.waitLock(60000);
+    // Saving a row takes about a second, so many clients at once just wait their turn.
+    // The email is not sent here (see saveForm), which keeps each turn short.
+    lock.waitLock(30000);
     var limit = spamLimit(id, digits);
     if (limit) return out({ ok: false, error: limit });
     saveForm(id, p);
@@ -79,18 +84,15 @@ function saveForm(id, p) {
   if (r) sh.getRange(r, 1, 1, row.length).setValues([row]);
   else sh.appendRow(row);
 
-  // One email per new client, with the photos attached. Photos upload after the form,
-  // so wait until all the announced files are in Drive (or 10 min, see flushPending).
+  // One email (+ WhatsApp alert) per new client. It is sent by flushPending, which runs every
+  // minute, not here: sending mail inside the request held the lock for seconds per order, so
+  // when many clients ordered together the others timed out and their rows were never saved.
   if (!r) {
     props.setProperty('N_' + id, String(want));
     props.setProperty('P_' + id, String(Date.now())); // pending until the email is really sent
     ensureTrigger();
-    if ((folder ? countFiles(folder) : 0) >= want) trySend(id);
   }
 }
-
-// The form/file is already saved: an email error must not make the site report a failure.
-function trySend(id) { try { sendMail(id); } catch (e) { console.warn('mail ' + id + ': ' + e); } }
 
 // Sends the email (and WhatsApp alert) once per order. Called under the script lock.
 // The order stays pending (P_) until the email is sent, so flushPending retries a failure.
@@ -157,26 +159,40 @@ function sendWhatsApp(text) {
 // Run once from the editor after setting WA_PHONE and WA_APIKEY: you should get a WhatsApp message.
 function testWhatsApp() { sendWhatsApp('✅ PRO CV : les alertes WhatsApp marchent.'); }
 
-// Runs every 10 min (trigger made by setup): sends the email for clients whose photos
-// never all arrived, with whatever is in Drive. Also retries emails that failed.
+// Runs every minute (trigger made by setup / ensureTrigger): sends the email for new clients.
+// An order that announced files waits for them, 10 min at most. Also retries emails that failed.
+// It takes the lock once per email, so orders arriving meanwhile are saved between two emails.
 function flushPending() {
-  var lock = LockService.getScriptLock();
-  if (!lock.tryLock(60000)) return; // busy with uploads: next run
-  try {
-    var props = PropertiesService.getScriptProperties(), all = props.getProperties();
-    Object.keys(all).forEach(function (k) {
-      if (k.indexOf('P_') === 0 && Date.now() - (+all[k]) > 10 * 60 * 1000) {
-        try { sendMail(k.slice(2)); } catch (e) { console.warn('flush ' + k + ': ' + e); }
-      }
-    });
-  } finally { lock.releaseLock(); }
+  var props = PropertiesService.getScriptProperties(), all = props.getProperties();
+  // Gmail allows about 100 emails a day on a normal account: past that, keep them pending
+  // (the rows are already in the sheet) and try again on a later run.
+  if (MailApp.getRemainingDailyQuota() < 1) { console.warn('mail quota used up for today'); return; }
+  Object.keys(all).forEach(function (k) {
+    if (k.indexOf('P_') !== 0) return;
+    var id = k.slice(2), want = +(all['N_' + id] || 0);
+    if (want > 0 && Date.now() - (+all[k]) < 10 * 60 * 1000) {
+      var fid = all['F_' + id], have = 0;
+      try { have = fid ? countFiles(DriveApp.getFolderById(fid)) : 0; } catch (e) {}
+      if (have < want) return; // files still arriving
+    }
+    var lock = LockService.getScriptLock();
+    if (!lock.tryLock(20000)) return; // busy with orders: next run
+    try { sendMail(id); } catch (e) { console.warn('flush ' + k + ': ' + e); }
+    finally { lock.releaseLock(); }
+  });
 }
 
-// The 10-minute check is created by setup(); this also creates it if setup was not run again.
+// The every-minute check is created by setup(); this also creates it if setup was not run again,
+// and replaces the old every-10-minutes trigger once (TRIGGER_V marks that it was done).
 function ensureTrigger() {
   try {
-    var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'flushPending'; });
-    if (!has) ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(10).create();
+    var props = PropertiesService.getScriptProperties();
+    if (props.getProperty('TRIGGER_V') === '2') return;
+    ScriptApp.getProjectTriggers().forEach(function (t) {
+      if (t.getHandlerFunction() === 'flushPending') ScriptApp.deleteTrigger(t);
+    });
+    ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(1).create();
+    props.setProperty('TRIGGER_V', '2');
   } catch (e) { console.warn('trigger: ' + e); }
 }
 
@@ -240,11 +256,11 @@ function out(o) {
 }
 
 // Run this once from the editor (▶ Run) to grant access and create the sheet + folder
-// and the 10-minute check that emails orders whose photos never all arrived.
+// and the every-minute check that emails new orders.
 function setup() {
   var sh = sheet();
   orderFolder('test', { nom: 'TEST', tel: '' });
-  var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'flushPending'; });
-  if (!has) ScriptApp.newTrigger('flushPending').timeBased().everyMinutes(10).create();
+  PropertiesService.getScriptProperties().deleteProperty('TRIGGER_V');
+  ensureTrigger();
   Logger.log('Sheet: ' + sh.getParent().getUrl());
 }
