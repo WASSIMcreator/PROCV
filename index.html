@@ -654,8 +654,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
           <div class="part" data-s="4"><span lang="ar">الدراسة والتكوين</span><span lang="fr">Études / formations</span></div>
           <div class="full rep" id="etu"><div class="list"></div>
-            <span class="err"><span lang="ar">املأ تكوينًا واحدًا على الأقل (الفترة، الشهادة، المؤسسة)</span><span lang="fr">Remplissez au moins une formation (période, diplôme, établissement)</span></span>
-            <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ أضف تكوينًا آخر</span><span lang="fr">+ Ajouter une formation</span></button></div></div>
+            <span class="err"><span lang="ar">املأ دراسة أو تكوينًا واحدًا على الأقل (الفترة، الشهادة، المؤسسة)</span><span lang="fr">Remplissez au moins une formation (période, diplôme, établissement)</span></span>
+            <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ أضف دراسة أو تكوينًا آخر</span><span lang="fr">+ Ajouter une formation</span></button></div></div>
 
           <div class="part" data-s="5"><span lang="ar">المهارات</span><span lang="fr">Compétences</span></div>
           <div class="full"><label><span class="req"><span lang="ar">ما الذي تجيده؟</span><span lang="fr">Ce que je sais faire</span></span><small><span lang="ar">مثلًا: سياقة الشاحنات، Excel، اللحام، خدمة الزبائن… كلمات قصيرة تكفي</span><span lang="fr">Ex. : conduite poids lourd, Excel, soudure, service client… Quelques mots suffisent</span></small><textarea name="competences" data-ph="Permis CE, Excel, soudure, service client…" required></textarea></label><span class="err"><span lang="ar">هذه الخانة إلزامية</span><span lang="fr">Champ obligatoire</span></span></div>
@@ -782,7 +782,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       ['fin', 'إلى (الشهر/السنة)', 'Au (mois/année)', ['مثلًا 06/2023 أو مستمر', 'ex. 06/2023 ou en cours'], 1],
       ['poste', 'الوظيفة / المنصب', 'Travail / poste', ['مثلًا: سائق، ميكانيكي…', 'ex. Chauffeur, Mécanicien…'], 2],
       ['lieu', 'الشركة / المكان', 'Entreprise / lieu', ['مثلًا: شركة X، الدار البيضاء', 'ex. Société X, Casablanca'], 2]] },
-    etu: { t: ['التكوين', 'Formation'], f: [
+    etu: { t: ['الدراسة أو التكوين', 'Études / formation'], f: [
       ['debut', 'من (الشهر/السنة)', 'Du (mois/année)', ['مثلًا 09/2015', 'ex. 09/2015'], 1],
       ['fin', 'إلى (الشهر/السنة)', 'Au (mois/année)', ['مثلًا 06/2018', 'ex. 06/2018'], 1],
       ['diplome', 'الشهادة أو التكوين', 'Diplôme ou formation', ['مثلًا: باك، تقني متخصص…', 'ex. Bac, Technicien spécialisé…'], 2],
@@ -872,7 +872,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
 
   // wizard: 5 short steps. Each topic header carries its step in data-s; step 1 is only the job and goal.
   var NSTEP = 5, cur = 1;
-  var STEP_T = [null, ['الوظيفة والهدف', 'Poste et objectif'], ['مستوى الألمانية', "Niveau d'allemand"], ['معلوماتك الشخصية', 'Vos informations'], ['الخبرة والتكوين', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues']];
+  var STEP_T = [null, ['الوظيفة والهدف', 'Poste et objectif'], ['مستوى الألمانية', "Niveau d'allemand"], ['معلوماتك الشخصية', 'Vos informations'], ['الخبرة والدراسة', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues']];
   var cells = Array.prototype.slice.call(form.querySelector('.g').children), sNow = 1;
   cells.forEach(function (el) { if (el.classList.contains('part')) sNow = +el.dataset.s || sNow; el.dataset.step = sNow; });
   var reached = {};
