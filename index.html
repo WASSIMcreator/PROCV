@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PRO CV · Bewerbung auf Deutsch</title>
 <meta name="description" content="PRO CV: ملف ترشيح ألماني كامل (Deckblatt + Anschreiben + Lebenslauf) بـ200 درهم في 24 ساعة. Dossier de candidature allemand complet pour 200 DH.">
+<link rel="canonical" href="https://procv.store/">
 <link rel="icon" href="assets/brand/logo-96.png">
 <!-- first CV page is the largest thing on screen: fetch it right away -->
 <link rel="preload" as="image" href="assets/cv/l1.webp" type="image/webp" fetchpriority="high">
@@ -115,6 +116,9 @@ footer .logo img { width: 76px; height: 76px; background: #fff; border-radius: 1
 .top .sp { flex: 1; }
 .lang { background: none; border: 1px solid var(--line); border-radius: 10px; min-height: 42px; padding: 0 14px; font: 500 15px var(--font); color: var(--ink); cursor: pointer; }
 .lang:hover { border-color: var(--navy); }
+.news-link { color: var(--navy); font-weight: 600; font-size: 15px; text-decoration: none; padding: 0 6px; }
+.news-link:hover { color: var(--blue); }
+@media (max-width: 480px) { .news-link { display: none; } }
 
 .wordmark { display: inline-flex; align-items: center; direction: ltr; text-decoration: none; }
 .wordmark img { display: block; height: 24px; width: auto; }
@@ -314,7 +318,7 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .ask-b.other { background: var(--wa); border-color: var(--wa); color: #fff; }
 .ask-of { margin-top: 24px; }
 html:not(.only-form) .of { display: none; }
-html.only-form main, html.only-form .dock, html.only-form .top .order, html.only-form #fd-x, html.only-form .fd-lang { display: none !important; }
+html.only-form main, html.only-form .dock, html.only-form .top .order, html.only-form .news-link, html.only-form #fd-x, html.only-form .fd-lang { display: none !important; }
 .of { padding: clamp(24px, 4vw, 48px) 0 clamp(40px, 6vw, 72px); background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); }
 .of .wrap { max-width: 840px; }
 .of h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.15; }
@@ -413,6 +417,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <div class="wrap">
     <a class="wordmark" href="#" aria-label="PRO CV"><img src="assets/brand/wordmark.svg" alt="PRO CV" width="120" height="24"></a>
     <span class="sp"></span>
+    <a class="news-link" href="news/"><span lang="ar">مقالات</span><span lang="fr">Articles</span></a>
     <button class="lang" id="lang" type="button"><span lang="ar">Français</span><span lang="fr">العربية</span></button>
     <a class="btn go red sm order" href="#infos"><span lang="ar">اطلب ملفك</span><span lang="fr">Commander</span></a>
   </div>
@@ -611,7 +616,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <div class="wrap">
     <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo-512.png" alt="PRO CV" width="60" height="60" loading="lazy" decoding="async"></a>
     <span><span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
-    <span class="links"><a class="tel-link ltr" href="#">07 06 82 84 46</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
+    <span class="links"><a href="news/"><span lang="ar">مقالات PRO CV</span><span lang="fr">Articles PRO CV</span></a><a class="tel-link ltr" href="#">07 06 82 84 46</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
   </div>
 </footer>
 

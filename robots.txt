@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /formulaire/
+Disallow: /news-src/
+Disallow: /scripts/
+Disallow: /google-apps-script/
+
+Sitemap: https://procv.store/sitemap.xml
