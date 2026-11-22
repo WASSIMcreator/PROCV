@@ -102,6 +102,9 @@ section[id] { scroll-margin-top: 84px; }
 .btn.go:hover { background: var(--blue-2); transform: translateY(-2px); box-shadow: 0 16px 30px -12px rgba(31,95,209,.95); }
 .btn.go.red { background: var(--red); box-shadow: 0 12px 26px -12px rgba(225,29,46,.8); }
 .btn.go.red:hover { background: var(--red-2); box-shadow: 0 16px 30px -12px rgba(225,29,46,.9); }
+/* every "order" button uses the same red, wherever it sits on the page */
+.btn.go.order { background: var(--red); box-shadow: 0 12px 26px -12px rgba(225,29,46,.8); }
+.btn.go.order:hover { background: var(--red-2); box-shadow: 0 16px 30px -12px rgba(225,29,46,.9); }
 /* attention effect: a red ring that pulses out, and a light sweep across the button */
 .btn.fx { position: relative; overflow: hidden; isolation: isolate; animation: fx-pulse 2.2s ease-out infinite; }
 .btn.fx::before { content: ""; position: absolute; z-index: -1; top: -10%; bottom: -10%; left: -60%; width: 45%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); transform: skewX(-20deg); animation: fx-shine 3.4s ease-in-out infinite; pointer-events: none; }
@@ -189,7 +192,13 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .pages { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
 .pages[hidden] { display: none; }
 .pages figure { scroll-snap-align: start; }
-.pages button { display: block; width: 100%; padding: 0; border: 0; border-radius: 8px; background: #fff; cursor: zoom-in; overflow: hidden; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .25s, transform .25s; }
+/* desktop: every tab (3, 4 or 5 pages) fits in one row, same card size, nothing cut off */
+@media (min-width: 900px) { .pages { grid-auto-columns: minmax(0, 196px); justify-content: start; overflow-x: visible; } }
+/* grey shimmer while a page image loads (e.g. after switching tabs) */
+.pages button { background: linear-gradient(100deg, #eef2f8 40%, #f8fafd 50%, #eef2f8 60%) 0 0 / 200% 100%; animation: sk 1.2s linear infinite; }
+.pages button.ld { background: #fff; animation: none; }
+@keyframes sk { to { background-position: -200% 0; } }
+.pages button { display: block; width: 100%; padding: 0; border: 0; border-radius: 8px; cursor: zoom-in; overflow: hidden; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .25s, transform .25s; }
 .pages button:hover { transform: translateY(-4px); box-shadow: 0 18px 32px -18px rgba(20,37,74,.5), 0 0 0 1px var(--line); }
 .pages img { width: 100%; aspect-ratio: 607 / 858; object-fit: cover; object-position: top; }
 .pages figcaption { font-size: 14px; color: var(--muted); margin-top: 10px; font-weight: 500; }
@@ -246,7 +255,7 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .offer li { display: flex; gap: 12px; align-items: center; }
 .offer li::before { content: ""; flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--wa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
 .offer .btn.go { margin-top: 26px; width: 100%; }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+.steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 30px; }
 .steps div { border-top: 2px solid rgba(255,255,255,.22); padding-top: 12px; font-size: 15px; color: #c4cde0; }
 .steps b { display: block; color: #fff; font-size: 17px; }
 
@@ -278,6 +287,8 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .privacy { margin-top: 18px; background: var(--paper); border-radius: 10px; padding: 18px 22px; max-width: 920px; box-shadow: 0 0 0 1px var(--line); scroll-margin-top: 84px; }
 .privacy > b { display: block; font-size: 18px; color: var(--navy); margin-bottom: 6px; }
 .privacy ul { padding-inline-start: 20px; display: grid; gap: 6px; color: var(--text); font-size: 16px; }
+.lvl-note { margin-top: 10px; background: #fff8db; border-inline-start: 4px solid #e0a800; border-radius: 8px; padding: 10px 14px; font-size: 15px; line-height: 1.6; color: var(--ink); }
+.lvl-note[hidden] { display: none; }
 details.priv summary { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
 details.priv[open] summary { margin-bottom: 6px; }
 
@@ -399,12 +410,17 @@ dialog.lb { border: 0; padding: 0; background: transparent; max-width: min(92vw,
 dialog.lb::backdrop { background: rgba(12,23,48,.88); }
 dialog.lb img { max-height: 88vh; width: auto; margin: 0 auto; border-radius: 6px; }
 dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #fff; font-size: 26px; cursor: pointer; }
+dialog.lb button.lb-nav { top: 50%; right: auto; transform: translateY(-50%); font-size: 30px; line-height: 1; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+dialog.lb button.lb-nav[hidden] { display: none; }
+dialog.lb #lbl { left: 14px; }
+dialog.lb #lbr { left: auto; right: 14px; }
+dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-align: center; color: #fff; font: 600 15px var(--font); direction: ltr; }
 
 .dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); box-shadow: 0 -1px 0 var(--line); display: none; transform: translateY(110%); transition: transform .3s; }
 .dock.on { transform: none; }
 .dock .btn { width: 100%; }
 
-.rv { opacity: 0; transform: translateY(18px); transition: opacity .7s, transform .7s; }
+.rv { opacity: 0; transform: translateY(12px); transition: opacity .45s, transform .45s; }
 .rv.in { opacity: 1; transform: none; }
 
 @media (max-width: 900px) {
@@ -466,7 +482,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <!-- EXAMPLES -->
   <section class="block ex" id="exemples">
     <div class="wrap">
-      <div class="head rv">
+      <div class="head">
         <h1><span lang="ar">شوف بعينيك شنو كتسلم</span><span lang="fr">Voyez ce que vous recevez</span></h1>
         <p class="lead"><span lang="ar">هادو ملفات حقيقية درناها لزبناء من المغرب. كليكي على أي صفحة باش تكبّرها.</span><span lang="fr">Ce sont de vrais dossiers faits pour des clients au Maroc. Touchez une page pour l'agrandir.</span></p>
         <div class="cta">
@@ -611,7 +627,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <p><span lang="ar">بلا مصاريف زايدة، والملف جاهز في 24 ساعة.</span><span lang="fr">Sans frais cachés, dossier prêt sous 24 h.</span></p>
         <p class="after"><b><span lang="ar">أحسن خدمة بعد البيع:</span><span lang="fr">Le meilleur service après-vente :</span></b> <span lang="ar">أي تعديل على الملف ديالك بعد الدفع، فابور.</span><span lang="fr">toute modification de votre dossier après paiement est gratuite.</span></p>
         <div class="steps">
-          <div><b><span lang="ar">1. عمّر الاستمارة</span><span lang="fr">1. Remplissez</span></b><span lang="ar">معلوماتك بالدارجة ولا بالفرنسية، تقريبا 5 دقايق</span><span lang="fr">le formulaire en darija ou en français, environ 5 min</span></div>
+          <div><b><span lang="ar">1. عمّر الاستمارة</span><span lang="fr">1. Remplissez</span></b><span lang="ar">بالدارجة ولا بالفرنسية، تقريبا 5 دقايق (ولا صيفط معلوماتك فواتساب)</span><span lang="fr">le formulaire en darija ou en français, environ 5 min (ou envoyez vos infos sur WhatsApp)</span></div>
           <div><b><span lang="ar">2. كنكتبو</span><span lang="fr">2. Nous rédigeons</span></b><span lang="ar">الملف بالألمانية حسب المهنة ديالك، في 24 ساعة</span><span lang="fr">le dossier en allemand pour votre métier, sous 24 h</span></div>
           <div><b><span lang="ar">3. شوف الملف</span><span lang="fr">3. Vérifiez</span></b><span lang="ar">كنصيفطو ليك صور الملف فواتساب، باش تشوفو قبل ما تخلص</span><span lang="fr">nous vous envoyons un aperçu sur WhatsApp, avant de payer</span></div>
           <div><b><span lang="ar">4. خلّص واستلم</span><span lang="fr">4. Payez et recevez</span></b><span lang="ar">200 درهم (CIH، Attijariwafa ولا Cash Plus)، وكتوصل بالـ PDF كامل</span><span lang="fr">200 DH (CIH, Attijariwafa ou Cash Plus), puis le PDF complet</span></div>
@@ -686,8 +702,9 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
             <div class="chips" style="margin-top:8px"><label><input type="radio" name="but" value="Arbeit" required> Arbeit <span lang="ar">(عمل)</span><span lang="fr">(emploi)</span></label><label><input type="radio" name="but" value="Ausbildung"> Ausbildung <span lang="ar">(تكوين مهني)</span><span lang="fr">(formation)</span></label></div><span class="err"><span lang="ar">اختر خيارًا</span><span lang="fr">Choisissez une option</span></span></div>
 
           <div class="part" data-s="2"><span lang="ar">مستوى الألمانية</span><span lang="fr">Niveau d'allemand</span></div>
-          <div class="full"><span class="req lbl"><span lang="ar">مستواك</span><span lang="fr">Votre niveau</span></span>
-            <div class="chips" style="margin-top:8px"><label><input type="radio" name="allemand" value="Keine" required> <span lang="ar">لم أبدأ بعد</span><span lang="fr">Pas encore</span></label><label><input type="radio" name="allemand" value="A1"> A1</label><label><input type="radio" name="allemand" value="A2"> A2</label><label><input type="radio" name="allemand" value="B1"> B1</label><label><input type="radio" name="allemand" value="B2"> B2</label><label><input type="radio" name="allemand" value="C1"> C1</label><label><input type="radio" name="allemand" value="C2"> C2</label></div><span class="err"><span lang="ar">اختر المستوى</span><span lang="fr">Choisissez un niveau</span></span></div>
+          <div class="full"><span class="req lbl"><span lang="ar">اختر مستواك الحالي</span><span lang="fr">Choisissez votre niveau actuel</span></span>
+            <div class="chips" style="margin-top:8px"><label><input type="radio" name="allemand" value="Keine" required> <span lang="ar">لم أبدأ بعد</span><span lang="fr">Pas encore</span></label><label><input type="radio" name="allemand" value="A1"> A1</label><label><input type="radio" name="allemand" value="A2"> A2</label><label><input type="radio" name="allemand" value="B1"> B1</label><label><input type="radio" name="allemand" value="B2"> B2</label><label><input type="radio" name="allemand" value="C1"> C1</label><label><input type="radio" name="allemand" value="C2"> C2</label></div><span class="err"><span lang="ar">اختر المستوى</span><span lang="fr">Choisissez un niveau</span></span>
+            <p class="lvl-note" id="lvl-note" hidden><span lang="ar">ℹ️ أغلب الشركات ومراكز الـ Ausbildung في ألمانيا تطلب مستوى A2 على الأقل، والأفضل B1، والمقابلة تكون بالألمانية. يمكنك أن تكمل الطلب، لكن ننصحك بمواصلة تعلّم الألمانية قبل أن ترسل ملفك للشركات.</span><span lang="fr">ℹ️ La plupart des entreprises et des Ausbildung en Allemagne demandent au moins le niveau A2, idéalement B1, et l'entretien se fait en allemand. Vous pouvez continuer, mais nous vous conseillons de poursuivre l'allemand avant d'envoyer votre dossier.</span></p></div>
           <div class="full"><label><span><span lang="ar">الشهادة (إن وُجدت)</span><span lang="fr">Certificat (si vous en avez)</span></span><input type="text" name="certificat" data-ph="Goethe B1, telc B2, ÖSD…" autocomplete="off"></label></div>
 
           <div class="part" data-s="3"><span lang="ar">المعلومات الشخصية</span><span lang="fr">Informations personnelles</span></div>
@@ -732,7 +749,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
           <button class="btn go" type="submit" id="pg-send"><span lang="ar">أرسل المعلومات</span><span lang="fr">Envoyer</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
           <details class="saved priv"><summary><span lang="ar">🔒 نستخدم معلوماتك فقط لإعداد ملفك، ولا نشاركها مع أي أحد.</span><span lang="fr">🔒 Vos informations servent uniquement à préparer votre dossier et ne sont partagées avec personne.</span></summary><span lang="ar">تصلنا عبر واتساب وتُحفظ في ملف خاص بنا. لا نبيعها ولا نعطيها لأي جهة، ويمكنك أن تطلب حذفها في أي وقت برسالة على واتساب.</span><span lang="fr">Elles nous arrivent sur WhatsApp et sont gardées dans un fichier privé. Elles ne sont ni vendues ni transmises, et vous pouvez demander leur effacement à tout moment sur WhatsApp.</span></details>
-          <span class="saved" id="saved"><span lang="ar">تُحفظ معلوماتك على هاتفك إلى أن ترسلها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
+          <span class="saved" id="saved"><span lang="ar">تُحفظ معلوماتك على هذا الجهاز إلى أن ترسلها.</span><span lang="fr">Vos réponses restent enregistrées sur cet appareil jusqu'à l'envoi.</span></span>
         </div>
       </form>
       <!-- sending screen: the answers are saved to Google Sheet, then WhatsApp opens -->
@@ -749,7 +766,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       </div>
 </dialog>
 
-<dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><img id="lbi" alt=""></dialog>
+<dialog class="lb" id="lb"><button type="button" aria-label="Fermer" id="lbx">×</button><button type="button" class="lb-nav" id="lbl" aria-label="‹">‹</button><button type="button" class="lb-nav" id="lbr" aria-label="›">›</button><img id="lbi" alt=""><span class="lb-count" id="lbc"></span></dialog>
 
 <script>
   // ---- Contact details ----
@@ -937,7 +954,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     var pre = cur === 1 ? ['المرحلة الأولى · ', 'Première étape · '] : cur === NSTEP ? ['المرحلة الأخيرة · ', 'Dernière étape · '] : ['', ''];
     document.getElementById('pg-t').innerHTML = sp(pre[0] + STEP_T[cur][0], pre[1] + STEP_T[cur][1]);
     document.getElementById('pg-b').style.width = (cur / NSTEP * 100) + '%';
-    document.getElementById('pg-back').style.visibility = cur > 1 ? 'visible' : 'hidden';
+    // on step 1 there is no "back": take it out so "next" spans the whole width
+    document.getElementById('pg-back').hidden = cur <= 1;
     document.getElementById('pg-next').hidden = cur === NSTEP;
     document.getElementById('pg-send').hidden = cur !== NSTEP;
     try { localStorage.setItem('procv-step', String(cur)); } catch (err) {}
@@ -1185,12 +1203,46 @@ go(st0);
     });
   });
 
-  var lb = document.getElementById('lb'), lbi = document.getElementById('lbi');
+  // friendly reminder when the German level is below A2 (the order still goes through)
+  (function () {
+    var note = document.getElementById('lvl-note');
+    function upd() { var c = document.querySelector('input[name="allemand"]:checked'); note.hidden = !(c && (c.value === 'Keine' || c.value === 'A1')); }
+    document.querySelectorAll('input[name="allemand"]').forEach(function (r) { r.addEventListener('change', upd); });
+    upd();
+  })();
+
+  // stop the loading shimmer once a page image is there
+  document.querySelectorAll('.pages button img').forEach(function (im) {
+    function done() { im.parentNode.classList.add('ld'); }
+    if (im.complete && im.naturalWidth) done(); else { im.addEventListener('load', done); im.addEventListener('error', done); }
+  });
+
+  // lightbox: open a page, then browse the other pages of the same dossier with the arrows (or keyboard)
+  var lb = document.getElementById('lb'), lbi = document.getElementById('lbi'), lbc = document.getElementById('lbc');
+  var lbl = document.getElementById('lbl'), lbr = document.getElementById('lbr');
+  var group = [], at = 0;
+  function show(i) {
+    at = (i + group.length) % group.length;
+    var b = group[at];
+    lbi.src = b.dataset.src; lbi.alt = b.querySelector('img').alt;
+    var many = group.length > 1;
+    lbl.hidden = lbr.hidden = !many;
+    lbc.textContent = many ? (at + 1) + ' / ' + group.length : '';
+  }
+  // the next page sits to the left in Arabic (right-to-left) and to the right in French
+  function step(side) { var rtl = h.dir === 'rtl'; show(at + ((side === 'r') === rtl ? -1 : 1)); }
   document.querySelectorAll('.pages button, .card button[data-src]').forEach(function (b) {
     b.addEventListener('click', function () {
-      lbi.src = b.dataset.src; lbi.alt = b.querySelector('img').alt;
+      group = [].slice.call(b.closest('.pages, .cards').querySelectorAll('button[data-src]'));
+      show(group.indexOf(b));
       if (lb.showModal) lb.showModal(); else window.open(b.dataset.src);
     });
+  });
+  lbl.addEventListener('click', function () { step('l'); });
+  lbr.addEventListener('click', function () { step('r'); });
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); step('l'); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); step('r'); }
   });
   document.getElementById('lbx').addEventListener('click', function () { lb.close(); });
   lb.addEventListener('click', function (e) { if (e.target === lb) lb.close(); });
@@ -1200,7 +1252,7 @@ go(st0);
   if ('IntersectionObserver' in window) {
     var ro = new IntersectionObserver(function (es) {
       es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); ro.unobserve(x.target); } });
-    }, { threshold: 0.12 });
+    }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
     document.querySelectorAll('.rv').forEach(function (el) { ro.observe(el); });
   } else {
     document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
