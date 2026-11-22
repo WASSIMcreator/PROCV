@@ -106,10 +106,10 @@ section[id] { scroll-margin-top: 84px; }
 .btn.go.order { background: var(--red); box-shadow: 0 12px 26px -12px rgba(225,29,46,.8); }
 .btn.go.order:hover { background: var(--red-2); box-shadow: 0 16px 30px -12px rgba(225,29,46,.9); }
 /* attention effect: a red ring that pulses out, and a light sweep across the button */
-.btn.fx { position: relative; overflow: hidden; isolation: isolate; animation: fx-pulse 2.2s ease-out infinite; }
-.btn.fx::before { content: ""; position: absolute; z-index: -1; top: -10%; bottom: -10%; left: -60%; width: 45%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); transform: skewX(-20deg); animation: fx-shine 3.4s ease-in-out infinite; pointer-events: none; }
-@keyframes fx-pulse { 0% { box-shadow: 0 12px 26px -12px rgba(225,29,46,.8), 0 0 0 0 rgba(225,29,46,.5); } 70%, 100% { box-shadow: 0 12px 26px -12px rgba(225,29,46,.8), 0 0 0 14px rgba(225,29,46,0); } }
-@keyframes fx-shine { 0%, 40% { left: -60%; } 75%, 100% { left: 130%; } }
+/* looping effects use only transform/opacity so phones run them on the GPU without repainting */
+.btn.fx { position: relative; overflow: hidden; isolation: isolate; box-shadow: 0 12px 26px -12px rgba(225,29,46,.8); }
+.btn.fx::before { content: ""; position: absolute; z-index: -1; top: -10%; bottom: -10%; left: 0; width: 45%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.5), transparent); transform: translateX(-140%) skewX(-20deg); animation: fx-shine 3.4s ease-in-out infinite; pointer-events: none; will-change: transform; }
+@keyframes fx-shine { 0%, 40% { transform: translateX(-140%) skewX(-20deg); } 75%, 100% { transform: translateX(300%) skewX(-20deg); } }
 @media (prefers-reduced-motion: reduce) { .btn.fx, .btn.fx::before { animation: none; } }
 .btn.go .arr { transition: transform .2s; }
 .btn:disabled { opacity: .65; cursor: progress; transform: none; }
@@ -121,7 +121,7 @@ html[dir="ltr"] .btn.go:hover .arr { transform: scaleX(-1) translateX(-4px); }
 .q-small a { color: var(--wa); font-weight: 600; text-underline-offset: 3px; }
 
 /* header */
-.top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+.top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.97); box-shadow: 0 1px 0 var(--line); }
 .top .wrap { display: flex; align-items: center; gap: 12px; height: 68px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; direction: ltr; }
 .logo img { width: 62px; height: 62px; object-fit: contain; }
@@ -225,8 +225,8 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .flow b { display: block; color: var(--navy); }
 .flow li > div > span { color: var(--muted); font-size: 16px; }
 .scan { position: relative; border-radius: 10px; overflow: hidden; background: #fff; max-width: 440px; justify-self: center; width: 100%; box-shadow: 0 24px 48px -28px rgba(20,37,74,.5), 0 0 0 1px var(--line); }
-.scan .bar { position: absolute; left: 0; right: 0; height: 70px; top: -70px; background: linear-gradient(180deg, rgba(47,107,220,0), rgba(47,107,220,.18)); border-bottom: 2px solid var(--blue); animation: scan 3.6s linear infinite; }
-@keyframes scan { to { top: 100%; } }
+.scan .bar { position: absolute; left: 0; right: 0; top: 0; height: 100%; background: linear-gradient(180deg, transparent calc(100% - 70px), rgba(47,107,220,.18)); border-bottom: 2px solid var(--blue); transform: translateY(-100%); animation: scan 3.6s linear infinite; will-change: transform; pointer-events: none; }
+@keyframes scan { to { transform: translateY(100%); } }
 .scan .read { position: absolute; left: 12px; right: 12px; bottom: 12px; background: rgba(12,23,48,.95); color: #fff; border-radius: 10px; padding: 14px 16px; font-size: 14px; direction: ltr; text-align: left; display: grid; gap: 6px; }
 .scan .read div { display: flex; justify-content: space-between; gap: 10px; }
 .scan .read .t { font-weight: 600; color: #9fb4dc; }
@@ -338,7 +338,7 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .fd-lang { min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; font: 600 14px var(--font); cursor: pointer; }
 .s2-bar { height: 10px; border-radius: 99px; background: #e3e8f2; overflow: hidden; }
 .s2-bar span { display: block; height: 100%; width: 35%; background: #1f5fd1; border-radius: 99px; animation: s2go 1.2s ease-in-out infinite; }
-@keyframes s2go { from { margin-left: -35%; } to { margin-left: 100%; } }
+@keyframes s2go { from { transform: translateX(-100%); } to { transform: translateX(286%); } }
 .ask-sec { padding: 8px 0 clamp(28px, 4vw, 48px); }
 .ask { background: #fff; border-radius: 18px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 0 0 1px var(--line), 0 20px 44px -30px rgba(20,37,74,.45); display: grid; gap: 16px; }
 .ask-h { display: grid; gap: 4px; }
@@ -687,7 +687,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
 
 <dialog class="fd" id="fd" aria-labelledby="fd-h">
   <div class="fd-top">
-    <b id="fd-h"><img src="assets/brand/logo-512.png" alt="" width="34" height="34"><span lang="ar">املأ معلوماتك</span><span lang="fr">Vos informations</span></b>
+    <b id="fd-h"><img src="assets/brand/logo-96.png" alt="" width="34" height="34"><span lang="ar">املأ معلوماتك</span><span lang="fr">Vos informations</span></b>
     <span class="fd-r"><button type="button" class="fd-lang" id="fd-lang"><span lang="ar">Français</span><span lang="fr">العربية</span></button><button type="button" class="x" id="fd-x" aria-label="Fermer">×</button></span>
   </div>
   <p class="q-small"><span lang="ar">هل لديك سؤال قبل البدء؟</span><span lang="fr">Une question avant ?</span> <a class="wa" href="#"><span lang="ar">تواصل معنا عبر واتساب</span><span lang="fr">Écrivez-nous sur WhatsApp</span></a></p>
@@ -1054,6 +1054,34 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     return out.join('\n');
   }
 
+  // Moroccan phone in 212 format, so Meta can match the buyer to their account.
+  function normPh(v) {
+    var raw = (v || '').trim(), ph = raw.replace(/\D/g, '');
+    if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else if (!/^212/.test(ph)) ph = '212' + ph.replace(/^0/, '');
+    ph = ph.replace(/^2120/, '212');
+    return ph.length < 11 ? '' : ph;
+  }
+  // Give the pixel the buyer's phone/email as soon as they are typed, long before the form is sent.
+  var PIXEL = '1814127609805768', matched = '';
+  function matchUser() {
+    if (!window.fbq) return;
+    var ph = normPh(form.elements.tel && form.elements.tel.value), em = ((form.elements.email && form.elements.email.value) || '').trim().toLowerCase();
+    if (!/^212[5-7]\d{8}$/.test(ph)) return;
+    var ud = { country: 'ma', ph: ph }; if (/^\S+@\S+\.\S+$/.test(em)) ud.em = em;
+    var k = JSON.stringify(ud); if (k === matched) return; matched = k;
+    fbq('init', PIXEL, ud);
+  }
+  ['tel', 'email'].forEach(function (n) { if (form.elements[n]) form.elements[n].addEventListener('change', matchUser); });
+  // A standard event through the pixel, plus the same event as a direct hit (keepalive survives
+  // the jump to WhatsApp). Same event ID on both, so Meta keeps one.
+  function metaEvent(name, cd, eid) {
+    if (window.fbq) fbq('track', name, cd, { eventID: eid });
+    var u = 'https://www.facebook.com/tr/?id=' + PIXEL + '&ev=' + name + '&eid=' + encodeURIComponent(eid) +
+      '&dl=' + encodeURIComponent(location.href) + '&noscript=1';
+    for (var k in cd) u += '&cd[' + k + ']=' + encodeURIComponent(cd[k]);
+    try { fetch(u, { mode: 'no-cors', keepalive: true, credentials: 'include' }); } catch (err) { new Image().src = u; }
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (cur < NSTEP) {
@@ -1067,23 +1095,21 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     // Hidden field only robots fill: let them "succeed" (the script ignores them too), but send
     // no Lead/Purchase, or Meta would learn from spam and bring more people like them.
     if (o.pc_check) { o = null; form.reset(); form.hidden = true; step2.hidden = true; document.getElementById('thanks').hidden = false; return; }
-    // Moroccan phone in 212 format, so Meta can match the buyer to their account.
-    var raw = (o.tel || '').trim(), ph = raw.replace(/\D/g, '');
-    if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else if (!/^212/.test(ph)) ph = '212' + ph.replace(/^0/, '');
-    ph = ph.replace(/^2120/, '212');
-    if (ph.length < 11) ph = '';
+    var ph = normPh(o.tel);
     // Count one sale per phone per day, even if the client goes back and sends the form again.
     var sentKey = ph + '|' + new Date().toISOString().slice(0, 10), already = false;
     try { already = localStorage.getItem('procv-sent') === sentKey; } catch (err) {}
     // Only a real Moroccan mobile/landline (212 + 5/6/7 + 8 digits) counts as a sale for Meta:
     // junk numbers typed by spammers would teach the ads to find more of them.
-    if (window.fbq && !already && /^212[5-7]\d{8}$/.test(ph)) {
-      var ud = { country: 'ma' }; if (ph) ud.ph = ph;
-      if (o.email) ud.em = o.email.toLowerCase();
-      fbq('init', '1814127609805768', ud);
-      fbq('track', 'Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+    if (!already && /^212[5-7]\d{8}$/.test(ph)) {
+      // No fbq('init') here: a second init makes the pixel wait for an extra script before it sends,
+      // and WhatsApp opens first, so no Lead/Purchase ever reached Meta. The buyer's phone/email was
+      // already given to the pixel when typed (matchUser). Each event also goes out as a direct hit
+      // that survives the page leaving; the shared event ID lets Meta count it once.
+      var cd = { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, eid = orderId();
+      metaEvent('Lead', cd, eid + '-lead');
       // Payment happens on WhatsApp; a sent form is counted as the sale so Sales campaigns can optimize on it.
-      fbq('track', 'Purchase', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' });
+      metaEvent('Purchase', cd, eid + '-buy');
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
     sendOrder(o, message(o));
