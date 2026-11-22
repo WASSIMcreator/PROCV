@@ -3,9 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PRO CV · Bewerbung auf Deutsch</title>
-<meta name="description" content="PRO CV: ملف ترشيح ألماني كامل (Deckblatt + Anschreiben + Lebenslauf) بـ200 درهم في 24 ساعة. Dossier de candidature allemand complet pour 200 DH.">
+<title>PRO CV | ملف ترشيح ألماني (CV + Anschreiben) بـ200 درهم</title>
+<meta name="description" content="ملف Bewerbung ألماني كامل: Deckblatt + Anschreiben + Lebenslauf بـ200 درهم، جاهز في 24 ساعة، والتعديلات فابور. Dossier de candidature allemand complet pour 200 DH.">
 <link rel="canonical" href="https://procv.store/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PRO CV">
+<meta property="og:locale" content="ar_MA">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:url" content="https://procv.store/">
+<meta property="og:title" content="PRO CV | ملف ترشيح ألماني كامل بـ200 درهم">
+<meta property="og:description" content="Deckblatt + Anschreiben + Lebenslauf بالألمانية، جاهز في 24 ساعة، والتعديلات فابور.">
+<meta property="og:image" content="https://procv.store/assets/brand/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="628">
+<meta property="og:image:alt" content="ملف Bewerbung ألماني كامل من PRO CV بـ200 درهم">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/brand/logo-96.png">
 <!-- first CV page is the largest thing on screen: fetch it right away -->
 <link rel="preload" as="image" href="assets/cv/l1.webp" type="image/webp" fetchpriority="high">
@@ -259,6 +271,15 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .warn { background: #fff7eb; border-inline-start: 5px solid #c26a00; border-radius: 10px; padding: 18px 22px; max-width: 920px; }
 .warn b { display: block; font-size: 18px; color: #7a3f00; margin-bottom: 4px; }
 .warn p { color: #4a3420; }
+.who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.who-grid > div { background: var(--paper); border-radius: var(--r); padding: 20px 22px; box-shadow: 0 0 0 1px var(--line); border-top: 4px solid var(--blue); }
+.who-grid b { display: block; color: var(--navy); font-size: 18px; margin-bottom: 6px; }
+.who-grid p { color: var(--text); font-size: 16px; line-height: 1.6; }
+.privacy { margin-top: 18px; background: var(--paper); border-radius: 10px; padding: 18px 22px; max-width: 920px; box-shadow: 0 0 0 1px var(--line); scroll-margin-top: 84px; }
+.privacy > b { display: block; font-size: 18px; color: var(--navy); margin-bottom: 6px; }
+.privacy ul { padding-inline-start: 20px; display: grid; gap: 6px; color: var(--text); font-size: 16px; }
+details.priv summary { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+details.priv[open] summary { margin-bottom: 6px; }
 
 footer { background: var(--navy-2); color: #9fb4dc; padding: 32px 0 110px; font-size: 15px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 28px; justify-content: space-between; align-items: center; }
@@ -497,7 +518,8 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
       <div class="list">
         <details><summary><span lang="ar">واش كتبيعو الكونترا ولا كتترجمو الوثائق؟</span><span lang="fr">Vendez-vous des contrats ou traduisez-vous des documents ?</span></summary><p><span lang="ar">لا. حنا ما كنبيعوش الكونترا ديال الخدمة، وما كنترجموش الوثائق (الديبلومات، الشواهد…). الترجمة ديال الوثائق خاصها مترجم محلَّف. حنا كنكتبو ليك ملف الترشيح بالألمانية: Deckblatt + Anschreiben + Lebenslauf.</span><span lang="fr">Non. Nous ne vendons pas de contrats de travail et nous ne traduisons pas les documents (diplômes, attestations…) : pour cela il faut un traducteur assermenté. Nous rédigeons votre dossier de candidature en allemand : Deckblatt + Anschreiben + Lebenslauf.</span></p></details>
         <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">إيه، ضروري. خاصك تكون كتعرف الألمانية على الأقل A2، والأحسن B1، حيت الشركات والمدارس فألمانيا كيطلبو مستوى فالألمانية والمقابلة كتكون بالألمانية. ولكن الملف حنا اللي كنكتبوه: صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وحنا نكتبوه ليك بالألمانية.</span><span lang="fr">Oui, c'est indispensable. Il faut au moins le niveau A2, et B1 c'est mieux : les entreprises et les écoles en Allemagne demandent un niveau d'allemand, et l'entretien se fait en allemand. Mais le dossier, c'est nous qui l'écrivons : envoyez vos infos en darija, en arabe ou en français, nous le rédigeons en allemand.</span></p></details>
-        <details><summary><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment payer ?</span></summary><p><span lang="ar">تقدر تخلص بالتحويل البنكي لـ Attijariwafa bank ولا CIH Bank، ولا ب Cash Plus.</span><span lang="fr">Par virement Attijariwafa bank ou CIH Bank, ou par Cash Plus.</span></p></details>
+        <details><summary><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment payer ?</span></summary><p><span lang="ar">كتخلص من بعد ما نصيفطو ليك صور الملف ديالك فواتساب وتشوفو. تقدر تخلص بالتحويل البنكي لـ Attijariwafa bank ولا CIH Bank، ولا ب Cash Plus، ومن بعد كتوصل بالـ PDF كامل.</span><span lang="fr">Vous payez après avoir vu l'aperçu de votre dossier, envoyé sur WhatsApp. Par virement Attijariwafa bank ou CIH Bank, ou par Cash Plus, puis vous recevez le PDF complet.</span></p></details>
+        <details><summary><span lang="ar">علاش 200 درهم؟ شنو داخل فالثمن؟</span><span lang="fr">Que comprend le prix de 200 DH ?</span></summary><p><span lang="ar">200 درهم هو الثمن الكامل، بلا حتى مصاريف زايدة: Deckblatt بالصورة، Anschreiben مكتوب على حساب المهنة، Lebenslauf، صفحة Vielen Dank، تحضير تصويرة الـ Bewerbung، والتعديلات فابور حتى من بعد الدفع. الثمن واحد للجميع، باش تعرف من الأول شحال غادي تخلص.</span><span lang="fr">200 DH est le prix complet, sans frais en plus : Deckblatt avec photo, Anschreiben écrit pour votre métier, Lebenslauf, page Vielen Dank, préparation de la photo de candidature, et les modifications gratuites même après paiement. Le prix est le même pour tous : vous savez dès le départ ce que vous payez.</span></p></details>
         <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
         <details><summary><span lang="ar">واش كتوجدو تصويرة الـ Bewerbung؟</span><span lang="fr">Préparez-vous la photo de candidature (Bewerbungsfoto) ?</span></summary><p><span lang="ar">إيه. صيفط لينا تصويرة ديالك من القدام، وحنا كنوجدوها ليك تصويرة Bewerbung احترافية (القص، الخلفية والضو)، وكنحطوها فالملف ديالك.</span><span lang="fr">Oui. Envoyez-nous une photo de vous de face : nous la préparons en photo de candidature professionnelle (cadrage, fond et lumière) et nous la mettons dans votre dossier.</span></p></details>
         <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقول لينا شنو بغيتي نبدلو وكنبدلوه ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-nous quoi changer, nous le changeons sans frais.</span></p></details>
@@ -563,20 +585,36 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
     </div>
   </section>
 
+  <!-- WHO WRITES -->
+  <section class="block who" id="equipe">
+    <div class="wrap">
+      <div class="head rv">
+        <h2><span lang="ar">شكون كيكتب الملف ديالك؟</span><span lang="fr">Qui rédige votre dossier ?</span></h2>
+        <p class="lead"><span lang="ar">فريق PRO CV متخصص غير فملفات الترشيح الألمانية. كل ملف كنكتبوه من الصفر، على حساب المهنة ديالك، وكنراجعوه صفحة بصفحة قبل ما نصيفطوه.</span><span lang="fr">L'équipe PRO CV fait uniquement des dossiers de candidature allemands. Chaque dossier est écrit de zéro pour votre métier, puis relu page par page avant l'envoi.</span></p>
+      </div>
+      <div class="who-grid">
+        <div class="rv"><b>DIN 5008</b><p><span lang="ar">الشكل الرسمي اللي كتعتمدو الشركات الألمانية فالرسائل والـ Lebenslauf.</span><span lang="fr">La norme de mise en page attendue par les entreprises allemandes.</span></p></div>
+        <div class="rv"><b>ATS</b><p><span lang="ar">PDF فيه نص حقيقي وكلمات المهنة، باش البرامج ديال الفرز تقراه.</span><span lang="fr">Un PDF texte avec les mots du métier, lisible par les logiciels de tri.</span></p></div>
+        <div class="rv"><b>Ausbildung · Arbeit · Pflege</b><p><span lang="ar">المصطلحات والـ Anschreiben كيتبدلو على حساب الهدف ديالك.</span><span lang="fr">Vocabulaire et Anschreiben adaptés à votre objectif.</span></p></div>
+        <div class="rv"><b><span lang="ar">ماشي نموذج جاهز</span><span lang="fr">Pas un modèle copié</span></b><p><span lang="ar">ما كنعمروش قالب بالأسماء: كنكتبو التجارب ديالك بجمل ألمانية مناسبة ليك.</span><span lang="fr">Pas de simple modèle rempli : vos expériences rédigées en vraies phrases allemandes.</span></p></div>
+      </div>
+    </div>
+  </section>
+
   <!-- OFFER -->
   <section class="block offer dark" id="prix">
     <div class="wrap">
       <div class="rv">
         <h2><span lang="ar">ثمن واحد، ملف كامل</span><span lang="fr">Un prix, un dossier complet</span></h2>
-        <span class="deal">EXCLUSIVE DISCOUNT</span>
+        <span class="deal"><span lang="ar">تخفيض خاص</span><span lang="fr">Offre spéciale</span></span>
         <div class="big"><span lang="ar"><s class="was">300</s> 200 <small>درهم</small></span><span lang="fr"><s class="was">300</s> 200 <small>DH</small></span></div>
         <p><span lang="ar">بلا مصاريف زايدة، والملف جاهز في 24 ساعة.</span><span lang="fr">Sans frais cachés, dossier prêt sous 24 h.</span></p>
         <p class="after"><b><span lang="ar">أحسن خدمة بعد البيع:</span><span lang="fr">Le meilleur service après-vente :</span></b> <span lang="ar">أي تعديل على الملف ديالك بعد الدفع، فابور.</span><span lang="fr">toute modification de votre dossier après paiement est gratuite.</span></p>
         <div class="steps">
-          <div><b><span lang="ar">1. صيفط</span><span lang="fr">1. Envoyez</span></b><span lang="ar">معلوماتك فواتساب، بالدارجة ولا بالفرنسية</span><span lang="fr">vos infos sur WhatsApp, en darija ou en français</span></div>
-          <div><b><span lang="ar">2. كنكتب</span><span lang="fr">2. J'écris</span></b><span lang="ar">الملف بالألمانية حسب المهنة</span><span lang="fr">le dossier en allemand pour votre métier</span></div>
-          <div><b><span lang="ar">3. استلم</span><span lang="fr">3. Recevez</span></b><span lang="ar">PDF جاهز تصيفطو، في 24 ساعة</span><span lang="fr">un PDF prêt à envoyer sous 24 h</span></div>
-          <div><b><span lang="ar">4. خلّص</span><span lang="fr">4. Payez</span></b><span lang="ar">200 درهم، بالتحويل لـ CIH Bank ولا Attijariwafa bank، ولا بـ Cash Plus</span><span lang="fr">200 DH par virement CIH Bank ou Attijariwafa bank, ou par Cash Plus</span></div>
+          <div><b><span lang="ar">1. عمّر الاستمارة</span><span lang="fr">1. Remplissez</span></b><span lang="ar">معلوماتك بالدارجة ولا بالفرنسية، تقريبا 5 دقايق</span><span lang="fr">le formulaire en darija ou en français, environ 5 min</span></div>
+          <div><b><span lang="ar">2. كنكتبو</span><span lang="fr">2. Nous rédigeons</span></b><span lang="ar">الملف بالألمانية حسب المهنة ديالك، في 24 ساعة</span><span lang="fr">le dossier en allemand pour votre métier, sous 24 h</span></div>
+          <div><b><span lang="ar">3. شوف الملف</span><span lang="fr">3. Vérifiez</span></b><span lang="ar">كنصيفطو ليك صور الملف فواتساب، باش تشوفو قبل ما تخلص</span><span lang="fr">nous vous envoyons un aperçu sur WhatsApp, avant de payer</span></div>
+          <div><b><span lang="ar">4. خلّص واستلم</span><span lang="fr">4. Payez et recevez</span></b><span lang="ar">200 درهم (CIH، Attijariwafa ولا Cash Plus)، وكتوصل بالـ PDF كامل</span><span lang="fr">200 DH (CIH, Attijariwafa ou Cash Plus), puis le PDF complet</span></div>
         </div>
       </div>
       <div class="rv panel">
@@ -608,6 +646,15 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <b><span lang="ar">تنبيه مهم</span><span lang="fr">À savoir</span></b>
         <p><span lang="ar">PRO CV ما كنبيعوش فرص الشغل، وما كنوفروش عقود العمل ولا الفيزا ولا الـ Ausbildung. الخدمة ديالنا هي نكتبو ليك ملف الترشيح بالألمانية، والقبول كيبقى عند الشركة ولا المؤسسة اللي غادي تقدم ليها. إلا شي واحد طلب منك فلوس على "خدمة مضمونة فألمانيا" باسمنا، راه ماشي حنا.</span><span lang="fr">PRO CV ne vend pas d'emploi et ne fournit ni contrat de travail, ni visa, ni place d'Ausbildung. Nous rédigeons votre dossier de candidature en allemand ; la décision reste à l'entreprise ou à l'école à qui vous postulez. Si quelqu'un vous demande de l'argent pour un « emploi garanti en Allemagne » en notre nom, ce n'est pas nous.</span></p>
       </div>
+      <div class="privacy rv" id="vie-privee">
+        <b><span lang="ar">🔒 حماية المعلومات ديالك</span><span lang="fr">🔒 Protection de vos données</span></b>
+        <ul>
+          <li><span lang="ar"><b>شنو كنجمعو:</b> الاسم، تاريخ الازدياد، الهاتف، الإيميل، التصويرة، والمعلومات ديال الدراسة والخدمة اللي كتعمر فالاستمارة.</span><span lang="fr"><b>Ce que nous recevons :</b> nom, date de naissance, téléphone, e-mail, photo, et les études et emplois saisis dans le formulaire.</span></li>
+          <li><span lang="ar"><b>علاش:</b> غير باش نكتبو الملف ديالك ونتواصلو معاك. ما كنبيعوش المعلومات وما كنعطيوهاش لحتى شي واحد.</span><span lang="fr"><b>Pourquoi :</b> uniquement pour rédiger votre dossier et vous contacter. Vos données ne sont ni vendues ni transmises à personne.</span></li>
+          <li><span lang="ar"><b>فين كتبقى:</b> كتوصلنا فواتساب، وكتتسجل فملف خاص بينا باش ما تضيعش.</span><span lang="fr"><b>Où :</b> elles nous arrivent sur WhatsApp et sont gardées dans un fichier privé, pour ne pas se perdre.</span></li>
+          <li><span lang="ar"><b>الحذف:</b> تقدر تطلب منا نمسحو المعلومات ديالك فأي وقت، بميساج فواتساب.</span><span lang="fr"><b>Suppression :</b> vous pouvez demander l'effacement de vos données à tout moment, par message WhatsApp.</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 </main>
@@ -616,7 +663,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
   <div class="wrap">
     <a class="logo" href="#" aria-label="PRO CV"><img src="assets/brand/logo-512.png" alt="PRO CV" width="60" height="60" loading="lazy" decoding="async"></a>
     <span><span lang="ar">ملفات ترشيح ألمانية من المغرب</span><span lang="fr">Dossiers de candidature allemands depuis le Maroc</span></span>
-    <span class="links"><a href="news/"><span lang="ar">مقالات PRO CV</span><span lang="fr">Articles PRO CV</span></a><a class="tel-link ltr" href="#">07 06 82 84 46</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
+    <span class="links"><a href="news/"><span lang="ar">مقالات PRO CV</span><span lang="fr">Articles PRO CV</span></a><a href="#vie-privee"><span lang="ar">حماية المعلومات</span><span lang="fr">Données personnelles</span></a><a class="tel-link ltr" href="tel:+212706828446">07 06 82 84 46</a><a class="wa" href="https://wa.me/212706828446">WhatsApp</a><a href="https://www.instagram.com/procv.ma1/" target="_blank" rel="noopener">Instagram @procv.ma1</a></span>
   </div>
 </footer>
 
@@ -684,7 +731,7 @@ dialog.lb button { position: fixed; top: 14px; right: 14px; width: 48px; height:
         <div class="foot">
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
           <button class="btn go" type="submit" id="pg-send"><span lang="ar">أرسل المعلومات</span><span lang="fr">Envoyer</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button>
-          <span class="saved"><span lang="ar">🔒 نستخدم معلوماتك فقط لإعداد ملفك، ولا نشاركها مع أي أحد.</span><span lang="fr">🔒 Vos informations servent uniquement à préparer votre dossier et ne sont partagées avec personne.</span></span>
+          <details class="saved priv"><summary><span lang="ar">🔒 نستخدم معلوماتك فقط لإعداد ملفك، ولا نشاركها مع أي أحد.</span><span lang="fr">🔒 Vos informations servent uniquement à préparer votre dossier et ne sont partagées avec personne.</span></summary><span lang="ar">تصلنا عبر واتساب وتُحفظ في ملف خاص بنا. لا نبيعها ولا نعطيها لأي جهة، ويمكنك أن تطلب حذفها في أي وقت برسالة على واتساب.</span><span lang="fr">Elles nous arrivent sur WhatsApp et sont gardées dans un fichier privé. Elles ne sont ni vendues ni transmises, et vous pouvez demander leur effacement à tout moment sur WhatsApp.</span></details>
           <span class="saved" id="saved"><span lang="ar">تُحفظ معلوماتك على هاتفك إلى أن ترسلها.</span><span lang="fr">Vos réponses restent enregistrées sur votre téléphone jusqu'à l'envoi.</span></span>
         </div>
       </form>
