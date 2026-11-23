@@ -5,6 +5,7 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://procv.store';
@@ -174,7 +175,13 @@ ${posts.map(p => `    <a class="card" href="${p.slug}/"${p.lang !== 'ar' ? ` lan
 // ---- sitemap -------------------------------------------------------------
 {
   const latest = posts.map(p => p.updated || p.date).sort().pop();
-  const urls = [[`${SITE}/`, latest, '1.0'], [`${SITE}/news/`, latest, '0.8'], ...posts.map(p => [`${SITE}/news/${p.slug}/`, p.updated || p.date, '0.7'])];
+  // Home page: today if it has uncommitted edits, otherwise the date of its last commit.
+  const today = new Date().toISOString().slice(0, 10);
+  const fileDate = f => { try {
+    if (execSync(`git status --porcelain -- ${f}`, { cwd: ROOT }).toString().trim()) return today;
+    return execSync(`git log -1 --format=%cs -- ${f}`, { cwd: ROOT }).toString().trim() || latest;
+  } catch { return latest; } };
+  const urls = [[`${SITE}/`, fileDate('index.html'), '1.0'], [`${SITE}/news/`, latest, '0.8'], ...posts.map(p => [`${SITE}/news/${p.slug}/`, p.updated || p.date, '0.7'])];
   writeFileSync(join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(([u, d, pr]) => `  <url><loc>${u}</loc><lastmod>${d}</lastmod><priority>${pr}</priority></url>`).join('\n')}

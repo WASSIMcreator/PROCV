@@ -71,6 +71,7 @@ a { color: var(--blue); }
 .content ul, .content ol { margin: 12px 0; padding-inline-start: 26px; color: var(--text); }
 .content li { margin: 6px 0; }
 .content strong { color: var(--ink); }
+.content .answer { background: var(--blue-soft); border-inline-start: 4px solid var(--blue); border-radius: 10px; padding: 12px 16px; color: var(--ink); }
 .content figure { margin: 26px 0; }
 .content figure img { border-radius: 10px; border: 1px solid var(--line); margin-inline: auto; max-height: 560px; width: auto; background: #fff; }
 .content figcaption { text-align: center; font-size: 14px; color: var(--muted); margin-top: 8px; }
