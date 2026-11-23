@@ -795,6 +795,14 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   var SAVE_URL = 'https://script.google.com/macros/s/AKfycbzgv2FyFIPnSp7VxJ39ofa8LLK6Od-Cn9PF4VzkLLwC1-hgg8MdUEfEGdAYycyMEOtwtw/exec';
 
   var h = document.documentElement;
+  // Meta ids for the Conversions API: keep the ad click id (fbclid) as fbc in case the
+  // pixel's own _fbc cookie is missing when the form is sent.
+  (function () {
+    var m = location.search.match(/[?&]fbclid=([^&#]+)/);
+    if (m) try { localStorage.setItem('procv-fbc', 'fb.1.' + Date.now() + '.' + decodeURIComponent(m[1])); } catch (e) {}
+  })();
+  function cookie(n) { var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; }
+  function fbc() { var c = cookie('_fbc'); if (c) return c; try { c = localStorage.getItem('procv-fbc') || ''; } catch (e) {} return c; }
   function msg() {
     return h.dataset.l === 'ar'
       ? 'السلام عليكم، عندي سؤال على ملف الترشيح الألماني (200 درهم).'
@@ -1101,11 +1109,14 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     // Lead only for a real phone number AND German A2 or higher. "Pas encore"/A1 still send the form
     // (Sheet + WhatsApp) but tell Meta nothing, so the ads stop looking for people without German.
     // No Purchase here: payment happens later, on WhatsApp, after the client sees the preview.
-    if (!already && okPhone(ph) && LEAD_LV.indexOf(o.allemand) > -1) {
-      metaEvent('Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, orderId() + '-lead');
+    // The same event_id goes to Google, which sends the Lead again through the Conversions API:
+    // Meta keeps one of the two.
+    var leadOk = !already && okPhone(ph) && LEAD_LV.indexOf(o.allemand) > -1, eventId = orderId() + '-lead';
+    if (leadOk) {
+      metaEvent('Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, eventId);
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
-    sendOrder(o, message(o));
+    sendOrder(o, message(o), { event_id: eventId, lead_ok: leadOk, fbp: cookie('_fbp'), fbc: fbc(), event_source_url: location.href, client_user_agent: navigator.userAgent });
   });
 
   // ---- the answers go to Google Sheet (+ email); then WhatsApp opens, where the client sends photos and PDFs ----
@@ -1133,11 +1144,11 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   // The answers go to Google first (sending screen), then the thank-you screen stays put with a
   // WhatsApp link the client taps: a real tap is the only way Instagram/Facebook/iOS let WhatsApp open.
   // The full answers are also in the WhatsApp message, so the order still reaches us if Google missed it.
-  function sendOrder(o, text) {
+  function sendOrder(o, text, meta) {
     if (sending) return; sending = true;
     setWa(text);
     form.hidden = true; step2.hidden = false; fdTop();
-    var payload = { type: 'form', id: orderId(), data: o, message: text, nfiles: 0 };
+    var payload = Object.assign({ type: 'form', id: orderId(), data: o, message: text, nfiles: 0 }, meta || {});
     var sent = !SAVE_URL ? Promise.resolve(true) : Promise.race([
       post(payload).then(function () { return true; }),
       new Promise(function (ok, no) { setTimeout(function () { no(new Error('timeout')); }, 15000); })

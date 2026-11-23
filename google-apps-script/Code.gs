@@ -6,6 +6,9 @@
  * - You get one email per new client within about a minute (sent by flushPending, not by the
  *   request itself, so many clients ordering together are all saved).
  *
+ * - Meta Conversions API: a qualified Lead is sent server-side when the form arrives, and a
+ *   Purchase when you tick "Payé" in the sheet (CAPI section at the end of this file).
+ *
  * Setup: see google-apps-script/README.md
  */
 
@@ -43,7 +46,10 @@ function doPost(e) {
     lock.waitLock(30000);
     var limit = spamLimit(id, digits);
     if (limit) return out({ ok: false, error: limit });
-    saveForm(id, p);
+    var row = saveForm(id, p);
+    // The Meta call can take a second: release the lock first so other clients are not kept waiting.
+    lock.releaseLock();
+    capiLead_(row, id, p); // never throws: a Meta error must not cost us the order
     return out({ ok: true });
   } catch (err) {
     return out({ ok: false, error: String(err) });
@@ -83,6 +89,8 @@ function saveForm(id, p) {
              folder ? countFiles(folder) : 0, folder ? folder.getUrl() : '', safe(String(p.message || '').slice(0, 45000))];
   if (r) sh.getRange(r, 1, 1, row.length).setValues([row]);
   else sh.appendRow(row);
+  var saved = r || sh.getLastRow();
+  try { saveMeta_(sh, saved, p); } catch (e) { console.warn('meta columns: ' + e); }
 
   // One email (+ WhatsApp alert) per new client. It is sent by flushPending, which runs every
   // minute, not here: sending mail inside the request held the lock for seconds per order, so
@@ -92,6 +100,7 @@ function saveForm(id, p) {
     props.setProperty('P_' + id, String(Date.now())); // pending until the email is really sent
     ensureTrigger();
   }
+  return saved;
 }
 
 // Sends the email (and WhatsApp alert) once per order. Called under the script lock.
@@ -263,4 +272,187 @@ function setup() {
   PropertiesService.getScriptProperties().deleteProperty('TRIGGER_V');
   ensureTrigger();
   Logger.log('Sheet: ' + sh.getParent().getUrl());
+}
+
+// =====================================================================================
+// Meta Conversions API (server-side events)
+//
+// Script properties (⚙ Paramètres du projet > Propriétés du script), never in this file:
+//   META_CAPI_TOKEN       access token from Events Manager > Paramètres > API Conversions
+//   META_TEST_EVENT_CODE  optional, e.g. TEST12345: events then show in "Tester les événements"
+//                         (delete it once the test is done)
+// Run setupCapiColumns() once: it adds the columns below and the "Payé" trigger.
+// =====================================================================================
+
+var CAPI_URL = 'https://graph.facebook.com/v21.0/1814127609805768/events';
+var CAPI_COLS = ['Payé', 'CAPI_Lead_Status', 'CAPI_Purchase_Status', 'Meta_Event_ID', 'Meta_FBP', 'Meta_FBC', 'Meta_Source_URL', 'Meta_User_Agent'];
+var LEAD_LEVELS = ['A2', 'B1', 'B2', 'C1', 'C2'];
+
+// Column number of each header. Missing CAPI headers are added after the last used column,
+// so the existing columns never move.
+function capiCols_(sh) {
+  var last = Math.max(sh.getLastColumn(), HEAD.length);
+  var names = sh.getRange(1, 1, 1, last).getValues()[0].map(String);
+  var missing = CAPI_COLS.filter(function (n) { return names.indexOf(n) < 0; });
+  if (missing.length) {
+    sh.getRange(1, last + 1, 1, missing.length).setValues([missing]).setFontWeight('bold');
+    names = names.concat(missing);
+  }
+  var c = {};
+  names.forEach(function (n, i) { if (n) c[n] = i + 1; });
+  return c;
+}
+
+// Keeps what the browser sent for Meta, and puts an unticked "Payé" box on the row.
+function saveMeta_(sh, r, p) {
+  var c = capiCols_(sh);
+  var cell = sh.getRange(r, c['Payé']);
+  if (cell.getDataValidation() == null) cell.insertCheckboxes();
+  var put = function (name, v) { if (v) sh.getRange(r, c[name]).setValue(safe(String(v).slice(0, 1000))); };
+  put('Meta_Event_ID', String(p.event_id || '').replace(/[^\w-]/g, '').slice(0, 80));
+  put('Meta_FBP', p.fbp);
+  put('Meta_FBC', p.fbc);
+  put('Meta_Source_URL', p.event_source_url);
+  put('Meta_User_Agent', p.client_user_agent);
+}
+
+// Phone as Meta wants it: digits with the country code (Moroccan 06/07/05 -> 2126/2127/2125).
+function normPhone_(v) {
+  var d = String(v || '').replace(/\D/g, '');
+  if (/^00/.test(d)) d = d.slice(2);
+  else if (/^0/.test(d)) { d = d.slice(1); if (!/^212/.test(d)) d = '212' + d; } // local number typed with 0
+  else if (/^[5-7]\d{8}$/.test(d)) d = '212' + d;
+  return d.replace(/^2120/, '212');
+}
+// Same rule as the site: Moroccan 212 + 5/6/7 + 8 digits, or another country's 8 to 15 digits.
+function okPhone_(d) { return /^212[5-7]\d{8}$/.test(d) || (!/^212/.test(d) && /^\d{8,15}$/.test(d)); }
+
+function hashSha256_(val) {
+  var v = String(val == null ? '' : val);
+  if (!v) return '';
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, v, Utilities.Charset.UTF_8);
+  return bytes.map(function (b) { var h = ((b + 256) % 256).toString(16); return h.length < 2 ? '0' + h : h; }).join('');
+}
+
+// user_data: email, phone, first and last name hashed (+ country for Moroccan numbers);
+// fbp, fbc and the user agent unhashed, as Meta asks.
+function userData_(u) {
+  var d = {}, add = function (k, v) { if (v) d[k] = [hashSha256_(v)]; };
+  add('em', String(u.email || '').trim().toLowerCase());
+  var ph = normPhone_(u.tel);
+  if (okPhone_(ph)) { add('ph', ph); if (/^212/.test(ph)) add('country', 'ma'); }
+  var words = String(u.nom || '').trim().toLowerCase().replace(/[.,'’"()\-]/g, ' ').split(/\s+/).filter(Boolean);
+  if (words.length) add('fn', words[0]);
+  if (words.length > 1) add('ln', words[words.length - 1]);
+  if (u.fbp) d.fbp = String(u.fbp);
+  if (u.fbc) d.fbc = String(u.fbc);
+  if (u.ua) d.client_user_agent = String(u.ua);
+  return d;
+}
+
+// Sends one event. Returns 'OK…', 'NO TOKEN' or the error text; never throws.
+function capiSend_(ev) {
+  var props = PropertiesService.getScriptProperties();
+  var token = props.getProperty('META_CAPI_TOKEN');
+  if (!token) return 'NO TOKEN';
+  var body = { data: [ev], access_token: token };
+  var test = props.getProperty('META_TEST_EVENT_CODE');
+  if (test) body.test_event_code = test;
+  try {
+    var res = UrlFetchApp.fetch(CAPI_URL, { method: 'post', contentType: 'application/json', payload: JSON.stringify(body), muteHttpExceptions: true });
+    var code = res.getResponseCode();
+    if (code === 200) return 'OK' + (test ? ' (test ' + test + ')' : '');
+    return 'ERROR ' + code + ': ' + res.getContentText().slice(0, 300);
+  } catch (e) {
+    return 'ERROR ' + String(e).slice(0, 300);
+  }
+}
+
+function stamp_() { return Utilities.formatDate(new Date(), 'Africa/Casablanca', 'yyyy-MM-dd HH:mm'); }
+
+// Server-side Lead with the browser's event_id, so Meta counts the two as one.
+// Only when the site says the lead qualifies (German A2+, real phone, first send of the day for
+// this phone), checked again here; once per row and once per phone per day.
+function capiLead_(r, id, p) {
+  try {
+    var o = p.data || {};
+    if (!r || !p.lead_ok || LEAD_LEVELS.indexOf(String(o.allemand)) < 0) return;
+    var ph = normPhone_(o.tel);
+    if (!okPhone_(ph)) return;
+    if (!PropertiesService.getScriptProperties().getProperty('META_CAPI_TOKEN')) return;
+    var sh = sheet(), c = capiCols_(sh);
+    if (String(sh.getRange(r, 2).getValue()) !== id) { r = findRow(sh, id); if (!r) return; } // the sheet was sorted
+    var stCell = sh.getRange(r, c['CAPI_Lead_Status']);
+    if (stCell.getValue()) return;
+    var cache = CacheService.getScriptCache();
+    var dayKey = 'L_' + ph + '_' + Utilities.formatDate(new Date(), 'Africa/Casablanca', 'yyyyMMdd');
+    if (cache.get(dayKey)) { stCell.setValue('SKIPPED same phone today'); return; }
+    var st = capiSend_({
+      event_name: 'Lead',
+      event_id: String(p.event_id || (id + '-lead')),
+      event_time: Math.floor(Date.now() / 1000),
+      action_source: 'website',
+      event_source_url: String(p.event_source_url || 'https://procv.store/'),
+      user_data: userData_({ email: o.email, tel: o.tel, nom: o.nom, fbp: p.fbp, fbc: p.fbc, ua: p.client_user_agent }),
+      custom_data: { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }
+    });
+    if (/^OK/.test(st)) cache.put(dayKey, '1', 86400);
+    stCell.setValue(st + ' ' + stamp_());
+  } catch (e) {
+    console.warn('CAPI lead: ' + e);
+  }
+}
+
+// Purchase when you tick "Payé". Runs from the installable "On edit" trigger made by
+// setupCapiColumns() (a simple onEdit is not allowed to call Meta).
+function onCommandesEdit(e) {
+  if (!e || !e.range) return;
+  var sh = e.range.getSheet();
+  if (sh.getName() !== SHEET_NAME) return;
+  var c = capiCols_(sh), col = c['Payé'];
+  if (e.range.getColumn() > col || e.range.getLastColumn() < col) return;
+  for (var r = Math.max(2, e.range.getRow()); r <= e.range.getLastRow(); r++) {
+    if (sh.getRange(r, col).getValue() !== true) continue;
+    var stCell = sh.getRange(r, c['CAPI_Purchase_Status']);
+    if (stCell.getValue()) continue; // already sent: unticking and ticking again sends nothing
+    var v = sh.getRange(r, 1, 1, sh.getLastColumn()).getValues()[0];
+    var get = function (name) { return c[name] ? String(v[c[name] - 1] || '') : ''; };
+    var evId = get('Meta_Event_ID'), url = get('Meta_Source_URL'), ua = get('Meta_User_Agent');
+    var ev = {
+      event_name: 'Purchase',
+      event_id: (evId ? evId.replace(/-lead$/, '') : 'row-' + r) + '-purchase',
+      event_time: Math.floor(Date.now() / 1000),
+      action_source: url && ua ? 'website' : 'other',
+      user_data: userData_({ email: v[4], tel: String(v[3]).replace(/^'/, ''), nom: v[2], fbp: get('Meta_FBP'), fbc: get('Meta_FBC'), ua: ua }),
+      custom_data: { value: 200, currency: 'MAD', content_name: String(v[6] || '') || 'Bewerbung' }
+    };
+    if (url) ev.event_source_url = url;
+    var st = capiSend_(ev);
+    stCell.setValue(/^OK/.test(st) ? 'SENT ' + stamp_() + st.slice(2) : st);
+  }
+}
+
+// Run once from the editor (▶ Exécuter): adds the CAPI columns, puts a "Payé" box on every
+// order, and creates the On edit trigger for onCommandesEdit.
+function setupCapiColumns() {
+  var sh = sheet(), c = capiCols_(sh), last = sh.getLastRow();
+  if (last >= 2) {
+    var pay = sh.getRange(2, c['Payé'], last - 1, 1), vals = pay.getValues();
+    pay.insertCheckboxes();
+    pay.setValues(vals.map(function (x) { return [x[0] === true]; }));
+  }
+  var has = ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'onCommandesEdit'; });
+  if (!has) ScriptApp.newTrigger('onCommandesEdit').forSpreadsheet(sh.getParent()).onEdit().create();
+  Logger.log('CAPI ready. Token set: ' + !!PropertiesService.getScriptProperties().getProperty('META_CAPI_TOKEN'));
+}
+
+// Run from the editor to check the token: sends one test Lead (it shows in Test Events
+// only while META_TEST_EVENT_CODE is set).
+function testCapi() {
+  Logger.log(capiSend_({
+    event_name: 'Lead', event_id: 'test-' + Date.now(), event_time: Math.floor(Date.now() / 1000),
+    action_source: 'website', event_source_url: 'https://procv.store/formulaire/',
+    user_data: userData_({ email: 'test@example.com', tel: '0612345678', nom: 'Test Procv', ua: 'Mozilla/5.0 (test)' }),
+    custom_data: { value: 200, currency: 'MAD', content_name: 'Test' }
+  }));
 }

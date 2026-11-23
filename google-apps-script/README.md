@@ -61,3 +61,29 @@ Après un changement dans `Code.gs`, **dans cet ordre** :
    (« Autorisation requise ») et la vérification des 10 minutes n'existe pas.
 3. **Déployer** → **Gérer les déploiements** → ✏ → Version : **Nouvelle version** → **Déployer**.
    L'URL reste la même.
+
+## Meta Conversions API (Lead + Purchase côté serveur)
+
+Le script renvoie à Meta, depuis Google :
+- **Lead** quand un client envoie le formulaire avec un allemand **A2 ou plus** et un vrai numéro.
+  Il porte le même `event_id` que le Lead du Pixel : Meta n'en compte qu'un.
+- **Purchase (200 MAD)** quand vous cochez **Payé** dans la feuille `Commandes`. Une seule fois
+  par ligne : décocher puis recocher n'envoie rien de plus.
+
+Email, téléphone, prénom et nom sont envoyés hachés (SHA-256). Le statut de chaque envoi
+s'écrit dans `CAPI_Lead_Status` et `CAPI_Purchase_Status`.
+
+1. Meta **Events Manager** → votre Pixel **1814127609805768** → **Paramètres** →
+   **API Conversions** → **Générer un token d'accès**. Copiez-le.
+2. Apps Script → ⚙ **Paramètres du projet** → **Propriétés du script** → ajoutez
+   `META_CAPI_TOKEN` = le token. Pour tester, ajoutez aussi `META_TEST_EVENT_CODE` = le code
+   affiché dans **Tester les événements** (ex. `TEST12345`), puis **supprimez-le** après le test.
+3. Collez le nouveau `Code.gs`, enregistrez, exécutez **setup** puis **setupCapiColumns**
+   (acceptez les autorisations), puis **Déployer** → **Gérer les déploiements** → ✏ →
+   **Nouvelle version**. `setupCapiColumns` ajoute les colonnes à la fin de la feuille et crée
+   le déclencheur « Lors d'une modification » pour `onCommandesEdit`.
+4. Vérifiez : exécutez **testCapi** (le journal doit afficher `OK`), puis envoyez un formulaire
+   en B1 et cochez **Payé** sur sa ligne : dans **Tester les événements**, vous devez voir
+   un Lead (Navigateur + Serveur, dédupliqué) et un Purchase (Serveur).
+
+Ne mettez jamais le token dans `Code.gs` ni dans le site.
