@@ -75,7 +75,8 @@ a { color: var(--blue); }
 .content figure img { border-radius: 10px; border: 1px solid var(--line); margin-inline: auto; max-height: 560px; width: auto; background: #fff; }
 .content figcaption { text-align: center; font-size: 14px; color: var(--muted); margin-top: 8px; }
 .content table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 16px; background: var(--paper); border-radius: 10px; overflow: hidden; }
-.content th, .content td { border: 1px solid var(--line); padding: 10px 12px; text-align: start; vertical-align: top; }
+.content th, .content td { border: 1px solid var(--line); padding: 10px 12px; text-align: start; vertical-align: top; overflow-wrap: anywhere; }
+@media (max-width: 560px) { .content table { font-size: 14px; table-layout: fixed; }.content th, .content td { padding: 8px; } }
 .content th { background: var(--blue-soft); color: var(--navy); }
 .content .de { direction: ltr; unicode-bidi: isolate; font-weight: 600; }
 .tip { background: #fff8db; border-inline-start: 5px solid var(--yellow); border-radius: 10px; padding: 14px 18px; margin: 20px 0; color: var(--ink); }
