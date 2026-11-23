@@ -36,10 +36,14 @@
     // ?f=1 (the /formulaire page): show only the order form
     if (/[?&]f=1(&|$)/.test(location.search)) h.classList.add('only-form');
   })();
-  // Always open at the top: no restored scroll position, no old #infos jump.
+  // Open at the top (no restored scroll position), except for links such as /#prix that point to a section.
   try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-  if (location.hash === '#infos' || location.hash === '#prix') { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
-  window.addEventListener('load', function () { if (!location.hash) window.scrollTo(0, 0); });
+  window.addEventListener('load', function () {
+    if (!location.hash) { window.scrollTo(0, 0); return; }
+    // the browser's own jump can land before images and fonts settle: scroll to the section again
+    var t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (t && t.tagName !== 'DIALOG') t.scrollIntoView({ behavior: 'instant' }); // not smooth: a smooth scroll on load can stop halfway
+  });
   window.addEventListener('pageshow', function (e) { if (e.persisted && !location.hash) window.scrollTo(0, 0); });
 </script>
 <!-- Meta Pixel Code -->
@@ -199,7 +203,7 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 @media (min-width: 900px) { .pages { grid-auto-columns: minmax(0, 196px); justify-content: start; overflow-x: visible; } }
 /* grey shimmer while a page image loads (e.g. after switching tabs) */
 .pages button { background: linear-gradient(100deg, #eef2f8 40%, #f8fafd 50%, #eef2f8 60%) 0 0 / 200% 100%; animation: sk 1.2s linear infinite; }
-.pages button.ld { background: #fff; animation: none; }
+.pages button.ld, .pages[hidden] button { background: #fff; animation: none; }
 @keyframes sk { to { background-position: -200% 0; } }
 .pages button { display: block; width: 100%; padding: 0; border: 0; border-radius: 8px; cursor: zoom-in; overflow: hidden; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .25s, transform .25s; }
 .pages button:hover { transform: translateY(-4px); box-shadow: 0 18px 32px -18px rgba(20,37,74,.5), 0 0 0 1px var(--line); }
@@ -335,6 +339,10 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form .photo { background: #eaf5ee; border-radius: 10px; padding: 12px 16px; font-size: 15px; color: #23402f; }
 .form .saved { font-size: 14px; color: var(--muted); }
 .form .hid { display: none !important; }
+.form .sum { background: var(--blue-soft); border-inline-start: 4px solid var(--blue); border-radius: 10px; padding: 10px 14px; font-size: 15px; font-weight: 600; line-height: 1.6; color: var(--navy); }
+.form .accord label { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.6; font-weight: 500; cursor: pointer; padding: 12px 14px; border: 1.5px solid #cdd3df; border-radius: 10px; background: #fff; }
+.form .accord input { flex: none; width: 20px; height: 20px; margin-top: 3px; accent-color: var(--navy); }
+.form .bad.accord label { border-color: var(--bad); }
 .form [hidden], .form .nodoc { display: none !important; }
 .form .prep { margin: -6px 0 16px; padding: 10px 14px; border-radius: 10px; background: var(--blue-soft); color: var(--navy); font-size: 14px; }
 
@@ -506,7 +514,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
       </div>
       <div class="pages" id="t-lkw">
         <figure><button type="button" data-src="assets/cv/l1.webp"><img src="assets/cv/l1.webp" alt="Deckblatt" fetchpriority="high" width="607" height="858"></button><figcaption><b>Deckblatt</b> · <span lang="ar">صفحة الغلاف</span><span lang="fr">Page de garde</span></figcaption></figure>
-        <figure><button type="button" data-src="assets/cv/l2.webp"><img src="assets/cv/l2.webp" alt="Anschreiben" width="607" height="858"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
+        <figure><button type="button" data-src="assets/cv/l2.webp"><img src="assets/cv/l2.webp" alt="Anschreiben" width="607" height="858" loading="lazy"></button><figcaption><b>Anschreiben</b> · <span lang="ar">رسالة التحفيز</span><span lang="fr">Lettre de motivation</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/l3.webp"><img src="assets/cv/l3.webp" alt="Lebenslauf" loading="lazy" width="607" height="858"></button><figcaption><b>Lebenslauf</b> · <span lang="ar">السيرة الذاتية</span><span lang="fr">CV</span></figcaption></figure>
         <figure><button type="button" data-src="assets/cv/l4.webp"><img src="assets/cv/l4.webp" alt="Vielen Dank" loading="lazy" width="607" height="858"></button><figcaption><b>Vielen Dank</b> · <span lang="ar">صفحة الشكر</span><span lang="fr">Remerciements</span></figcaption></figure>
       </div>
@@ -702,6 +710,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
         <p class="prep" id="prep"><span lang="ar">قبل أن تبدأ، جهّز: تواريخ العمل والدراسة (يكفي الشهر والسنة) وصورة شخصية من الأمام. إذا خرجت، تبقى معلوماتك محفوظة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">
+          <div class="full sum" data-s="1"><span lang="ar">ملف Bewerbung كامل بـ 200 درهم • خاص مستوى A2+ في الألمانية • ما كنبيعوش عقود العمل</span><span lang="fr">Dossier Bewerbung complet : 200 DH • Niveau A2+ en allemand requis • Nous ne vendons pas de contrats</span></div>
           <div class="part" data-s="1"><span lang="ar">الوظيفة أو التكوين المطلوب</span><span lang="fr">Poste / formation souhaité(e)</span></div>
           <div><label><span class="req"><span lang="ar">اسم الوظيفة أو التكوين</span><span lang="fr">Nom du poste ou formation</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هذه الخانة إلزامية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><span class="req lbl"><span lang="ar">النوع</span><span lang="fr">Type</span></span>
@@ -732,6 +741,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
             <span class="err"><span lang="ar">املأ دراسة أو تكوينًا واحدًا على الأقل (الفترة، الشهادة، المؤسسة)</span><span lang="fr">Remplissez au moins une formation (période, diplôme, établissement)</span></span>
             <div class="rep-foot"><button type="button" class="add"><span lang="ar">+ أضف دراسة أو تكوينًا آخر</span><span lang="fr">+ Ajouter une formation</span></button></div></div>
 
+          <div class="full sum" data-s="5"><span lang="ar">ملف Bewerbung كامل بـ 200 درهم • خاص مستوى A2+ في الألمانية • ما كنبيعوش عقود العمل</span><span lang="fr">Dossier Bewerbung complet : 200 DH • Niveau A2+ en allemand requis • Nous ne vendons pas de contrats</span></div>
           <div class="part" data-s="5"><span lang="ar">المهارات</span><span lang="fr">Compétences</span></div>
           <div class="full"><label><span class="req"><span lang="ar">ما الذي تجيده؟</span><span lang="fr">Ce que je sais faire</span></span><small><span lang="ar">مثلًا: سياقة الشاحنات، Excel، اللحام، خدمة الزبائن… كلمات قصيرة تكفي</span><span lang="fr">Ex. : conduite poids lourd, Excel, soudure, service client… Quelques mots suffisent</span></small><textarea name="competences" data-ph="Permis CE, Excel, soudure, service client…" required></textarea></label><span class="err"><span lang="ar">هذه الخانة إلزامية</span><span lang="fr">Champ obligatoire</span></span></div>
 
@@ -750,6 +760,9 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
           <div class="part" data-s="5"><span lang="ar">الهوايات</span><span lang="fr">Loisirs</span></div>
           <div class="full"><label><span><span lang="ar">ماذا تحب أن تفعل في وقت فراغك؟</span><span lang="fr">Ce que vous aimez faire</span></span><input type="text" name="loisirs" data-ph="Football, lecture, cuisine…" autocomplete="off"></label></div>
 
+          <div class="full accord"><label><input type="checkbox" name="accord" required> <span><span lang="ar">أؤكد أنني أعرف أن ثمن الملف هو 200 درهم (الدفع بعد معاينة الصور عبر واتساب) وأن الخدمة هي إعداد ملف Bewerbung فقط.</span><span lang="fr">Je confirme savoir que le dossier coûte 200 DH (paiement après aperçu sur WhatsApp) et que le service concerne uniquement la rédaction du dossier Bewerbung.</span></span></label>
+            <span class="err"><span lang="ar">يجب تأكيد هذه الخانة قبل الإرسال</span><span lang="fr">Cochez cette case pour envoyer votre demande</span></span></div>
+
         </div>
         <div class="foot">
           <div class="nav"><button class="btn soft" type="button" id="pg-back"><span lang="ar">رجوع</span><span lang="fr">Retour</span></button><button class="btn go" type="button" id="pg-next"><span lang="ar">التالي</span><span lang="fr">Suivant</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></button></div>
@@ -766,9 +779,9 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
       <div class="form thanks" id="thanks" hidden>
         <div class="big">🙏</div>
         <b><span lang="ar">شكرًا! لقد توصلنا بطلبك</span><span lang="fr">Merci ! Votre demande est bien reçue</span></b>
-        <p id="thx-ok"><span lang="ar">تم إرسال معلوماتك ✅ سيُفتح واتساب الآن: اضغط على ➤ لتصلنا الرسالة، ثم أرسل لنا الصورة والوثائق في نفس المحادثة. إذا لم يُفتح، اضغط على « افتح واتساب ».</span><span lang="fr">Vos informations sont envoyées ✅ WhatsApp s'ouvre : touchez ➤ pour nous envoyer le message, puis votre photo et vos documents dans la même conversation. S'il ne s'ouvre pas, touchez « Ouvrir WhatsApp ».</span></p>
+        <p id="thx-ok"><span lang="ar">تم إرسال معلوماتك ✅ آخر خطوة: اضغط على « افتح واتساب » ثم على ➤ لتصلنا الرسالة، وأرسل لنا الصورة والوثائق في نفس المحادثة.</span><span lang="fr">Vos informations sont envoyées ✅ Dernière étape : touchez « Ouvrir WhatsApp », puis ➤ pour nous envoyer le message, et envoyez votre photo et vos documents dans la même conversation.</span></p>
         <p id="thx-send" hidden><span lang="ar">⚠️ الاتصال بالإنترنت ضعيف ولم نتأكد من وصول معلوماتك. اضغط على « افتح واتساب »: ستجد أجوبتك في الرسالة، أرسلها لتصلنا، ثم أرسل الصورة والوثائق.</span><span lang="fr">⚠️ Connexion faible : nous n'avons pas pu confirmer la réception. Touchez « Ouvrir WhatsApp » : vos réponses seront dans le message, envoyez-le, puis votre photo et vos documents.</span></p>
-        <button class="btn go" type="button" id="thx-wa"><span lang="ar">افتح واتساب</span><span lang="fr">Ouvrir WhatsApp</span></button>
+        <a class="btn go" id="thx-wa" href="https://api.whatsapp.com/send?phone=212706828446" target="_blank" rel="noopener"><span lang="ar">افتح واتساب</span><span lang="fr">Ouvrir WhatsApp</span></a>
       </div>
 </dialog>
 
@@ -796,22 +809,11 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   }
   wire();
 
-  // Instagram and Facebook in-app browsers often block new windows,
-  // so WhatsApp is opened in the same page, after the pixel has had time to send.
-  // On phones, whatsapp:// opens the app directly and skips the "Ouvrir l'application" page;
-  // if the app doesn't open (page still visible), fall back to wa.me.
-  // auto = opened by the page itself, not by a tap: on phones only try the app, so a blocked attempt
-  // leaves the thank-you screen (and its WhatsApp button) instead of jumping to the wa.me page
-  function goWhatsApp(text, auto) {
-    // not wa.me: its redirect turns emoji such as ✅ and 📎 into �
-    var web = 'https://api.whatsapp.com/send?phone=' + PHONE + '&text=' + encodeURIComponent(text);
-    var phone = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    setTimeout(function () {
-      if (!phone) { location.href = web; return; }
-      location.href = 'whatsapp://send?phone=' + PHONE + '&text=' + encodeURIComponent(text);
-      if (!auto) setTimeout(function () { if (!document.hidden) location.href = web; }, 1500);
-    }, 400);
-  }
+  // not wa.me: its redirect turns emoji such as ✅ and 📎 into �
+  function waUrl(text) { return 'https://api.whatsapp.com/send?phone=' + PHONE + '&text=' + encodeURIComponent(text); }
+  // Opened right inside the tap (no timer): Instagram/Facebook in-app browsers and iOS Safari
+  // block WhatsApp when the page opens it later on its own.
+  function goWhatsApp(text) { location.href = waUrl(text); }
   // "ask before ordering" buttons: open WhatsApp with the chosen question
   document.addEventListener('click', function (e) {
     var b = e.target.closest && e.target.closest('.ask-b');
@@ -823,9 +825,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a.wa');
     if (!a) return;
-    e.preventDefault();
     if (window.fbq) fbq('track', 'Contact');
-    goWhatsApp(msg());
   });
 
   document.getElementById('fd-lang').addEventListener('click', function () { document.getElementById('lang').click(); });
@@ -921,7 +921,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     else if (k === 'noexp') noexp.checked = !!d0.noexp;
     else if (k === 'exp' || k === 'etu') (d0[k] || []).forEach(function (v) { addItem(k === 'exp' ? expRep : etuRep, v); });
     else form.querySelectorAll('[name="' + k + '"]').forEach(function (el) {
-      if (el.type === 'radio') el.checked = el.value === d0[k]; else el.value = d0[k];
+      if (el.type === 'radio') el.checked = el.value === d0[k]; else if (el.type === 'checkbox') el.checked = !!d0[k]; else el.value = d0[k];
     });
   });
   if (!expRep.querySelector('.item')) addItem(expRep);
@@ -949,7 +949,7 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   var NSTEP = 5, cur = 1;
   var STEP_T = [null, ['الوظيفة والهدف', 'Poste et objectif'], ['مستوى الألمانية', "Niveau d'allemand"], ['معلوماتك الشخصية', 'Vos informations'], ['الخبرة والدراسة', 'Expérience et études'], ['المهارات واللغات', 'Compétences et langues']];
   var cells = Array.prototype.slice.call(form.querySelector('.g').children), sNow = 1;
-  cells.forEach(function (el) { if (el.classList.contains('part')) sNow = +el.dataset.s || sNow; el.dataset.step = sNow; });
+  cells.forEach(function (el) { if (el.dataset.s) sNow = +el.dataset.s || sNow; el.dataset.step = sNow; });
   var reached = {};
   var wentAt = 0;
   function go(n) {
@@ -974,7 +974,10 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   function next() {
     var bad = check(cur);
     if (bad.length) { focusBad(bad[0]); return; }
-    if (h.classList.contains('only-form')) { try { history.pushState({ fd: 1 }, ''); } catch (err) {} }
+    if (h.classList.contains('only-form')) {
+      if (cur === 1) initiateCheckout();
+      try { history.pushState({ fd: 1 }, ''); } catch (err) {}
+    }
     go(cur + 1);
   }
   // first empty text field of the current step (used for Enter/Go and when the form opens)
@@ -1002,7 +1005,8 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
       if (el.type === 'radio') {
         if (seen[el.name]) return; seen[el.name] = 1;
         if (!form.querySelector('[name="' + el.name + '"]:checked')) bad.push(box(el));
-      } else if (!el.value.trim()) bad.push(box(el));
+      } else if (el.type === 'checkbox') { if (!el.checked) bad.push(box(el)); }
+      else if (!el.value.trim()) bad.push(box(el));
       else if (el.type === 'email' && !/^\S+@\S+\.\S+$/.test(el.value.trim())) bad.push(box(el));
     });
     var o = data();
@@ -1060,32 +1064,21 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     return out.join('\n');
   }
 
-  // Moroccan phone in 212 format, so Meta can match the buyer to their account.
+  // Phone in international digits: Moroccan numbers get 212, numbers typed with + or 00 keep their country code.
   function normPh(v) {
     var raw = (v || '').trim(), ph = raw.replace(/\D/g, '');
     if (/^(\+|00)/.test(raw)) ph = ph.replace(/^00/, ''); else if (!/^212/.test(ph)) ph = '212' + ph.replace(/^0/, '');
     ph = ph.replace(/^2120/, '212');
-    return ph.length < 11 ? '' : ph;
+    return ph.length < 8 ? '' : ph;
   }
-  // Give the pixel the buyer's phone/email as soon as they are typed, long before the form is sent.
-  var PIXEL = '1814127609805768', matched = '';
-  function matchUser() {
-    if (!window.fbq) return;
-    var ph = normPh(form.elements.tel && form.elements.tel.value), em = ((form.elements.email && form.elements.email.value) || '').trim().toLowerCase();
-    if (!/^212[5-7]\d{8}$/.test(ph)) return;
-    var ud = { country: 'ma', ph: ph }; if (/^\S+@\S+\.\S+$/.test(em)) ud.em = em;
-    var k = JSON.stringify(ud); if (k === matched) return; matched = k;
-    fbq('init', PIXEL, ud);
-  }
-  ['tel', 'email'].forEach(function (n) { if (form.elements[n]) form.elements[n].addEventListener('change', matchUser); });
-  // A standard event through the pixel, plus the same event as a direct hit (keepalive survives
-  // the jump to WhatsApp). Same event ID on both, so Meta keeps one.
+  // A real number: Moroccan 212 + 5/6/7 + 8 digits, or another country's 8 to 15 digits.
+  function okPhone(ph) { return /^212[5-7]\d{8}$/.test(ph) || (!/^212/.test(ph) && /^\d{8,15}$/.test(ph)); }
+  // Only clients who already speak some German are worth a Lead for Meta's optimisation.
+  var LEAD_LV = ['A2', 'B1', 'B2', 'C1', 'C2'];
+  // One hit per event, through the pixel only (it is initialised once, in <head>).
+  // The page now stays on the thank-you screen, so the pixel has time to send.
   function metaEvent(name, cd, eid) {
     if (window.fbq) fbq('track', name, cd, { eventID: eid });
-    var u = 'https://www.facebook.com/tr/?id=' + PIXEL + '&ev=' + name + '&eid=' + encodeURIComponent(eid) +
-      '&dl=' + encodeURIComponent(location.href) + '&noscript=1';
-    for (var k in cd) u += '&cd[' + k + ']=' + encodeURIComponent(cd[k]);
-    try { fetch(u, { mode: 'no-cors', keepalive: true, credentials: 'include' }); } catch (err) { new Image().src = u; }
   }
 
   form.addEventListener('submit', function (e) {
@@ -1102,20 +1095,14 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     // no Lead/Purchase, or Meta would learn from spam and bring more people like them.
     if (o.pc_check) { o = null; form.reset(); form.hidden = true; step2.hidden = true; document.getElementById('thanks').hidden = false; return; }
     var ph = normPh(o.tel);
-    // Count one sale per phone per day, even if the client goes back and sends the form again.
+    // One Lead per phone per day, even if the client goes back and sends the form again.
     var sentKey = ph + '|' + new Date().toISOString().slice(0, 10), already = false;
     try { already = localStorage.getItem('procv-sent') === sentKey; } catch (err) {}
-    // Only a real Moroccan mobile/landline (212 + 5/6/7 + 8 digits) counts as a sale for Meta:
-    // junk numbers typed by spammers would teach the ads to find more of them.
-    if (!already && /^212[5-7]\d{8}$/.test(ph)) {
-      // No fbq('init') here: a second init makes the pixel wait for an extra script before it sends,
-      // and WhatsApp opens first, so no Lead/Purchase ever reached Meta. The buyer's phone/email was
-      // already given to the pixel when typed (matchUser). Each event also goes out as a direct hit
-      // that survives the page leaving; the shared event ID lets Meta count it once.
-      var cd = { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, eid = orderId();
-      metaEvent('Lead', cd, eid + '-lead');
-      // Payment happens on WhatsApp; a sent form is counted as the sale so Sales campaigns can optimize on it.
-      metaEvent('Purchase', cd, eid + '-buy');
+    // Lead only for a real phone number AND German A2 or higher. "Pas encore"/A1 still send the form
+    // (Sheet + WhatsApp) but tell Meta nothing, so the ads stop looking for people without German.
+    // No Purchase here: payment happens later, on WhatsApp, after the client sees the preview.
+    if (!already && okPhone(ph) && LEAD_LV.indexOf(o.allemand) > -1) {
+      metaEvent('Lead', { value: 200, currency: 'MAD', content_name: o.but || 'Bewerbung' }, orderId() + '-lead');
       try { localStorage.setItem('procv-sent', sentKey); } catch (err) {}
     }
     sendOrder(o, message(o));
@@ -1131,53 +1118,62 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
   // If a browser blocks reading it, send blind like before so the order still goes out.
   function post(obj) {
     var body = JSON.stringify(obj);
-    return fetch(SAVE_URL, { method: 'POST', body: body, redirect: 'follow' }).then(function (r) { return r.json(); }, function () {
+    return fetch(SAVE_URL, { method: 'POST', body: body, redirect: 'follow', keepalive: body.length < 60000 }).then(function (r) { return r.json(); }, function () {
       return fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', body: body }).then(function () { return { ok: true }; });
     }).then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'not saved'); return j; });
   }
-  // Background send that survives the page leaving for WhatsApp (beacon, else keepalive fetch, else normal post).
-  function postNow(obj) {
-    var body = JSON.stringify(obj);
-    try { if (navigator.sendBeacon && navigator.sendBeacon(SAVE_URL, new Blob([body], { type: 'text/plain;charset=utf-8' }))) return true; } catch (err) {}
-    try { if (body.length < 60000) { fetch(SAVE_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: body }); return true; } } catch (err) {}
-    post(obj).catch(function () {});
-    return true;
+  // Last resort when the normal send failed or took too long (the script ignores an id it already has).
+  function beacon(obj) {
+    try { return !!(navigator.sendBeacon && navigator.sendBeacon(SAVE_URL, new Blob([JSON.stringify(obj)], { type: 'text/plain;charset=utf-8' }))); } catch (err) { return false; }
   }
-  var sending = false, doneMsg = '';
-  // No waiting: the answers leave for Google in the background and WhatsApp opens in the same tap
-  // (a tap is needed, Instagram blocks WhatsApp opened later by the page). The full answers also go in the
-  // WhatsApp message, so the order still reaches us if Google missed it.
+  var sending = false;
+  var thxWa = document.getElementById('thx-wa');
+  function setWa(text) { thxWa.href = waUrl(text || (isAr() ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅')); }
+  setWa('');
+  // The answers go to Google first (sending screen), then the thank-you screen stays put with a
+  // WhatsApp link the client taps: a real tap is the only way Instagram/Facebook/iOS let WhatsApp open.
+  // The full answers are also in the WhatsApp message, so the order still reaches us if Google missed it.
   function sendOrder(o, text) {
     if (sending) return; sending = true;
-    if (SAVE_URL) postNow({ type: 'form', id: orderId(), data: o, message: text, nfiles: 0 });
-    doneMsg = text;
-    try { localStorage.removeItem(KEY); localStorage.removeItem('procv-oid'); } catch (err) {}
-    form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
-    go(1);
-    document.getElementById('thx-ok').hidden = false; document.getElementById('thx-send').hidden = true;
-    form.hidden = true; step2.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
-    goWhatsApp(doneMsg);
-    setTimeout(function () { sending = false; }, 1500);
+    setWa(text);
+    form.hidden = true; step2.hidden = false; fdTop();
+    var payload = { type: 'form', id: orderId(), data: o, message: text, nfiles: 0 };
+    var sent = !SAVE_URL ? Promise.resolve(true) : Promise.race([
+      post(payload).then(function () { return true; }),
+      new Promise(function (ok, no) { setTimeout(function () { no(new Error('timeout')); }, 15000); })
+    ]).catch(function () { beacon(payload); return false; });
+    sent.then(function (ok) {
+      try { localStorage.removeItem(KEY); localStorage.removeItem('procv-oid'); } catch (err) {}
+      form.reset(); form.querySelectorAll('.item').forEach(function (i) { i.remove(); }); addItem(expRep); addItem(etuRep); permisUI(); expUI();
+      go(1);
+      document.getElementById('thx-ok').hidden = !ok; document.getElementById('thx-send').hidden = ok;
+      step2.hidden = true; document.getElementById('thanks').hidden = false; fdTop();
+      sending = false;
+    });
   }
-  document.getElementById('thx-wa').addEventListener('click', function () {
-    goWhatsApp(doneMsg || (h.dataset.l === 'ar' ? 'السلام عليكم، طلبت ملف الترشيح الألماني من عندكم ✅' : 'Bonjour, j’ai commandé le dossier de candidature allemand ✅'));
-  });
+  thxWa.addEventListener('click', function () { if (window.fbq) fbq('track', 'Contact'); });
   // clean what the upload version of the form left on the phone
   try { ['procv-step2', 'procv-n', 'procv-id', 'procv-up'].forEach(function (k) { localStorage.removeItem(k); }); indexedDB.deleteDatabase('procv'); } catch (err) {}
-go(st0);
-
-  // order buttons -> form dialog
+  // order buttons -> form dialog (declared before the first go(), which reads it)
   var fd = document.getElementById('fd');
+  go(st0);
+
   // a reload keeps the history entry of an open form: drop it, the form starts closed
   try { if (history.state && history.state.fd) history.replaceState(null, ''); } catch (err) {}
-  var icSent = false, popClose = false;
+  var popClose = false;
+  // InitiateCheckout once per session, and only after the visitor acts: a tap on an order button,
+  // or Next from step 1 on /formulaire. Never on page load.
+  function initiateCheckout() {
+    try { if (sessionStorage.getItem('procv-ic')) return; sessionStorage.setItem('procv-ic', '1'); } catch (err) {}
+    if (window.fbq) fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' });
+  }
   function openForm(e, silent) {
     if (e && e.preventDefault) e.preventDefault();
     if (fd.open) return;
     try { fd.showModal(); } catch (err) { fd.setAttribute('open', ''); fd.classList.add('fallback'); }
     // one history entry while the form is open, so the phone's Back button stays on the page
     try { if (!(history.state && history.state.fd)) history.pushState({ fd: 1 }, ''); } catch (err) {}
-    if (!silent && !icSent && window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
+    if (!silent && e && e.type === 'click') initiateCheckout();
     // reopened after a finished order (popup on the home page): start a new empty form
     var th = document.getElementById('thanks');
     if (!silent && !th.hidden && !sending && !h.classList.contains('only-form')) { th.hidden = true; form.hidden = false; }
@@ -1221,7 +1217,6 @@ go(st0);
   if (h.classList.contains('only-form')) {
     document.getElementById('of-slot').appendChild(fd);
     fd.classList.add('inline'); fd.setAttribute('open', '');
-    if (window.fbq) { icSent = true; fbq('track', 'InitiateCheckout', { value: 200, currency: 'MAD', content_name: 'Bewerbung' }); }
     go(cur);
   } else if (location.hash === '#commande') openForm();
 
