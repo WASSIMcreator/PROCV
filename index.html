@@ -339,7 +339,14 @@ dialog.fd::backdrop { background: rgba(12,23,48,.7); }
 .form .photo { background: #eaf5ee; border-radius: 10px; padding: 12px 16px; font-size: 15px; color: #23402f; }
 .form .saved { font-size: 14px; color: var(--muted); }
 .form .hid { display: none !important; }
-.form .sum { background: var(--blue-soft); border-inline-start: 4px solid var(--blue); border-radius: 10px; padding: 10px 14px; font-size: 15px; font-weight: 600; line-height: 1.6; color: var(--navy); }
+.form .sum { background: #fff; border: 1.5px solid #d7e2f4; border-top: 3px solid var(--blue); border-radius: 14px; padding: 14px 16px; box-shadow: 0 10px 24px -18px rgba(20,37,74,.35); }
+.form .sum ul { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.form .sum li { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: 10px; background: #f6f9ff; font-size: 13.5px; line-height: 1.45; color: var(--navy); font-weight: 600; }
+.form .sum li.warn-li { background: #fff7eb; color: #7a3f00; }
+.form .sum li i { font-style: normal; font-size: 17px; line-height: 1.2; flex: none; }
+.form .sum li b { color: var(--blue); font-weight: 700; }
+.form .sum li.warn-li b { color: #9a4f00; }
+@media (max-width: 640px) { .form .sum ul { grid-template-columns: 1fr; gap: 8px; } }
 .form .accord label { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.6; font-weight: 500; cursor: pointer; padding: 12px 14px; border: 1.5px solid #cdd3df; border-radius: 10px; background: #fff; }
 .form .accord input { flex: none; width: 20px; height: 20px; margin-top: 3px; accent-color: var(--navy); }
 .form .bad.accord label { border-color: var(--bad); }
@@ -710,7 +717,18 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
         <div class="prog"><span id="pg-t"></span><div class="bar"><i id="pg-b"></i></div></div>
         <p class="prep" id="prep"><span lang="ar">قبل أن تبدأ، جهّز: تواريخ العمل والدراسة (يكفي الشهر والسنة) وصورة شخصية من الأمام. إذا خرجت، تبقى معلوماتك محفوظة.</span><span lang="fr">Préparez : les dates de vos emplois et études (mois et année suffisent) et une photo de face. Si vous quittez, vos réponses restent enregistrées.</span></p>
         <div class="g">
-          <div class="full sum" data-s="1"><span lang="ar">ملف Bewerbung كامل بـ 200 درهم • خاص مستوى A2+ في الألمانية • ما كنبيعوش عقود العمل</span><span lang="fr">Dossier Bewerbung complet : 200 DH • Niveau A2+ en allemand requis • Nous ne vendons pas de contrats</span></div>
+          <div class="full sum" data-s="1">
+            <ul lang="ar">
+              <li><i>📄</i><span>ملف ترشيح ألماني كامل بـ <b>200 درهم</b></span></li>
+              <li><i>🇩🇪</i><span>يشترط مستوى <b class="ltr">A2</b> على الأقل في الألمانية</span></li>
+              <li class="warn-li"><i>ℹ️</i><span>كتابة الملف فقط · <b>لا نبيع عقود العمل</b></span></li>
+            </ul>
+            <ul lang="fr">
+              <li><i>📄</i><span>Dossier allemand complet : <b>200 DH</b></span></li>
+              <li><i>🇩🇪</i><span>Niveau <b class="ltr">A2+</b> en allemand requis</span></li>
+              <li class="warn-li"><i>ℹ️</i><span>Rédaction uniquement · <b>Pas de contrats vendus</b></span></li>
+            </ul>
+          </div>
           <div class="part" data-s="1"><span lang="ar">الوظيفة أو التكوين المطلوب</span><span lang="fr">Poste / formation souhaité(e)</span></div>
           <div><label><span class="req"><span lang="ar">اسم الوظيفة أو التكوين</span><span lang="fr">Nom du poste ou formation</span></span><input type="text" name="metier" data-ph="LKW-Fahrer, Pflegefachkraft…" required autocomplete="off"></label><span class="err"><span lang="ar">هذه الخانة إلزامية</span><span lang="fr">Champ obligatoire</span></span></div>
           <div><span class="req lbl"><span lang="ar">النوع</span><span lang="fr">Type</span></span>
