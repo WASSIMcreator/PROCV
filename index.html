@@ -247,7 +247,7 @@ section.block { padding: clamp(60px, 8vw, 110px) 0; }
 .vs .x, .vs .v { flex: none; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px; }
 .vs .x { background: var(--bad) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6.5 6.5l7 7M13.5 6.5l-7 7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/100% no-repeat; }
 .vs .v { background: var(--wa) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat; }
-.ats-duo { max-width: 680px; margin: clamp(36px, 5vw, 56px) auto 0; }
+.ats-duo { max-width: 680px; margin: 0 auto clamp(36px, 5vw, 56px); }
 .flip-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 5px; background: #e3e9f4; border-radius: 999px; margin-bottom: 16px; }
 .flip-pill { border: 0; border-radius: 999px; padding: 10px 12px; font: 700 14px/1.25 var(--font); background: transparent; color: var(--navy); cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; }
 .flip-pill.on { background: var(--navy); color: #fff; box-shadow: 0 4px 12px rgba(20,37,74,.2); }
@@ -572,80 +572,9 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="block faq" id="questions">
-    <div class="wrap">
-      <div class="head rv"><h2><span lang="ar">أسئلة كتجينا بزاف</span><span lang="fr">Questions fréquentes</span></h2></div>
-      <div class="list">
-        <details><summary><span lang="ar">واش كتبيعو الكونترا ولا كتترجمو الوثائق؟</span><span lang="fr">Vendez-vous des contrats ou traduisez-vous des documents ?</span></summary><p><span lang="ar">لا. حنا ما كنبيعوش الكونترا ديال الخدمة، وما كنترجموش الوثائق (الديبلومات، الشواهد…). الترجمة ديال الوثائق خاصها مترجم محلَّف. حنا كنكتبو ليك ملف الترشيح بالألمانية: Deckblatt + Anschreiben + Lebenslauf.</span><span lang="fr">Non. Nous ne vendons pas de contrats de travail et nous ne traduisons pas les documents (diplômes, attestations…) : pour cela il faut un traducteur assermenté. Nous rédigeons votre dossier de candidature en allemand : Deckblatt + Anschreiben + Lebenslauf.</span></p></details>
-        <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">إيه، ضروري. خاصك تكون كتعرف الألمانية على الأقل A2، والأحسن B1، حيت الشركات والمدارس فألمانيا كيطلبو مستوى فالألمانية والمقابلة كتكون بالألمانية. ولكن الملف حنا اللي كنكتبوه: صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وحنا نكتبوه ليك بالألمانية.</span><span lang="fr">Oui, c'est indispensable. Il faut au moins le niveau A2, et B1 c'est mieux : les entreprises et les écoles en Allemagne demandent un niveau d'allemand, et l'entretien se fait en allemand. Mais le dossier, c'est nous qui l'écrivons : envoyez vos infos en darija, en arabe ou en français, nous le rédigeons en allemand.</span></p></details>
-        <details><summary><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment payer ?</span></summary><p><span lang="ar">كتخلص من بعد ما نصيفطو ليك صور الملف ديالك فواتساب وتشوفو. تقدر تخلص بالتحويل البنكي لـ Attijariwafa bank ولا CIH Bank، ولا ب Cash Plus، ومن بعد كتوصل بالـ PDF كامل.</span><span lang="fr">Vous payez après avoir vu l'aperçu de votre dossier, envoyé sur WhatsApp. Par virement Attijariwafa bank ou CIH Bank, ou par Cash Plus, puis vous recevez le PDF complet.</span></p></details>
-        <details><summary><span lang="ar">علاش 200 درهم؟ شنو داخل فالثمن؟</span><span lang="fr">Que comprend le prix de 200 DH ?</span></summary><p><span lang="ar">200 درهم هو الثمن الكامل، بلا حتى مصاريف زايدة، وكيشمل جوج نسخ بجوجهم: الملف الكلاسيكي (DIN 5008: Deckblatt بالصورة، Anschreiben مكتوب على حساب المهنة، Lebenslauf، وصفحة Vielen Dank) + نسخة ATS خاصة بالبوابات الإلكترونية مع شرح مبسّط للاستعمال، زيادة على تحضير تصويرة الـ Bewerbung والتعديلات فابور حتى من بعد الدفع. الثمن واحد للجميع، باش تعرف من الأول شحال غادي تخلص.</span><span lang="fr">200 DH est le prix complet, sans frais en plus, et inclut les deux versions : le dossier classique DIN 5008 (Deckblatt avec photo, Anschreiben écrit pour votre métier, Lebenslauf et page Vielen Dank) + la version ATS dédiée aux portails en ligne avec un guide d’utilisation, ainsi que la préparation de la photo de candidature et les modifications gratuites même après paiement. Le prix est le même pour tous : vous savez dès le départ ce que vous payez.</span></p></details>
-        <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
-        <details><summary><span lang="ar">واش كتترجمو الـ CV ديالي للألمانية؟</span><span lang="fr">Traduisez-vous mon CV en allemand ?</span></summary><p><span lang="ar">حسن من ترجمة. صيفط لينا الـ CV ديالك بالفرنسية ولا العربية، ولا غير المعلومات ديالك بالدارجة، وحنا كنكتبو ليك <a href="news/lebenslauf-cv-almani/">Lebenslauf ألماني</a> جديد بالشكل لي كتطلبو الشركات فألمانيا (tabellarischer Lebenslauf)، مع Anschreiben مكتوب على حساب المهنة. الترجمة الحرفية كتبان دغيا وكترفضها الشركات.</span><span lang="fr">Mieux qu'une traduction. Envoyez-nous votre CV en français ou en arabe, ou simplement vos informations, et nous rédigeons un <a href="news/traduire-cv-allemand/">CV allemand</a> neuf au format attendu en Allemagne (tabellarischer Lebenslauf), avec un Anschreiben adapté au métier. Une traduction mot à mot se repère tout de suite.</span></p></details>
-        <details><summary><span lang="ar">لأي مهنة كتكتبو الملف؟</span><span lang="fr">Pour quels métiers ?</span></summary><p><span lang="ar">لجميع المهن: <a href="news/ausbildung-pflege-tamrid/">اوسبيلدونغ التمريض</a> (Pflegefachfrau / Pflegefachmann)، Pflegehelfer، سائق شاحنة (Berufskraftfahrer)، Koch / Köchin، KFZ-Mechatroniker، Erzieher، Hotelfach، Elektroniker وغيرها. كل ملف كيتكتب بالمصطلحات ديال المهنة ديالك.</span><span lang="fr">Tous les métiers : <a href="news/cv-allemand-ausbildung/">CV allemand pour Ausbildung</a> en Pflege (Pflegefachfrau / Pflegefachmann), Pflegehelfer, chauffeur poids lourd (Berufskraftfahrer), Koch / Köchin, KFZ-Mechatroniker, Erzieher, hôtellerie, électronique, etc. Chaque dossier utilise le vocabulaire de votre métier.</span></p></details>
-        <details><summary><span lang="ar">واش كتوجدو تصويرة الـ Bewerbung؟</span><span lang="fr">Préparez-vous la photo de candidature (Bewerbungsfoto) ?</span></summary><p><span lang="ar">إيه. صيفط لينا تصويرة ديالك من القدام، وحنا كنوجدوها ليك تصويرة Bewerbung احترافية (القص، الخلفية والضو)، وكنحطوها فالملف ديالك.</span><span lang="fr">Oui. Envoyez-nous une photo de vous de face : nous la préparons en photo de candidature professionnelle (cadrage, fond et lumière) et nous la mettons dans votre dossier.</span></p></details>
-        <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقول لينا شنو بغيتي نبدلو وكنبدلوه ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-nous quoi changer, nous le changeons sans frais.</span></p></details>
-      </div>
-    </div>
-  </section>
-
-  <section class="block clients dark" id="clients">
-    <div class="wrap">
-      <div class="top-row">
-        <div class="head rv">
-          <h2><span lang="ar">زبناء وثقو فينا</span><span lang="fr">Ils nous ont fait confiance</span></h2>
-          <p class="lead"><span lang="ar">رسائل وأداءات حقيقية من زبناء PRO CV. خبّينا الأسماء والأرقام ديالهم.</span><span lang="fr">De vrais messages et paiements de clients PRO CV. Noms et numéros masqués.</span></p>
-        </div>
-      </div>
-      <div class="cards">
-        <figure class="card rv"><button type="button" data-src="assets/clients/a.webp"><img src="assets/clients/a.webp" alt="Messages vocaux d'un client satisfait" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">زبون فرحان بالملف ديالو</span><span lang="fr">Un client satisfait</span></figcaption></figure>
-        <figure class="card rv"><button type="button" data-src="assets/clients/b.webp"><img src="assets/clients/b.webp" alt="Virement de 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء 200 درهم بالتحويل البنكي</span><span lang="fr">Paiement de 200 DH par virement</span></figcaption></figure>
-        <figure class="card rv"><button type="button" data-src="assets/clients/c.webp"><img src="assets/clients/c.webp" alt="Reçu Cash Plus 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء بـ Cash Plus</span><span lang="fr">Paiement par Cash Plus</span></figcaption></figure>
-      </div>
-      <div class="cta-row rv">
-        <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي بحالهم</span><span lang="fr">Je veux mon dossier aussi</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
-      </div>
-    </div>
-  </section>
-
   <!-- ATS -->
   <section class="block ats" id="ats">
     <div class="wrap">
-      <div class="grid">
-        <div>
-          <div class="head rv">
-            <h2><span lang="ar">قبل ما يقرا شي واحد السيرة ديالك، كيقراها برنامج</span><span lang="fr">Avant un humain, c'est un logiciel qui lit votre CV</span></h2>
-            <p class="lead"><span lang="ar">بزاف ديال الشركات فألمانيا كتستقبل الطلبات من بوابة إلكترونية، فيها نظام كيسمّاوه ATS (Bewerbermanagementsystem). هاد النظام كيفرز الطلبات قبل ما توصل للمسؤول.</span><span lang="fr">Beaucoup d'entreprises allemandes reçoivent les candidatures via un portail équipé d'un ATS (Bewerbermanagementsystem). Il trie les dossiers avant qu'ils arrivent au recruteur.</span></p>
-          </div>
-          <ol class="flow">
-            <li class="rv"><div><b><span lang="ar">كيقرا النص ديال الملف</span><span lang="fr">Il lit le texte du fichier</span></b><span lang="ar">إلا كان الملف تصويرة ولا scan، ما كيلقى والو يقراه.</span><span lang="fr">Si le fichier est une photo ou un scan, il n'y a rien à lire.</span></div></li>
-            <li class="rv"><div><b><span lang="ar">كيقسّمو لخانات</span><span lang="fr">Il le découpe en rubriques</span></b><span lang="ar">الاسم، الخبرة، التكوين، اللغات، الرخصة… بالعناوين الألمانية المعروفة.</span><span lang="fr">Nom, expérience, formation, langues, permis… avec les titres allemands attendus.</span></div></li>
-            <li class="rv"><div><b><span lang="ar">كيقارنو مع الإعلان</span><span lang="fr">Il le compare à l'annonce</span></b><span lang="ar">كيقلب على كلمات المهنة. الملف اللي ما فيهش هاد الكلمات كيهبط للتحت، وممكن حتى حد ما يشوفو.</span><span lang="fr">Il cherche les mots du métier. Sans eux, le dossier descend dans la liste, et personne ne le voit.</span></div></li>
-          </ol>
-        </div>
-        <div class="scan rv" aria-hidden="true">
-          <img src="assets/cv/p3.webp" alt="" width="900" height="1270" loading="lazy">
-          <div class="bar"></div>
-          <div class="read">
-            <div class="t">ATS liest den Lebenslauf:</div>
-            <div>Beruf: Kfz-Mechatroniker <i></i></div>
-            <div>Berufserfahrung: 2 <i></i></div>
-            <div>Deutsch: B2 <i></i></div>
-            <div>Text-PDF <i></i></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="vs rv">
-        <div class="row hd"><div><span lang="ar">علاش كيترفضو بزاف ديال الملفات</span><span lang="fr">Pourquoi tant de dossiers sont écartés</span></div><div><span lang="ar">شنو كندير أنا فالملف ديالك</span><span lang="fr">Ce que je fais dans votre dossier</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">CV مصوّر بالتليفون ولا scan</span><span lang="fr">CV photographié ou scanné</span></div><div><span class="v"></span><span lang="ar">PDF فيه نص حقيقي، البرنامج كيقراه كامل</span><span lang="fr">Un PDF avec du vrai texte, lisible en entier</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">عناوين بالفرنسية ولا مخترعة</span><span lang="fr">Titres en français ou inventés</span></div><div><span class="v"></span><span lang="ar">عناوين ألمانية: Berufserfahrung, Ausbildung, Sprachen</span><span lang="fr">Titres allemands : Berufserfahrung, Ausbildung, Sprachen</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">كلمات عامة ما فيهاش المهنة</span><span lang="fr">Mots vagues, sans le métier</span></div><div><span class="v"></span><span lang="ar">مصطلحات المهنة: Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span><span lang="fr">Les termes du métier : Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">ترجمة Google فيها أخطاء</span><span lang="fr">Traduction automatique avec des fautes</span></div><div><span class="v"></span><span lang="ar">ألمانية مهنية، ومستوى اللغة واضح</span><span lang="fr">Un allemand professionnel, niveau de langue clair</span></div></div>
-        <div class="row"><div><span class="x"></span><span lang="ar">تواريخ ناقصة ولا مخلّطة</span><span lang="fr">Dates manquantes ou en désordre</span></div><div><span class="v"></span><span lang="ar">كل تجربة بالشهر والعام: 01.2020 – 12.2025</span><span lang="fr">Chaque poste au mois près : 01.2020 – 12.2025</span></div></div>
-      </div>
-
       <div class="ats-duo rv" id="ats-duo">
         <div class="flip-bar" role="group" aria-label="Versions incluses">
           <button type="button" class="flip-pill on" data-flip="0" aria-pressed="true"><span lang="ar">النسخة 1 · كلاسيك</span><span lang="fr">Version 1 · Classique</span></button>
@@ -679,21 +608,39 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
         </div>
         <p class="flip-note"><span lang="ar">+ شرح مبسّط مع ملفك كيبين ليك فين وإمتى تستعمل كل نسخة.</span><span lang="fr">+ Guide pratique inclus pour savoir où et quand utiliser chaque version.</span></p>
       </div>
-    </div>
-  </section>
 
-  <!-- WHO WRITES -->
-  <section class="block who" id="equipe">
-    <div class="wrap">
-      <div class="head rv">
-        <h2><span lang="ar">شكون كيكتب الملف ديالك؟</span><span lang="fr">Qui rédige votre dossier ?</span></h2>
-        <p class="lead"><span lang="ar">فريق PRO CV متخصص غير فملفات الترشيح الألمانية. كل ملف كنكتبوه من الصفر، على حساب المهنة ديالك، وكنراجعوه صفحة بصفحة قبل ما نصيفطوه.</span><span lang="fr">L'équipe PRO CV fait uniquement des dossiers de candidature allemands. Chaque dossier est écrit de zéro pour votre métier, puis relu page par page avant l'envoi.</span></p>
+      <div class="grid">
+        <div>
+          <div class="head rv">
+            <h2><span lang="ar">قبل ما يقرا شي واحد السيرة ديالك، كيقراها برنامج</span><span lang="fr">Avant un humain, c'est un logiciel qui lit votre CV</span></h2>
+            <p class="lead"><span lang="ar">بزاف ديال الشركات فألمانيا كتستقبل الطلبات من بوابة إلكترونية، فيها نظام كيسمّاوه ATS (Bewerbermanagementsystem). هاد النظام كيفرز الطلبات قبل ما توصل للمسؤول.</span><span lang="fr">Beaucoup d'entreprises allemandes reçoivent les candidatures via un portail équipé d'un ATS (Bewerbermanagementsystem). Il trie les dossiers avant qu'ils arrivent au recruteur.</span></p>
+          </div>
+          <ol class="flow">
+            <li class="rv"><div><b><span lang="ar">كيقرا النص ديال الملف</span><span lang="fr">Il lit le texte du fichier</span></b><span lang="ar">إلا كان الملف تصويرة ولا scan، ما كيلقى والو يقراه.</span><span lang="fr">Si le fichier est une photo ou un scan, il n'y a rien à lire.</span></div></li>
+            <li class="rv"><div><b><span lang="ar">كيقسّمو لخانات</span><span lang="fr">Il le découpe en rubriques</span></b><span lang="ar">الاسم، الخبرة، التكوين، اللغات، الرخصة… بالعناوين الألمانية المعروفة.</span><span lang="fr">Nom, expérience, formation, langues, permis… avec les titres allemands attendus.</span></div></li>
+            <li class="rv"><div><b><span lang="ar">كيقارنو مع الإعلان</span><span lang="fr">Il le compare à l'annonce</span></b><span lang="ar">كيقلب على كلمات المهنة. الملف اللي ما فيهش هاد الكلمات كيهبط للتحت، وممكن حتى حد ما يشوفو.</span><span lang="fr">Il cherche les mots du métier. Sans eux, le dossier descend dans la liste, et personne ne le voit.</span></div></li>
+          </ol>
+        </div>
+        <div class="scan rv" aria-hidden="true">
+          <img src="assets/cv/p3.webp" alt="" width="900" height="1270" loading="lazy">
+          <div class="bar"></div>
+          <div class="read">
+            <div class="t">ATS liest den Lebenslauf:</div>
+            <div>Beruf: Kfz-Mechatroniker <i></i></div>
+            <div>Berufserfahrung: 2 <i></i></div>
+            <div>Deutsch: B2 <i></i></div>
+            <div>Text-PDF <i></i></div>
+          </div>
+        </div>
       </div>
-      <div class="who-grid">
-        <div class="rv"><b>DIN 5008</b><p><span lang="ar">الشكل الرسمي اللي كتعتمدو الشركات الألمانية فالرسائل والـ Lebenslauf.</span><span lang="fr">La norme de mise en page attendue par les entreprises allemandes.</span></p></div>
-        <div class="rv"><b>ATS</b><p><span lang="ar">PDF فيه نص حقيقي وكلمات المهنة، باش البرامج ديال الفرز تقراه.</span><span lang="fr">Un PDF texte avec les mots du métier, lisible par les logiciels de tri.</span></p></div>
-        <div class="rv"><b>Ausbildung · Arbeit · Pflege</b><p><span lang="ar">المصطلحات والـ Anschreiben كيتبدلو على حساب الهدف ديالك.</span><span lang="fr">Vocabulaire et Anschreiben adaptés à votre objectif.</span></p></div>
-        <div class="rv"><b><span lang="ar">ماشي نموذج جاهز</span><span lang="fr">Pas un modèle copié</span></b><p><span lang="ar">ما كنعمروش قالب بالأسماء: كنكتبو التجارب ديالك بجمل ألمانية مناسبة ليك.</span><span lang="fr">Pas de simple modèle rempli : vos expériences rédigées en vraies phrases allemandes.</span></p></div>
+
+      <div class="vs rv">
+        <div class="row hd"><div><span lang="ar">علاش كيترفضو بزاف ديال الملفات</span><span lang="fr">Pourquoi tant de dossiers sont écartés</span></div><div><span lang="ar">شنو كندير أنا فالملف ديالك</span><span lang="fr">Ce que je fais dans votre dossier</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">CV مصوّر بالتليفون ولا scan</span><span lang="fr">CV photographié ou scanné</span></div><div><span class="v"></span><span lang="ar">PDF فيه نص حقيقي، البرنامج كيقراه كامل</span><span lang="fr">Un PDF avec du vrai texte, lisible en entier</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">عناوين بالفرنسية ولا مخترعة</span><span lang="fr">Titres en français ou inventés</span></div><div><span class="v"></span><span lang="ar">عناوين ألمانية: Berufserfahrung, Ausbildung, Sprachen</span><span lang="fr">Titres allemands : Berufserfahrung, Ausbildung, Sprachen</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">كلمات عامة ما فيهاش المهنة</span><span lang="fr">Mots vagues, sans le métier</span></div><div><span class="v"></span><span lang="ar">مصطلحات المهنة: Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span><span lang="fr">Les termes du métier : Berufskraftfahrer, Kfz-Mechatroniker, Pflegefachkraft</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">ترجمة Google فيها أخطاء</span><span lang="fr">Traduction automatique avec des fautes</span></div><div><span class="v"></span><span lang="ar">ألمانية مهنية، ومستوى اللغة واضح</span><span lang="fr">Un allemand professionnel, niveau de langue clair</span></div></div>
+        <div class="row"><div><span class="x"></span><span lang="ar">تواريخ ناقصة ولا مخلّطة</span><span lang="fr">Dates manquantes ou en désordre</span></div><div><span class="v"></span><span lang="ar">كل تجربة بالشهر والعام: 01.2020 – 12.2025</span><span lang="fr">Chaque poste au mois près : 01.2020 – 12.2025</span></div></div>
       </div>
     </div>
   </section>
@@ -724,6 +671,59 @@ dialog.lb .lb-count { position: fixed; bottom: 16px; left: 0; right: 0; text-ali
           <li><span lang="ar">أي تعديل بعد الدفع، فابور</span><span lang="fr">Toute modification après paiement, gratuite</span></li>
         </ul>
         <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي دابا</span><span lang="fr">Je veux mon dossier</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block clients dark" id="clients">
+    <div class="wrap">
+      <div class="top-row">
+        <div class="head rv">
+          <h2><span lang="ar">زبناء وثقو فينا</span><span lang="fr">Ils nous ont fait confiance</span></h2>
+          <p class="lead"><span lang="ar">رسائل وأداءات حقيقية من زبناء PRO CV. خبّينا الأسماء والأرقام ديالهم.</span><span lang="fr">De vrais messages et paiements de clients PRO CV. Noms et numéros masqués.</span></p>
+        </div>
+      </div>
+      <div class="cards">
+        <figure class="card rv"><button type="button" data-src="assets/clients/a.webp"><img src="assets/clients/a.webp" alt="Messages vocaux d'un client satisfait" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">زبون فرحان بالملف ديالو</span><span lang="fr">Un client satisfait</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/b.webp"><img src="assets/clients/b.webp" alt="Virement de 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء 200 درهم بالتحويل البنكي</span><span lang="fr">Paiement de 200 DH par virement</span></figcaption></figure>
+        <figure class="card rv"><button type="button" data-src="assets/clients/c.webp"><img src="assets/clients/c.webp" alt="Reçu Cash Plus 200 DH" loading="lazy" width="760" height="880"></button><figcaption><span lang="ar">أداء بـ Cash Plus</span><span lang="fr">Paiement par Cash Plus</span></figcaption></figure>
+      </div>
+      <div class="cta-row rv">
+        <a class="btn go order" href="#infos"><span lang="ar">بغيت ملفي بحالهم</span><span lang="fr">Je veux mon dossier aussi</span><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO WRITES -->
+  <section class="block who" id="equipe">
+    <div class="wrap">
+      <div class="head rv">
+        <h2><span lang="ar">شكون كيكتب الملف ديالك؟</span><span lang="fr">Qui rédige votre dossier ?</span></h2>
+        <p class="lead"><span lang="ar">فريق PRO CV متخصص غير فملفات الترشيح الألمانية. كل ملف كنكتبوه من الصفر، على حساب المهنة ديالك، وكنراجعوه صفحة بصفحة قبل ما نصيفطوه.</span><span lang="fr">L'équipe PRO CV fait uniquement des dossiers de candidature allemands. Chaque dossier est écrit de zéro pour votre métier, puis relu page par page avant l'envoi.</span></p>
+      </div>
+      <div class="who-grid">
+        <div class="rv"><b>DIN 5008</b><p><span lang="ar">الشكل الرسمي اللي كتعتمدو الشركات الألمانية فالرسائل والـ Lebenslauf.</span><span lang="fr">La norme de mise en page attendue par les entreprises allemandes.</span></p></div>
+        <div class="rv"><b>ATS</b><p><span lang="ar">PDF فيه نص حقيقي وكلمات المهنة، باش البرامج ديال الفرز تقراه.</span><span lang="fr">Un PDF texte avec les mots du métier, lisible par les logiciels de tri.</span></p></div>
+        <div class="rv"><b>Ausbildung · Arbeit · Pflege</b><p><span lang="ar">المصطلحات والـ Anschreiben كيتبدلو على حساب الهدف ديالك.</span><span lang="fr">Vocabulaire et Anschreiben adaptés à votre objectif.</span></p></div>
+        <div class="rv"><b><span lang="ar">ماشي نموذج جاهز</span><span lang="fr">Pas un modèle copié</span></b><p><span lang="ar">ما كنعمروش قالب بالأسماء: كنكتبو التجارب ديالك بجمل ألمانية مناسبة ليك.</span><span lang="fr">Pas de simple modèle rempli : vos expériences rédigées en vraies phrases allemandes.</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block faq" id="questions">
+    <div class="wrap">
+      <div class="head rv"><h2><span lang="ar">أسئلة كتجينا بزاف</span><span lang="fr">Questions fréquentes</span></h2></div>
+      <div class="list">
+        <details><summary><span lang="ar">واش كتبيعو الكونترا ولا كتترجمو الوثائق؟</span><span lang="fr">Vendez-vous des contrats ou traduisez-vous des documents ?</span></summary><p><span lang="ar">لا. حنا ما كنبيعوش الكونترا ديال الخدمة، وما كنترجموش الوثائق (الديبلومات، الشواهد…). الترجمة ديال الوثائق خاصها مترجم محلَّف. حنا كنكتبو ليك ملف الترشيح بالألمانية: Deckblatt + Anschreiben + Lebenslauf.</span><span lang="fr">Non. Nous ne vendons pas de contrats de travail et nous ne traduisons pas les documents (diplômes, attestations…) : pour cela il faut un traducteur assermenté. Nous rédigeons votre dossier de candidature en allemand : Deckblatt + Anschreiben + Lebenslauf.</span></p></details>
+        <details><summary><span lang="ar">واش خاصني نعرف الألمانية؟</span><span lang="fr">Dois-je parler allemand ?</span></summary><p><span lang="ar">إيه، ضروري. خاصك تكون كتعرف الألمانية على الأقل A2، والأحسن B1، حيت الشركات والمدارس فألمانيا كيطلبو مستوى فالألمانية والمقابلة كتكون بالألمانية. ولكن الملف حنا اللي كنكتبوه: صيفط معلوماتك بالدارجة ولا العربية ولا الفرنسية، وحنا نكتبوه ليك بالألمانية.</span><span lang="fr">Oui, c'est indispensable. Il faut au moins le niveau A2, et B1 c'est mieux : les entreprises et les écoles en Allemagne demandent un niveau d'allemand, et l'entretien se fait en allemand. Mais le dossier, c'est nous qui l'écrivons : envoyez vos infos en darija, en arabe ou en français, nous le rédigeons en allemand.</span></p></details>
+        <details><summary><span lang="ar">كيفاش نخلص؟</span><span lang="fr">Comment payer ?</span></summary><p><span lang="ar">كتخلص من بعد ما نصيفطو ليك صور الملف ديالك فواتساب وتشوفو. تقدر تخلص بالتحويل البنكي لـ Attijariwafa bank ولا CIH Bank، ولا ب Cash Plus، ومن بعد كتوصل بالـ PDF كامل.</span><span lang="fr">Vous payez après avoir vu l'aperçu de votre dossier, envoyé sur WhatsApp. Par virement Attijariwafa bank ou CIH Bank, ou par Cash Plus, puis vous recevez le PDF complet.</span></p></details>
+        <details><summary><span lang="ar">علاش 200 درهم؟ شنو داخل فالثمن؟</span><span lang="fr">Que comprend le prix de 200 DH ?</span></summary><p><span lang="ar">200 درهم هو الثمن الكامل، بلا حتى مصاريف زايدة، وكيشمل جوج نسخ بجوجهم: الملف الكلاسيكي (DIN 5008: Deckblatt بالصورة، Anschreiben مكتوب على حساب المهنة، Lebenslauf، وصفحة Vielen Dank) + نسخة ATS خاصة بالبوابات الإلكترونية مع شرح مبسّط للاستعمال، زيادة على تحضير تصويرة الـ Bewerbung والتعديلات فابور حتى من بعد الدفع. الثمن واحد للجميع، باش تعرف من الأول شحال غادي تخلص.</span><span lang="fr">200 DH est le prix complet, sans frais en plus, et inclut les deux versions : le dossier classique DIN 5008 (Deckblatt avec photo, Anschreiben écrit pour votre métier, Lebenslauf et page Vielen Dank) + la version ATS dédiée aux portails en ligne avec un guide d’utilisation, ainsi que la préparation de la photo de candidature et les modifications gratuites même après paiement. Le prix est le même pour tous : vous savez dès le départ ce que vous payez.</span></p></details>
+        <details><summary><span lang="ar">واش كيصلح للـ Ausbildung وللخدمة؟</span><span lang="fr">Ça marche pour une Ausbildung et un emploi ?</span></summary><p><span lang="ar">إيه. الملف كيتكتب حسب الهدف ديالك: Ausbildung، خدمة، ولا Pflege، بالمصطلحات ديال كل مجال.</span><span lang="fr">Oui. Le dossier est écrit selon votre but : Ausbildung, emploi ou Pflege, avec les termes de chaque domaine.</span></p></details>
+        <details><summary><span lang="ar">واش كتترجمو الـ CV ديالي للألمانية؟</span><span lang="fr">Traduisez-vous mon CV en allemand ?</span></summary><p><span lang="ar">حسن من ترجمة. صيفط لينا الـ CV ديالك بالفرنسية ولا العربية، ولا غير المعلومات ديالك بالدارجة، وحنا كنكتبو ليك <a href="news/lebenslauf-cv-almani/">Lebenslauf ألماني</a> جديد بالشكل لي كتطلبو الشركات فألمانيا (tabellarischer Lebenslauf)، مع Anschreiben مكتوب على حساب المهنة. الترجمة الحرفية كتبان دغيا وكترفضها الشركات.</span><span lang="fr">Mieux qu'une traduction. Envoyez-nous votre CV en français ou en arabe, ou simplement vos informations, et nous rédigeons un <a href="news/traduire-cv-allemand/">CV allemand</a> neuf au format attendu en Allemagne (tabellarischer Lebenslauf), avec un Anschreiben adapté au métier. Une traduction mot à mot se repère tout de suite.</span></p></details>
+        <details><summary><span lang="ar">لأي مهنة كتكتبو الملف؟</span><span lang="fr">Pour quels métiers ?</span></summary><p><span lang="ar">لجميع المهن: <a href="news/ausbildung-pflege-tamrid/">اوسبيلدونغ التمريض</a> (Pflegefachfrau / Pflegefachmann)، Pflegehelfer، سائق شاحنة (Berufskraftfahrer)، Koch / Köchin، KFZ-Mechatroniker، Erzieher، Hotelfach، Elektroniker وغيرها. كل ملف كيتكتب بالمصطلحات ديال المهنة ديالك.</span><span lang="fr">Tous les métiers : <a href="news/cv-allemand-ausbildung/">CV allemand pour Ausbildung</a> en Pflege (Pflegefachfrau / Pflegefachmann), Pflegehelfer, chauffeur poids lourd (Berufskraftfahrer), Koch / Köchin, KFZ-Mechatroniker, Erzieher, hôtellerie, électronique, etc. Chaque dossier utilise le vocabulaire de votre métier.</span></p></details>
+        <details><summary><span lang="ar">واش كتوجدو تصويرة الـ Bewerbung؟</span><span lang="fr">Préparez-vous la photo de candidature (Bewerbungsfoto) ?</span></summary><p><span lang="ar">إيه. صيفط لينا تصويرة ديالك من القدام، وحنا كنوجدوها ليك تصويرة Bewerbung احترافية (القص، الخلفية والضو)، وكنحطوها فالملف ديالك.</span><span lang="fr">Oui. Envoyez-nous une photo de vous de face : nous la préparons en photo de candidature professionnelle (cadrage, fond et lumière) et nous la mettons dans votre dossier.</span></p></details>
+        <details><summary><span lang="ar">وإلا بغيت نبدل شي حاجة؟</span><span lang="fr">Et si je veux changer quelque chose ?</span></summary><p><span lang="ar">أي تعديل بعد الدفع فابور. كتقول لينا شنو بغيتي نبدلو وكنبدلوه ليك بلا ما تخلص حتى درهم.</span><span lang="fr">Toute modification après paiement est gratuite. Dites-nous quoi changer, nous le changeons sans frais.</span></p></details>
       </div>
     </div>
   </section>
